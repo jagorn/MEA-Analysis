@@ -1,0 +1,10 @@
+# Write here the path of each of your data locations.
+# Use the following syntax:
+#
+# NAME_DATA_LOCATION_1 = 'PATH_DATA_LOCATION_1'
+# NAME_DATA_LOCATION_2 = 'PATH_DATA_LOCATION_2'
+# NAME_DATA_LOCATION_3 = 'PATH_DATALOCATION_3'
+#
+# by default, the software looks for the data in the first location listed.
+# to change the data location in your matlab code, use the command:
+# changeDataPath(NAME_DATA_LOCATION)

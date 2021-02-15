@@ -1,0 +1,20 @@
+# Use this file to specify:
+# 1. which stimulations were displayed during the experiment 
+# 2. in which orderthey were displayed
+# 3. all the conditions under which they were displayed (pharmacology, blockers, etc..)
+# 4. other comments
+# Use the following sintax:
+#
+# STIM_1 (CONDITION1, CONDITION2, CONDITION3)  # COMMENTS 
+# STIM_2   # COMMENTS
+# STIM_3 (CONDITION1)  
+# STIM_4 (CONDITION1, CONDITION2) # COMMENTS
+#
+# Example:
+# checkerboard
+# euler
+# bars
+# flicker 	(lap4, acet)
+# discs 	(lap4, acet)
+# flicker	 		# pharmacology removed
+

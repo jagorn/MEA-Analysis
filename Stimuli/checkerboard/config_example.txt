@@ -1,0 +1,19 @@
+# Use this file to specify the settings used to display the checkerboard stimulus.
+
+
+# Setup Configuration
+mea_rate 	= 20000
+frame_rate 	= 40
+
+# Stimulus Configurations
+version 	= checkerboard
+is_looping	= 1
+
+# Checkerboard Configurations
+block_pattern 	= AABACADA
+block_size 	= 600
+side1_check 	= 51
+side2_check	= 38
+
+# STA Parameters:
+n_time_bins	= 21

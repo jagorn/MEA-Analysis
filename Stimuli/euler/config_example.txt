@@ -1,0 +1,11 @@
+# Use this file to specify the settings used to display the euler stimulus.
+
+
+# Setup Configuration
+mea_rate 	= 20000
+frame_rate 	= 30
+
+# Stimulus Configurations
+version 	= euler_180530
+is_looping	= 0
+

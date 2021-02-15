@@ -1,0 +1,1 @@
+function printSectionsTable(exp_id)sections = getSectionsTable(exp_id);table = struct2table(sections);disp(table);
