@@ -1,4 +1,15 @@
 function plotSectionPsth(exp_id, section_id, varargin)
+% plots the PSTHs of a group of cells of the experiment exp_id to the
+% stimulus played in section_id
+
+% PARAMETERS:
+% EXP_ID:                   the identifier of the experiment
+% SECTION_ID:               the identifier of the section
+% CELL_INDICES (OPTIONAL):  the indices of the cells to plot.
+% PATTERN_NAME (OPTIONAL):  the repated pattern of section_id respect to which are computed the PSTHs
+% TIME_BIN (OPTIONAL):      the time bin of the psths (default = 50ms)
+% SMOOTHING_COEFF:          coefficient of smoothing when computing the psth
+
 
 repetitions = getRepetitions(exp_id, section_id);
 spike_times = getSpikeTimes(exp_id);

@@ -1,4 +1,14 @@
 function section_table = getSection(exp_id, section_id)
+% Returns a struct representing an experiment section.
+%
+% PARAMETERS:
+% EXP_ID:                               the identifier of the experiment.
+% SECTION_ID:                              the identifier of the section.
+
+% OUTPUT:
+% A struct describing the section, specifying the stimulus used,
+% conditions, triggers, repetitions, frame rate, etc...
+
 sections_table = getSectionsTable(exp_id);
 
 if ischar(section_id) || isstring(section_id)

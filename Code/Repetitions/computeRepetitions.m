@@ -11,6 +11,11 @@ function repetitions = computeRepetitions(triggers, repetitions_map, is_looping)
 % is_looping: if true, we assume the stimulus is repeated in loop.
 %             if false, we assume the stimulus is just played once.
 
+% OUTPUT:
+% repetitions: a struct describing the structure of the stimulus.
+%   repetitions.names{i}:           the name of the i-th repeated patterns of the stimulus
+%   repetitions.rep_begins{i}:      an array indicating the first trigger of each repetition of the i-th pattern
+%   repetitions.durations{i}:       the duration (in frames) of the i-th pattern
 
 frame2frame_interval = median(diff(triggers));
 

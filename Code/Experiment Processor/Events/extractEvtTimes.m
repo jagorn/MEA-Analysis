@@ -1,4 +1,7 @@
 function evtTimes = extractEvtTimes(exp_id, raw_file, mea_rate, varargin)
+% Extracts all the DMD event times from a raw file recordings.
+% It groups the event times in "sections", and saves them in the experiment
+% folder.
 
 % Parse Input
 p = inputParser;

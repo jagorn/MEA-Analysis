@@ -1,6 +1,34 @@
-% raster for one cell, responding to several repetitions of distinct patterns
-
 function plotStimRaster(spikes, repetitions, n_steps_stim, rate, varargin)
+% plots a Raster Plot representing the response of ONE cell,
+% to several repetitions of A SET of distinct patterns;
+%
+%
+% PARAMETERS:
+%
+% spikes:           an array representing all the spike times of a given neuron (in time steps).
+% repetitions:      a cell array, where each cell corresponds to a stimulus pattern.
+%                   each cell contains an array, which containts the first trigger of each repetition.
+% n_stes_stim:      the total number of steps in a repetition.
+% rate:             the sampling rate of the recording
+%
+%
+% OPTIONAL PARAMETERS:
+%
+% Title:                the title of the plot.
+% Labels:               the labels on the y axis of the plot.
+% Pattern_Indices:      the indices of the patterns to plot.
+% Pre_Stim_DT:          include in the raster this interval of time (seconds) before the stimulus onset.
+% Post_Stim_DT:         include in the raster this interval of time (seconds) after the stimulus offset.
+% Point_Size:           size of the raster points.
+% Line_Spacing:         blank space left between patterns in the plot.
+% Raster_Colors:        the colors to use in the plot to represent each pattern.
+% Stim_Color:           the color to use in the plot to represent the stimulus.
+% Dead_Times:           the dead_times used during the spike-sorting for each pattern.
+% Edges_onsets:         list of times (seconds) at which to draw some vertical edges
+% Edges_offsets:        list of times (seconds) at which to draw some vertical edges
+% Edges_colors:         list of colors for the vertical edges
+% N_Max_Repetitions:    maximum number of repetitions shown for each pattern.
+
 
 n_patterns = numel(repetitions);
 
@@ -30,7 +58,6 @@ addRequired(p, 'rate');
 addParameter(p, 'Title', title_default);
 addParameter(p, 'Labels', labels_default);
 addParameter(p, 'Pattern_Indices', pattern_indices_default);
-addParameter(p, 'Column_Size', []);
 addParameter(p, 'Pre_Stim_DT', post_stim_dt_default);
 addParameter(p, 'Post_Stim_DT', pre_stim_dt_default);
 addParameter(p, 'Point_Size', size_points_default);
@@ -49,7 +76,6 @@ parse(p, spikes, repetitions, n_steps_stim, rate, varargin{:});
 title_txt = p.Results.Title; 
 labels = p.Results.Labels; 
 pattern_idx = p.Results.Pattern_Indices; 
-column_size = p.Results.Column_Size; 
 pre_stim_dt = p.Results.Pre_Stim_DT; 
 post_stim_dt = p.Results.Post_Stim_DT; 
 point_size = p.Results.Point_Size; 
@@ -62,9 +88,6 @@ edges_offsets = p.Results.Edges_Offsets;
 edges_colors = p.Results.Edges_Colors; 
 n_max_repetitions = p.Results.N_Max_Repetitions; 
 
-if isempty(column_size)
-    column_size = numel(pattern_idx);
-end
 
 pre_stim_steps = pre_stim_dt*rate;
 post_stim_steps = post_stim_dt*rate;
@@ -77,7 +100,7 @@ response_duration = n_steps_resp / rate;
 for reps = repetitions
     n_max_repetitions = max(n_max_repetitions, numel(reps{:}));
 end
-n_tot_repetitions = column_size * (n_max_repetitions + line_spacing);
+n_tot_repetitions = numel(pattern_idx) * (n_max_repetitions + line_spacing);
 
 xlim([min(0, -pre_stim_dt), max(stim_duration, response_duration - pre_stim_dt + post_stim_dt)])
 ylim([-line_spacing, n_tot_repetitions])

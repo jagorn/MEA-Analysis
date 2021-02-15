@@ -12,7 +12,7 @@ function setDataset(dataset_name, experiments, varargin)
 % cells are accepted only with sorting score >= to [acceptedlabels]
 % 5=A, 4=AB, 3=ABC
 
-% STAs = true;
+% STAs (optional) = true;
 % if false, the STAs are not included in the dataset.
 
 % Parse Input

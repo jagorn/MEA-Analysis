@@ -1,4 +1,7 @@
 function stimTable = assignStimTriggers(stimTable, evt_times)
+% Assigns to each section of the experiment the corresponding triggers.
+% All the triggers are added as a new field 'triggers' to the sections
+% struct 'stimTable'.
 
 if numel(stimTable) ~= numel(evt_times)
     fprintf('the number of visual stimuli does not match with the sessions of triggers found\n')

@@ -1,5 +1,5 @@
 function changeDefaultPattern(psth_pattern)
-% changes the default PST.
+% changes the default PSTH.
 % the default PSTH is the PSTH that is shown in all the plots and cards.
 
 % INPUTS

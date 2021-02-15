@@ -1,4 +1,11 @@
 function initializeExperiment(exp_id)
+% Initialize an experiment, by creating its folder in the data path,
+% and initializing the stimulus file stims.txt
+%
+% PARAMETERS:
+%
+% EXP_ID: the identifier (string) of the experiment
+
 exp_id = char(exp_id);
 
 % create the experiment folder

@@ -1,4 +1,10 @@
 function initializeSections(exp_id)
+% Initialize the sections of an experiment.
+% For each section, it creates a folder and a configuration file to compile.
+%
+% PARAMETERS:
+%
+% EXP_ID: the identifier (string) of the experiment
 
 sections_table = generateSectionsTable(exp_id);
 

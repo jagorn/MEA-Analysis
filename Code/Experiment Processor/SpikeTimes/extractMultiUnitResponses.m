@@ -1,4 +1,5 @@
 function SpikeTimes_MultiUnit = extractMultiUnitResponses(exp_id, thresholding_file)
+% Extracts multi-unit responses of a given experiment
 
 try    
     SpikeTimes_MultiUnit = getMua(exp_id);

@@ -1,4 +1,6 @@
 function SpikeTimes = extractCellResponses(exp_id, results_file)
+% Extracts the spike times of a given experiment from the spike-sorting
+% results.
 
 try
     SpikeTimes = getSpikeTimes(exp_id);

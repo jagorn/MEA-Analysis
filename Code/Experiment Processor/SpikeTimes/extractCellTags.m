@@ -1,4 +1,6 @@
 function Tags = extractCellTags(exp_id, templates_file)
+% Extracts the cell tags of a given experiment from the spike-sorting
+% results.
 
 try
     Tags = getTags(exp_id);

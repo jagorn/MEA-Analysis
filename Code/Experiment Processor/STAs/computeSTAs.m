@@ -1,5 +1,12 @@
 function computeSTAs(exp_id, varargin)
-
+% Computes the STAs for the experiment exp_id.
+% The STAs are computed on the responses to the checkerboard stimulus.
+% THE STAs are also defactorized in temporal and spatial component.
+% The STAs are saved as a .mat file in the experiment folder.
+%
+% Parameters:
+% EXP_ID:                   the identifier of the experiment
+% DO_SMOOTHING (OPTIONAL):  if true, it smooths the stas before defactorization.
 
 do_smoothing_def = false;
 

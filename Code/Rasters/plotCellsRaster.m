@@ -1,6 +1,33 @@
-% raster for several cells, responding to several repetitions of a stim
-
 function plotCellsRaster(spikes, repetitions, n_steps_stim, rate, varargin)
+% plots a Raster Plot representing the response of several cells,
+% to the repetitions of a given stimulus pattern;
+%
+%
+% PARAMETERS:
+%
+% spikes:           a cell array, where each cell corresponds to a neuron.
+%                   each cell contains an array, which represents all the spike times of the neuron (in time steps).
+% repetitions:      an array which containts the first trigger of each repetition.
+% n_stes_stim:      the total number of steps in a repetition.
+% rate:             the sampling rate of the recording
+%
+%
+% OPTIONAL PARAMETERS:
+%
+% Title:                the title of the plot.
+% Labels:               the labels on the y axis of the plot.
+% Cells_Indices:         the indices of the cells to plot.
+% Pre_Stim_DT:          include in the raster this interval of time (seconds) before the stimulus onset.
+% Post_Stim_DT:         include in the raster this interval of time (seconds) after the stimulus offset.
+% Point_Size:           size of the raster points.
+% Line_Spacing:         blank space left between patterns in the plot.
+% Raster_Colors:        the colors to use in the plot to represent each pattern.
+% Stim_Color:           the color to use in the plot to represent the stimulus.
+% Dead_Times:           the dead_times used during the spike-sorting for each pattern.
+% Edges_onsets:         list of times (seconds) at which to draw some vertical edges
+% Edges_offsets:        list of times (seconds) at which to draw some vertical edges
+% Edges_colors:         list of colors for the vertical edges
+
 
 n_cells = numel(spikes);
 

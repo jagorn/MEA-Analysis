@@ -1,4 +1,11 @@
 function [x, y] = raster(spikes, onsets, offsets, sampling_rate)
+% generates x and y coordinates of a raster representing the spike times of
+% a group of cell in response to a given stimulus.
+%
+% PARAMETERS:
+% spikes:           the spike times of a set of cells
+% onsets, offsets:  the beginning and ending of each of the stimulus repetitions
+% sampling_rate:    the sampling rate of the recordings
 
 assert(length(onsets) == length(offsets))
 n_reps = length(onsets);

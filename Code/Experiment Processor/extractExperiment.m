@@ -1,4 +1,25 @@
 function  extractExperiment(exp_id, mea_rate, varargin)
+% This function extracts and saves all the data related to an experiment:
+% 1. Reads all the configuration files inside the secition folders.
+% 2. Extracts the triggers for all the experiment sections.
+% 3. Compute the repetitions of the repeated patterns for all the experiment sections
+% 4. Saves all the above info in a table called SectionsTable.
+% 5. Extracts and saves the spike times and tags for all the experiment cells.
+%
+% Parameters:
+% 
+% exp_ID:           the identifier of the experiment.
+% mea_rate:         the sampling rate of the experiment recordings.
+% extract_triggers (optional):      if true, it extracts and saves the experiment triggers.
+% compute_repetitions (optional):   if true, it computes the repetitions of the reapeated patterns for each section.
+% extract_multiunit (optional):     if true, it extracts and saves the multiunit spike times obtained with the thresholding function of spiking-circus.
+% extract_sortedSpikes (optional):  if true, it extracts and saves the sorted spike times obtained with the sorting function of spiking-circus.
+% extract_tags (optional):          if true, it extracts and saves the cell tags from the spiking-circus results file
+% raw_path (optional):              path to the raw file (by default it is the "sorted" folder in the experiment folder).
+% raw_name (optional):              name of the raw file (by default it is the same as exp_id).
+% sorting_path (optional):          path to the sorting results (by default it is the "sorted" folder in the experiment folder.
+% sorting_name (optional):          name of the sorting results files (by default it is the same as exp_id).
+% sorting_suffix (optional):        the version of the sorting results to be used.
 
 % Parameters Extraction
 extract_triggers_def = true;

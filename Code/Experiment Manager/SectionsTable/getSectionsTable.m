@@ -1,4 +1,13 @@
 function sectionsTable = getSectionsTable(exp_id)
+% Returns the section table of a given experiment
+%
+% PARAMETERS:
+% EXP_ID:                               the identifier of the experiment.
+
+% OUTPUT:
+% A struct with an element for each section of the experiment, specifying stimulus played,
+% conditions, triggers, repetitions, frame rate, etc...
+
 stim_table_file = fullfile(processedPath(exp_id), 'SectionsTable.mat');
 
 try

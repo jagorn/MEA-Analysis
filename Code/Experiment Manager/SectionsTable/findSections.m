@@ -1,4 +1,17 @@
 function chosen_tables = findSections(exp_id, stim_id, varargin)
+% Finds all the sections of an experiment corresponding to a given stimulus.
+%
+% PARAMETERS:
+% EXP_ID:                               the identifier of the experiment.
+% STIM_ID:                              the identifier of the stimulus.
+% RATES (OPTIONAL):                     only the sections with the frame rate specified are returned.
+% CONDITIONS (OPTIONAL):                only the sections with the conditions listed are returned.
+% ALLOW_OTHER_CONDITIONS (OPTIONAL):    if true, the sections returned must have all the conditions listed or more.
+%                                       if false, the sections returned must have al the conditions listed and only those.
+
+% OUTPUT:
+% A struct with an element for each section returned, specifying stim_id,
+% conditions, triggers, repetitions, frame rate, etc...
 
 % Parse Input
 p = inputParser;

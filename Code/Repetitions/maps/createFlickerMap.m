@@ -1,4 +1,12 @@
 function createFlickerMap()
+% Creates the repetition map for the flicker stimululs.
+% The repetition map is saved in the stimuli folder.
+
+% repetitions_map: a cell array describing the structure of the stimulus.
+%   repetitions_map.stim_duration: the whole duration (in frames) of the stimulus
+%   repetitions_map.names{i}: the name of the i-th repeated patterns of the stimulus
+%   repetitions_map.start_indexes{i}: an array representing the indexes of the starting frame of the i-th repeated pattern
+%   repetitions_map.durations{i}: the duration (in frames) of the i-th repeated pattern
 
 % white first version
 flicker_version = 'flicker_white_first';

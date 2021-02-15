@@ -1,4 +1,5 @@
 function generateStimFile(exp_id, section_id)
+% It generates the .stim file of an experiment section, necessary to visualize the raster plots in the spiking-circus GUI.
 
 reps = getRepetitions(exp_id, section_id);
 

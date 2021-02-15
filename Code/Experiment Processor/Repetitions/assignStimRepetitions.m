@@ -1,4 +1,12 @@
 function stimTable = assignStimRepetitions(stimTable, exp_id)
+% Assigns to each section of the experiment the corresponding repetitions.
+% All the repetitions are added as a new field 'repetitions' to the sections
+% struct 'stimTable'.
+
+% repetitions is struct describing the structure of the stimulus.
+%   repetitions.names{i}:           the name of the i-th repeated patterns of the stimulus
+%   repetitions.rep_begins{i}:      an array indicating the first trigger of each repetition of the i-th pattern
+%   repetitions.durations{i}:       the duration (in frames) of the i-th pattern
 
 for i_section = 1:numel(stimTable)
     section_id = stimTable(i_section).id;
