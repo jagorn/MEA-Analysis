@@ -6,8 +6,8 @@ A comprehensive set of scripts for handling and analyzing Multi Electrode Array 
 # Installation
 
 ## Installation and Configuration
-1. Download the MEA Analysis package [here] (https://github.com/jagorn/MEA-Analysis).
-2. Download the Checkerboard file [here] (https://drive.google.com/file/d/1pBHTdfZaLZumMlbEKDsI1TqGR8F5ZnIC/view?usp=sharing), and save it into the following project directory:
+1. Download the MEA Analysis package [here](https://github.com/jagorn/MEA-Analysis).
+2. Download the Checkerboard file [here](https://drive.google.com/file/d/1pBHTdfZaLZumMlbEKDsI1TqGR8F5ZnIC/view?usp=sharing), and save it into the following project directory:
 _*/my_project_path/MEA_Analysis/Stimuli/checkerboard/binary*_
 3. Add the _*/my_path/MEA_Analysis/Code*_ folder to the MATLAB Path. 
 
