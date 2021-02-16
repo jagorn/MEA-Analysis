@@ -15,7 +15,8 @@ Your *Data Path* is the folder where you store your data.
 The MEA_Analysis package looks for the data in this folder, and saves its variables here. 
 
 In order to configure your *Data Path* you must fill the configuration file:
-*/my_project_path/MEA_Analysis/data_path_configuration*
+*/my_project_path/MEA_Analysis/data_path_configuration*.
+
 Here you can list all the possible data paths, each represented with a name and a path.
 
 By default, the package will look for your data in the first data path listed in the configuration file.
