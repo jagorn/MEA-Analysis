@@ -7,14 +7,16 @@ A comprehensive set of scripts for handling and analyzing Multi Electrode Array 
 
 ## Installation and Configuration
 1. Download the MEA Analysis package [here] (https://github.com/jagorn/MEA-Analysis).
-2. Download the binary Checkerboard file here, and save it into the project directory _*/my_project_path/MEA_Analysis/Stimuli/checkerboard/binary*_
-3. Add the -*/my_path/MEA_Analysis/Code*_ folder to the MATLAB Path. 
+2. Download the Checkerboard file [here] (https://drive.google.com/file/d/1pBHTdfZaLZumMlbEKDsI1TqGR8F5ZnIC/view?usp=sharing), and save it into the following project directory:
+_*/my_project_path/MEA_Analysis/Stimuli/checkerboard/binary*_
+3. Add the _*/my_path/MEA_Analysis/Code*_ folder to the MATLAB Path. 
 
 ## Data Configuration
 Your _*Data Path*_ is the folder where you store your data.
 The MEA_Analysis package looks for the data in this folder, and saves its variables here. 
 
-In order to configure your -*Data Path*- you must fill the configuration file in _*/my_project_path/MEA_Analysis/data_path_configuration*_
+In order to configure your -*Data Path*- you must fill the configuration file:
+_*/my_project_path/MEA_Analysis/data_path_configuration*_
 Here you can list all the possible data paths, each represented with a name and a path.
 
 By default, the package will look for your data in the first data path listed in the configuration file.
