@@ -81,10 +81,17 @@ Among the other things, this function will save a *repetitions.mat* file in each
 You halso have a *sectionsTable.mat* file that sums up all the information about the stimuli played.
 
 ## Plots
-
+You can plot raster plots and psths for repeated portions of the stimuli.
+To do so, use the function: *plotSectionPSTH(exp_id, section_id)*, where section_id is the name of the section (the same as its folder name).
+You can specify which cells you want to plot, or which repeated patterns in the optional parameters.
 
 
 ## Compute The STAs
+If in your experiment you played a checkerboard stimulus, you can use it to generate spike-triggered averages and receptive fields for your cells.
+
+Use the function *computeSTAs(exp_id)* to compute the STAs of your cells.
+This function will generate the 3d STAs, and the defactorized temporal and spatial components.
+This variables are then saved in the *Sta.mat* file in the experiment folder.
 
 # Create a Dataset
 
