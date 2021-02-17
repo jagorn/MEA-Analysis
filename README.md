@@ -10,7 +10,7 @@ With this package you can process raw file and the spike-sorting results from sp
 1. Download the MEA Analysis package [here](https://github.com/jagorn/MEA-Analysis).
 2. Download the Checkerboard file [here](https://drive.google.com/file/d/1pBHTdfZaLZumMlbEKDsI1TqGR8F5ZnIC/view?usp=sharing), and save it into the following project directory:
 */my_project_path/MEA_Analysis/Stimuli/checkerboard/binary*
-3. Add the */my_path/MEA_Analysis/Code* folder to the MATLAB Path. 
+3. Add the */my_project_path/MEA_Analysis/Code* folder to the MATLAB Path. 
 
 ## Data Configuration
 Your *Data Path* is the folder where you store your data.
@@ -97,6 +97,8 @@ repetitions_map: a cell array describing the structure of the stimulus.
     repetitions_map.start_indexes{i}: an array representing the indexes of the starting frame of the i-th repeated pattern
     repetitions_map.durations{i}: the duration (in frames) of the i-th repeated pattern
 
+Check out the examples in the *Code/Repetitions/Maps* Folder to see how to create repetition maps for new stimuli.
+
 ## Plots
 You can plot raster plots and psths for repeated portions of the stimuli.
 To do so, use the function: *plotSectionPSTH(exp_id, section_id)*, where section_id is the name of the section (the same as its folder name).
@@ -110,9 +112,65 @@ Use the function *computeSTAs(exp_id)* to compute the STAs of your cells.
 This function will generate the 3d STAs, and the defactorized temporal and spatial components.
 This variables are then saved in the *Sta.mat* file in the experiment folder.
 
-# Create a Dataset
+# Analyze Datasets
+
+## Create a Dataset
+If you need more complex analysis or further processing of your data, you can create datasets.
+Datasets pool together data (PSTHs, STAs) from one or more experiments.
+You can then visualize and compare responses of cells from different experiments.
+You can also cluster your dataset, and identify the functional cell types.
+
+To create a new dataset:
+1. Initialize and extract the data for all the experiments you want to include to the dataset as described in the sections above.
+2. Compute the STAs for all the experiments you want to include as described above
+3. Use the function *setDataset(dataset_name, experiments)* to create the dataset.
+
+You have now created a new dataset, which includes all the receptive fields, spike times and temporal stas of all your cells.
+In order to load your dataset into the workspace you can use the function *loadDataset()*
+
+In your dataset you will find a table called CellsTable, which lists all the cells composing the dataset.
+
+# Modify and Change a Dataset
+You can generate as many datasets as you want, and they all will be saved in memory.
+For all operations on datasets, you can use the functions in the *MEA_ANALYSIS/DATASET Manager Package.*
+
+In particular you can:
+* list all of your datasets: *listDatasets()*
+* change the active dataset: *changeDataset(dataset_name)*
+* get the identifier of the active dataset: *getDatasetId()*
+* delete a dataset: *deleteDataset(dataset_name)*
+* copy a dataset: *copyDataset(dataset_name)*
+
+# Add PSTHs to a Dataset
+You can add as many PSTHs as you want to your dataset.
+Once you have created the dataset, use the function *addDatasetPSTH(stim_id)* to add the psth to the stimulus *stim_id* to the Dataset.
+
+The program will look in each experiment of the dataset, find the sections containing the chosen stimulus, compute the psths, and add them to the dataset.
+
+Each stimulus might have several repeated patterns (for example, for the flicker stimulus you might want to compute pshts respect to the white flashes or to the black flashes). You can use the optional parameters of the function *addDatasetPSTH* to specify which repeated patterns you want to add to the dataset.
+
+If you load your dataset, you will now see that inside the workspace you have a structure *psths*, where all the psths computed have been saved.
+
+You can add as many PSTHs you want to your dataset. You can check which PSTHs have been included in your dataset using the function *listPSTHs()*
 
 
-# Cell Typing
+## Plots
+You can use the functions from the package *Code/Dataset Processor/Plots* to plot the responses of your cells.
+For example:
+* *plotISI(i_cell)* to plot the inster-spike interval distribution of cell *i_cell*
+* *plotTSTA(i_cell)* and *plotSSTA(i_cell)* to plot the temporal and spatial components of the stas
+* *plotPSTH(i_cell, pattern_name)* to plot the PSTH of cell *i_cell* to the repeated pattern *pattern_name*.
 
+You can also use the function *plotCellCard(i_cell)* to plot a panel with all the data above for a given cell *i_cell*.
 
+## Cell Typing
+To find functional cell types in your dataset, use the *classifyDataset()* function.
+This function will use some features of your cells (temporal stas, psths, receptive field size) to cluster together cells functionally similar and identify plausible groups of cell types.
+
+You can personalize the clustering process by changing the parameters inside the funtcion.
+
+Once you run this script, in your dataset you will find a table called ClassesTable, which summarizes the results of the clustering.
+
+To visualize your clusters of cells, you can use several functions:
+* *plotLeafFeatures()* to visualize a panel with all the clusters together, plotting average STA and PSTH for each of them.
+* *plotLeafCards()* to visualize a card for each cluster, including mean temporal STA, mean PSTH, and Receptive fields tiling. 
