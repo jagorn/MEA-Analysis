@@ -2,6 +2,8 @@
 
 A comprehensive set of scripts for handling and analyzing Multi Electrode Array recordings of the retina.
 
+With this package you can process raw file and the spike-sorting results from spyking circus to compute receptive fields, psths, type your cells, and generate plots.
+
 # Installation
 
 ## Installation and Configuration
@@ -80,6 +82,21 @@ Among the other things, this function will save a *repetitions.mat* file in each
 
 You halso have a *sectionsTable.mat* file that sums up all the information about the stimuli played.
 
+## Adding a new stimulus
+Repetitions can only be computed on the stimuli known by the program.
+If you want to compute repetitions for a stimulus that is not recognized by the program, you must first add this stimulus to the package
+
+In order to add a new stimulus you must:
+1. create a subfolder named after the stimulus in the stimuli folder (*/my_project_path/MEA_Analysis/Stimuli*), for example *white_discs*
+2. For each version of this stimulus, you must create inside the folder a mat file called after the stimulus version (for example *white_discs_simple.mat*)
+3. Inside this matlab folder, you must save the repetitions map for the repeated portions of the stimulus, following this sintax:
+
+repetitions_map: a cell array describing the structure of the stimulus.
+    repetitions_map.stim_duration: the whole duration (in frames) of the stimulus
+    repetitions_map.names{i}: the name of the i-th repeated patterns of the stimulus
+    repetitions_map.start_indexes{i}: an array representing the indexes of the starting frame of the i-th repeated pattern
+    repetitions_map.durations{i}: the duration (in frames) of the i-th repeated pattern
+
 ## Plots
 You can plot raster plots and psths for repeated portions of the stimuli.
 To do so, use the function: *plotSectionPSTH(exp_id, section_id)*, where section_id is the name of the section (the same as its folder name).
@@ -95,7 +112,6 @@ This variables are then saved in the *Sta.mat* file in the experiment folder.
 
 # Create a Dataset
 
-# Plots
 
 # Cell Typing
 
