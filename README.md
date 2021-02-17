@@ -2,7 +2,8 @@
 
 A comprehensive set of scripts for handling and analyzing Multi Electrode Array recordings of the retina.
 
-With this package you can process raw file and the spike-sorting results from spyking circus to compute receptive fields, psths, type your cells, and generate plots.
+With this package you can process raw files and the spike-sorting results from spyking circus.
+You can analyze the responses to visual stimuli to compute receptive fields, psths, type your cells, and generate plots.
 
 # Installation
 
