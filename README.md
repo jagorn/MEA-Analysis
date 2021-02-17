@@ -92,11 +92,11 @@ In order to add a new stimulus you must:
 2. For each version of this stimulus, you must create inside the folder a mat file called after the stimulus version (for example *white_discs_simple.mat*)
 3. Inside this matlab folder, you must save the repetitions map for the repeated portions of the stimulus, following this sintax:
 
-repetitions_map: a cell array describing the structure of the stimulus.
-    repetitions_map.stim_duration: the whole duration (in frames) of the stimulus
-    repetitions_map.names{i}: the name of the i-th repeated patterns of the stimulus
-    repetitions_map.start_indexes{i}: an array representing the indexes of the starting frame of the i-th repeated pattern
-    repetitions_map.durations{i}: the duration (in frames) of the i-th repeated pattern
+* repetitions_map: a cell array describing the structure of the stimulus.
+*    repetitions_map.stim_duration: the whole duration (in frames) of the stimulus
+*    repetitions_map.names{i}: the name of the i-th repeated patterns of the stimulus
+*    repetitions_map.start_indexes{i}: an array representing the indexes of the starting frame of the i-th repeated pattern
+*    repetitions_map.durations{i}: the duration (in frames) of the i-th repeated pattern
 
 Check out the examples in the *Code/Repetitions/Maps* Folder to see how to create repetition maps for new stimuli.
 
@@ -163,6 +163,9 @@ For example:
 * *plotPSTH(i_cell, pattern_name)* to plot the PSTH of cell *i_cell* to the repeated pattern *pattern_name*.
 
 You can also use the function *plotCellCard(i_cell)* to plot a panel with all the data above for a given cell *i_cell*.
+
+By default, cell cards will show the PSTHs to the first repeated pattern added to the dataset (this is the default psth pattern).
+To change the default psth pattern, use: *changeDefaultPattern(psth_pattern)*
 
 ## Cell Typing
 To find functional cell types in your dataset, use the *classifyDataset()* function.
