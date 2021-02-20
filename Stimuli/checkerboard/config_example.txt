@@ -3,7 +3,7 @@
 
 # Setup Configuration
 mea_rate 	= 20000
-frame_rate 	= 40
+frame_rate 	= 30
 
 # Stimulus Configurations
 version 	= checkerboard

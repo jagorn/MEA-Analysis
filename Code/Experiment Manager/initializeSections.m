@@ -6,6 +6,8 @@ function initializeSections(exp_id)
 %
 % EXP_ID: the identifier (string) of the experiment
 
+
+
 sections_table = generateSectionsTable(exp_id);
 
 for i_section = 1:numel(sections_table)

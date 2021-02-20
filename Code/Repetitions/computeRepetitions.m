@@ -48,7 +48,7 @@ for i_pattern = 1:n_patterns
     % once we know the number of loops, we add add to the repetitions 
     % a new set of indexes for each loop.
     for i_block = 2:n_loops
-        loop_indices = indexes + repetitions_map.stim_duration;
+        loop_indices = rep_indexes{i_pattern} + repetitions_map.stim_duration;
         indexes = [indexes loop_indices];
     end
     

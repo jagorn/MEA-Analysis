@@ -33,7 +33,7 @@ n_cells = numel(spikes);
 
 % Default Parameters
 title_default = 'Cells Raster Plot';
-labels_default = 1:n_cells;
+labels_default = [];
 cells_indices_default = 1:n_cells;
 pre_stim_dt_default = 0.2;
 post_stim_dt_default = 0.2;
@@ -45,6 +45,7 @@ dead_times_default = {};
 edges_onset_default = [];
 edges_offset_default = [];
 edges_color_default = [];
+max_reps_default = 20;
 
 % Parse Input
 p = inputParser;
@@ -67,7 +68,7 @@ addParameter(p, 'Dead_Times', dead_times_default);
 addParameter(p, 'Edges_Onsets', edges_offset_default);
 addParameter(p, 'Edges_Offsets', edges_onset_default);
 addParameter(p, 'Edges_Colors', edges_color_default);
-
+addParameter(p, 'Max_Repetitions', max_reps_default);
 parse(p, spikes, repetitions, n_steps_stim, rate, varargin{:});
 
 title_txt = p.Results.Title; 
@@ -84,6 +85,7 @@ dead_times = p.Results.Dead_Times;
 edges_onsets = p.Results.Edges_Onsets; 
 edges_offsets = p.Results.Edges_Offsets; 
 edges_colors = p.Results.Edges_Colors; 
+max_reps = p.Results.Max_Repetitions;
 
 if isempty(column_size)
     column_size = numel(cells_idx);
@@ -97,7 +99,7 @@ n_steps_resp =  n_steps_stim + pre_stim_steps + post_stim_dt;
 stim_duration = n_steps_stim / rate;
 response_duration = n_steps_resp / rate;
 
-n_repetitions = numel(repetitions);
+n_repetitions = min(max_reps, numel(repetitions));
 n_tot_repetitions = column_size * (n_repetitions + line_spacing);
 
 
@@ -144,6 +146,12 @@ for i_cell = cells_idx
     y_ticks = [y_ticks, i_row - n_repetitions/2];  
     i_row = i_row + line_spacing;
 end
+
+
+if isempty(labels)
+    labels = cells_idx;
+end
+
 yticks(y_ticks)
 yticklabels(labels);
 title(title_txt, 'Interpreter', 'None')

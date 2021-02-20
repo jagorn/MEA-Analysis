@@ -17,7 +17,7 @@ for i_section = 1:numel(stimTable)
 	configs = parseConfigurationFile(configs_file);
     
 
-    if ~isKey(configs, 'stim_version')
+    if ~isKey(configs, 'version')
         error_struct.message = strcat("In the ", section_id, " configuration file the parameter 'stim_version' is missing");
         error_struct.identifier = strcat('MEA_Analysis:', mfilename);
         error(error_struct);
@@ -29,7 +29,7 @@ for i_section = 1:numel(stimTable)
         error(error_struct);
     end
     
-    stim_version = configs('stim_version');
+    stim_version = configs('version');
     is_looping = configs('is_looping');
     
     try

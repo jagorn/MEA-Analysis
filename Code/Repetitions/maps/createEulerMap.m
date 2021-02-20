@@ -10,7 +10,7 @@ function createEulerMap()
 
 
 euler_version = 'euler_180530';
-euler_length = 999;
+euler_length = 1000;
 stim_duration = euler_length * 30;
 rep_begin = 1 : euler_length : stim_duration;
 

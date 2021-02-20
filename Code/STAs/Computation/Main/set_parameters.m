@@ -31,7 +31,7 @@ IS.NCheckerboard1 = str2double(sta_params('side1_check')); %number of squarres p
 IS.NCheckerboard2 = str2double(sta_params('side2_check'));%IS.NCheckerboard1; % By default it is the same value in our team's display program
 IS.SkipRep = 1; % skips the spikes during the part of the stimulus which is repeated many times
 IS.MaxLat = IS.Nlatency + 10; % Only used if SkipRep == 1. Skips the spikes during the part of the stimulus which is repeated many times, and those accuring MaxLat bins after
-stim_freq = str2double(sta_params('stim_freq')); %Stimulus frequency in Hz (typically 60, 50 or 30)
+stim_freq = str2double(sta_params('frame_rate')); %Stimulus frequency in Hz (typically 60, 50 or 30)
 
 
 %% Parameters that should not change %%

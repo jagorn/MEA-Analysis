@@ -6,6 +6,7 @@ if ~isfile(stim_file)
     error(error_struct);
 end
 
+% TODO: fix this
 stim_entries = importdata(stim_file);
 stim_table = {};
 stim_count = 1;
@@ -66,8 +67,8 @@ try
     end
     
 catch
-    error_struct.message = "stims.txt file is badly formatted";
-    error_struct.identifier = strcat('MEA_Analysis:', mfilename);
-    error(error_struct);
+   error_struct.message = "stims.txt file is badly formatted";
+   error_struct.identifier = strcat('MEA_Analysis:', mfilename);
+   error(error_struct);
 end
 

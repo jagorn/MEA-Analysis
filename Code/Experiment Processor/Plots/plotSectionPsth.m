@@ -50,15 +50,20 @@ n_steps = repetitions.durations{i_pattern};
 rep_begin = repetitions.rep_begins{i_pattern};
 
 figure();
+colors = getColors(numel(spike_times));
 
 subplot(1, 2, 1);
-plotCellsRaster(spike_times, rep_begin, n_steps, mea_rate, 'Cells_Indices', cell_idx);
+plotCellsRaster(spike_times, rep_begin, n_steps, mea_rate, 'Cells_Indices', cell_idx, 'Raster_Colors', colors);
 
 subplot(1, 2, 2);
 n_bins = round(n_steps / (t_bin*mea_rate));
 [psth, xpsth, ~, ~] = doSmoothPSTH(spike_times, rep_begin, t_bin*mea_rate, n_bins, mea_rate, cell_idx, smoothing);
-plot(xpsth, psth)
+hold on
+for i = 1:size(psth, 1)
+    plot(xpsth, psth(i, :), 'Color', colors(cell_idx(i), :))
+end
 xlabel("Time (s)")
 ylabel("Firing Rate (Hz)")
 
-suptitle(title_plot)
+h = suptitle(title_plot);
+h.Interpreter = 'None';
