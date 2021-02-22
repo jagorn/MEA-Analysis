@@ -5,6 +5,9 @@ A comprehensive set of scripts for handling and analyzing Multi Electrode Array 
 With this package you can process raw files and the spike-sorting results from spyking circus.
 You can analyze the responses to visual stimuli to compute receptive fields, psths, type your cells, and generate plots.
 
+## Tutorials:
+Tutorials can be found [here](https://www.youtube.com/channel/UCxaEuitgCXIFZsrha0Cd24w) or in the tutorials folder in this repository.
+
 # Installation
 
 ## Installation and Configuration
