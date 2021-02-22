@@ -1,16 +1,9 @@
 function listPSTHs()
-% lists all the PSTHs saved in the dataset
+% prints the list of all PSTHs saved in the dataset
+psths_list = getPsthsList();
 
-load(getDatasetMat, 'psths');
-if ~exist('psths', 'var')
-    error_struct.message = strcat(getDatasetId(), " has no psths yet");
-    error_struct.identifier = strcat('MEA_Analysis:', mfilename);
-    error(error_struct);
-end
-
-fprintf('\nThe dataset %s has the following psths saved:\n', getDatasetId());
-psth_fields = fields(psths);
-for i_psths = 1:numel(psth_fields)
-    fprintf('\t%i: %s\n', i_psths, psth_fields{i_psths});
+fprintf('\nList of PSTHs computed in dataset %s:\n', getDatasetId);
+for i_psth = 1:numel(psths_list)
+    fprintf('\t%i:\t%s\n', i_psth, psths_list{i_psth});
 end
 fprintf('\n');

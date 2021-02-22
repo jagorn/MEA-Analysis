@@ -9,7 +9,9 @@ function setDataset(dataset_name, experiments, varargin)
 % dataset is created with the data from selected experiments
 
 % ACCEPTED GRADES (optional) = 3;
-% cells are accepted only with sorting score >= to [acceptedlabels]
+% These are the spyking-circus labels (A B C D E) that are accepted into
+% the dataset.
+% cells are accepted only when GRADE >= to [ACCEPTED GRADES]
 % 5=A, 4=AB, 3=ABC
 
 % STAs (optional) = true;
