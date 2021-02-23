@@ -18,7 +18,7 @@ for i_section = 1:numel(stimTable)
     
 
     if ~isKey(configs, 'version')
-        error_struct.message = strcat("In the ", section_id, " configuration file the parameter 'stim_version' is missing");
+        error_struct.message = strcat("In the ", section_id, " configuration file the parameter 'version' is missing");
         error_struct.identifier = strcat('MEA_Analysis:', mfilename);
         error(error_struct);
     end

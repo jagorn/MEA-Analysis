@@ -1,0 +1,23 @@
+function plotNNNDs(nnnds, null_nnnds, p_val)
+
+if nargin >= 2
+    histogram(null_nnnds(:), -0.125:0.25:5.125, ...
+        'Normalization','probability', ... 
+        'DisplayStyle', 'stairs', ...
+        'LineStyle', '--', ...
+        'LineWidth', 1.5, ...
+        'EdgeColor', 'k');
+    hold on
+end
+
+histogram(nnnds(:), -0.125:0.25:5.125, ...
+    'Normalization','probability'...
+    );
+xlabel("Normalized Nearest Neighbor Distances");
+ylabel("Frequency");
+ylim([0 1.1]);
+title_txt = 'NNNDs';
+if nargin >= 3
+    title_txt = [title_txt ' (p=' num2str(p_val) ')'];
+end
+title(title_txt)

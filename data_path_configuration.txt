@@ -8,3 +8,5 @@
 # by default, the software looks for the data in the first location listed.
 # to change the data location in your matlab code, use the command:
 # changeDataPath(NAME_DATA_LOCATION)
+
+local = '/home/fran_tr/Data';
