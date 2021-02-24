@@ -7,7 +7,6 @@ function plotRasterMEA(spike_times, evt_timesteps, evt_binsize, evt_spacing, mea
 % EVT_BINSIZE:              the interval of the raster (time steps)
 % MEA_RATE:                 sampling rate of the MEA
 % MEA_MAP:                  the electrode-to-position map
-% MEA_CHANNELS (OPTIONAL):  logical array representing which electrodes to plot
 % MAX_REPS (OPTIONAL):  	the maximum number of repetitions to show.
 
 
@@ -23,12 +22,9 @@ addRequired(p, 'evt_binsize');
 addRequired(p, 'evt_spacing');
 addRequired(p, 'mea_rate');
 addRequired(p, 'mea_map');
-addParameter(p, 'MEA_Channels', mea_channels_def);
 addParameter(p, 'Max_Repetitions', n_max_rep_def);
 
 parse(p, spike_times, evt_timesteps, evt_binsize, evt_spacing, mea_rate, mea_map, varargin{:});
-
-mea_channels = p.Results.MEA_Channels;
 n_max_rep = p.Results.Max_Repetitions; 
 
 timesteps_stim = evt_binsize + evt_spacing*2;
@@ -37,10 +33,14 @@ dt_stim = timesteps_stim / mea_rate;
 plotMEA();
 plotGridMEA();
 hold on
-for i_channel = mea_channels
+for i_channel = 1:numel(spike_times)
     spikes = spike_times{i_channel};
 
     [x, y] = raster(spikes, evt_timesteps - evt_spacing, evt_timesteps + evt_binsize + evt_spacing, mea_rate);
+    
+    if isempty(x)
+        continue;
+    end
     
     x_norm = x / dt_stim;
     y_norm = y / n_max_rep;
