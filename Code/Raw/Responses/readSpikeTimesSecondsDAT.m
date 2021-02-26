@@ -1,7 +1,7 @@
 function spikes = readSpikeTimesSecondsDAT(dat_folder, dat_prefix, channels)
 
 if ~isfolder(dat_folder)
-    error_struct.message = strcat("The .dat file ", results_file, " does not exist.");
+    error_struct.message = strcat("The .dat folder ", dat_folder, " does not exist.");
     error_struct.identifier = strcat('MEA_Analysis:', mfilename);
     error(error_struct);
 end

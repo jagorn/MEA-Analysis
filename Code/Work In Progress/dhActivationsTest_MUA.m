@@ -1,19 +1,23 @@
 clear
 close all
 
-dh_session = 3;
+exp_id = '20200131_dh';
+mua_name = 'CONVERTED';
+dh_session = 2;
+
+
 mea_rate = 20000;
 evt_dt = 0.5 * mea_rate;
 
-n_min_activations = 2;
+n_min_activations = 5;
 n_min_patterns = 10;
 n_max_patterns = 30;
 
 % Paths
-frames_file = ['/home/fran_tr/Data/20200131_dh/processed/DH/DHFrames_' num2str(dh_session) '.mat'];
-mea_map_file = '/home/fran_tr/Projects/MEA-Analysis/Rig/PositionsMEA.mat';
-dh_times_file = '/home/fran_tr/Data/20200131_dh/processed/DH/DHTimes.mat';
-spikes_file = '/home/fran_tr/Data/20200131_dh/sorted/CONVERTED/CONVERTED.mua.hdf5';
+frames_file = fullfile(processedPath(exp_id), 'DH', strcat('DHFrames_', num2str(dh_session), '.mat'));
+mea_map_file = fullfile(rigPath, 'PositionsMEA.mat');
+dh_times_file = fullfile(processedPath(exp_id), 'DH', 'DHTimes.mat');
+spikes_file = fullfile(sortedPath(exp_id), mua_name, strcat(mua_name, '.mua.hdf5'));
 
 % Load Event Markers
 load(dh_times_file, 'dhTimes');
@@ -32,14 +36,23 @@ mea_map = double(Positions);
 spikes = readSpikeTimes(spikes_file, true);
 
 
+disp('analyzing dh activations...');
 z_scores =  computeActivations(spikes, dh_times, evt_dt, dh_order, mea_rate, ...
                                'MEA_Map', mea_map, ...
-                               'Plot_Psths', true, ...
+                               'Plot_Psths', false, ...
                                'Plot_Activation', true);
                            
+disp('optimizing dh spots...');
 chosen_patterns = selectPatterns(z_scores, ...
                                  'N_Min_Activations', n_min_activations, ...
                                  'N_Min_Patterns', n_min_patterns, ...
                                  'N_Max_Patterns', n_max_patterns);
                            
+ n_spots = numel(unique(dh_order));
+ n_spots_selected = numel(chosen_patterns);
+ fprintf('the selected spots are %i out of %i:\n', n_spots_selected, n_spots);
+ for pattern = chosen_patterns
+     fprintf('%i ', pattern)
+ end
+ fprintf('\n\n');
                            
