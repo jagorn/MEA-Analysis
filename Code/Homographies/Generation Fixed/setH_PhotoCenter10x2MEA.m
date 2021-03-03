@@ -36,5 +36,5 @@ H4 = [1, 0, camera_width/2; ...
 H_dmd2img = H4*H3*H2*H1;
 H_img2dmd = inv(H_dmd2img);
 
-addHomography(H_dmd2img, 'dmd', 'img')
-addHomography(H_img2dmd, 'img', 'dmd')
+addHomography(H_dmd2img, 'DMD', 'CHECKERBOARD')
+addHomography(H_img2dmd, 'CHECKERBOARD', 'DMD')

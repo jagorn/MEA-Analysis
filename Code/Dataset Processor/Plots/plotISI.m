@@ -6,7 +6,7 @@ function plotISI(cell_id)
 
 load(getDatasetMat(), 'spikes', 'mea_rate');
 ISI = diff(spikes{cell_id} / mea_rate) * 1000;  % Convert to ms
-ISI = ISI(ISI<=25);
+ISI = ISI(ISI<=25000);
 histogram(ISI, 100);
 
 

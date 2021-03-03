@@ -6,6 +6,10 @@ Datasets/*
 Plots/*
 !Plots/.plots
 
+
+Homographies/*
+!Homographies/.homographies
+
 Stimuli/checkerboard/binary/*
 !Stimuli/checkerboard/binary/.binary
 
