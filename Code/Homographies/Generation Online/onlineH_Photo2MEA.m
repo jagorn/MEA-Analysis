@@ -1,13 +1,4 @@
-function [H_img2mea, H_mea2img] = setH_Photo2MEA(img_path, mea_spacing_micron)
-
-% LOAD THE MEA IMAGE
-try
-    camera_img = imread(img_path);
-catch
-    error_struct.message = strcat("image ", img_path, " do not exist");
-    error_struct.identifier = strcat('MEA_Analysis:', mfilename);
-    error(error_struct);
-end
+function [H_img2mea, H_mea2img] = onlineH_Photo2MEA(camera_img, mea_spacing_micron)
 
 % PLOT THE MEA IMAGE
 f = figure();
