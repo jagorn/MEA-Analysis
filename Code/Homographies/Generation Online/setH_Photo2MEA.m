@@ -29,8 +29,6 @@ if resp == 1
 else
     fprintf("Homography have not been saved.\n")
 end
-close(f);
-
 
 
 

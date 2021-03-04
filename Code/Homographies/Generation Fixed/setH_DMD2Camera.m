@@ -1,8 +1,8 @@
 function setH_DMD2Camera(varargin)
 
-size_dmd_def = [1020, 760];
-size_photo_def = [512, 672];
-pxl_size_photo_def = 0.64;
+size_dmd_def = [760, 1020] / 2;
+size_photo_def = [672, 512] / 2;
+pxl_size_photo_def = 2.56;
 pxl_size_dmd_def = 2.5;
 
 % Parse Input
@@ -20,9 +20,9 @@ pxl_size_dmd = p.Results.Pixel_Size_DMD;
 pxl_size_photo = p.Results.Pixel_Size_Photo;
 
 
-t_pre = size_dmd;
+t_pre = -size_dmd;
 r = pi/2;
-s = pxl_size_dmd / pxl_size_photo;
+s = pxl_size_dmd/pxl_size_photo;
 t_post = size_photo;
 
 [H, H_inv] = buildH(t_pre, r, s, t_post);

@@ -1,13 +1,11 @@
 function H = getHomography(rf1, rf2, exp_id)
 
-% if exp_id is not specified, the homography is supposed to be valid
-% for all the experiments
-
 % load the table
 HsTable = getHomographiesTable();
 
 % find out if the homography already exists.
 if exist('exp_id', 'var')
+    % if exp_id is not specified, the homography is valid for all the experiments
     id = find(strcmp(rf1, {HsTable.RF_from}) & strcmp(rf2, {HsTable.RF_to}) & strcmp(exp_id, {HsTable.experiment}));
 else
     id = find(strcmp(rf1, {HsTable.RF_from}) & strcmp(rf2, {HsTable.RF_to}) & cellfun(@isempty, {HsTable.experiment}));
