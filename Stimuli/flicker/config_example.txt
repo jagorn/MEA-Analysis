@@ -7,5 +7,5 @@ frame_rate 	= 1
 
 # Stimulus Configurations
 version 	= flicker_black_first
-is_looping	= 0
+is_looping	= 1
 

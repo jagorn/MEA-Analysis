@@ -7,7 +7,7 @@ function evtTimes = extractEvtTimes(exp_id, raw_file, mea_rate, varargin)
 p = inputParser;
 addRequired(p, 'raw_file');
 addRequired(p, 'mea_rate');
-addParameter(p, 'Inter_Section_DT', 10);
+addParameter(p, 'Inter_Section_DT', 5);
 parse(p, raw_file, mea_rate, varargin{:});
 
 inter_section_dt = p.Results.Inter_Section_DT; 
@@ -30,7 +30,11 @@ else
         stimChannel_data = extractDataDMD(raw_file);
         save(event_traces_file, 'stimChannel_data', '-v7.3');
     end
-    evtTimes = detectEvents(stimChannel_data, inter_section_dt, mea_rate);
+    evtTimes = detectEvents(stimChannel_data, mea_rate, ...
+        'Session_Time_Separation', inter_section_dt, ...
+        'Peak_Is_Positive', false, ...
+        'Discard_Last_Event', true);
+    
     fprintf('triggers extracted from %s\n', raw_file)
     save(event_times_file, 'evtTimes', 'mea_rate')
 end
