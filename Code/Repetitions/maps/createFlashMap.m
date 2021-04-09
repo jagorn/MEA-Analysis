@@ -8,7 +8,7 @@ function createFlashMap()
 %   repetitions_map.start_indexes{i}: an array representing the indexes of the starting frame of the i-th repeated pattern
 %   repetitions_map.durations{i}: the duration (in frames) of the i-th repeated pattern
 
-flash_version = 'flash1_ON_4_OFF';
+flash_version = 'flash_10n_4off';
 
 stim_duration = 30;
 rep_begin_white = 1 : 5 : stim_duration;

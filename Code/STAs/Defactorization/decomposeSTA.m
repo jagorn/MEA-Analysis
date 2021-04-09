@@ -28,21 +28,21 @@ for i=1:length(stas)
         
         % filter the sta to remove some noise
         if do_smoothing
-            spatial_sta = std(smoothSta(sta), [], 3);
+            frame_for_fitting = std(smoothSta(sta), [], 3);
         else
-            spatial_sta = std(sta, [], 3);
+            frame_for_fitting = std(sta, [], 3);
         end
-        spatial(i, :, :) = spatial_sta;
+        spatial(i, :, :) = std(sta, [], 3);
         
         % plot
         if do_plots
-            imagesc(spatial_sta);
+            imagesc(frame_for_fitting);
             waitforbuttonpress();
         end
 
         % Fit The ellipses
-        [xEll, yEll, ~, ~] =  fitEllipse(spatial_sta);
-        [is_valid, ~] = validateEllipse(xEll, yEll, spatial_sta);
+        [xEll, yEll, ~, ~] =  fitEllipse(frame_for_fitting);
+        [is_valid, ~] = validateEllipse(xEll, yEll, frame_for_fitting);
         
         
         if is_valid

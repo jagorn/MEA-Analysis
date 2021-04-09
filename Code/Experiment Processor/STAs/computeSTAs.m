@@ -8,7 +8,7 @@ function computeSTAs(exp_id, varargin)
 % EXP_ID:                   the identifier of the experiment
 % DO_SMOOTHING (OPTIONAL):  if true, it smooths the stas before defactorization.
 
-do_smoothing_def = false;
+do_smoothing_def = true;
 
 % Parse Input
 p = inputParser;
@@ -29,7 +29,7 @@ if numel(checker_table) > 1
     fprintf("\nThere is more than one checkerboard session.\n" + ...
                 "Which one do you want to use to compute the STA?\n\n");
     disp(struct2table(checker_table));
-    fprintf("\n type a number between 1 and %i",  numel(checker_table));
+    fprintf("\n type a number between 1 and %i\n",  numel(checker_table));
     
     i_checker = input('');
     checker_table = checker_table(i_checker);
