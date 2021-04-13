@@ -22,7 +22,7 @@ psth.patterns = repetitions.names;
 n_patterns = numel(repetitions.names);
 for i_pattern = 1:n_patterns
     
-    n_steps = repetitions.durations{i_pattern};
+    n_steps = repetitions.durations{i_pattern} + 2*t_spacing*mea_rate;
     rep_begin = repetitions.rep_begins{i_pattern};
     n_bins = round(n_steps / (t_bin*mea_rate));
     
