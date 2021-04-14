@@ -135,24 +135,27 @@ for i_exp = 1:n_exp
     repetitions = exp_tables{i_exp}.repetitions;
     spike_times = getSpikeTimes(exp_id);
 
-    exp_psths = sectionPSTHs(spike_times, repetitions, mea_rate, 'Time_Bin', t_bin, 'Time_Spacing', time_spacing, 'Smoothing', smoothing, 'Cell_Indices', exp_indices);
+    exp_psths = sectionPSTHs(spike_times, repetitions, mea_rate, ...
+                            'Time_Bin', t_bin, ...
+                            'Time_Spacing', time_spacing, ...
+                            'Smoothing', smoothing, ...
+                            'Cell_Indices', exp_indices);
+                        
     for i_pattern = 1:numel(names)
-        if isempty(label)
-            pattern_name = names{i_pattern};
-        else
-            pattern_name = strcat(label, '_', names{i_pattern});
-        end
         
-        if i_exp == 1 && isfield(psths, pattern_name)
-            error_struct.message = strcat("a psth called ", pattern_name, " already exists in this dataset");
+        pattern_type = exp_psths.patterns{i_pattern};
+        psth_label = createLabelPSTH(label, []);
+
+        if i_exp == 1 && isfield(psths, pattern_type) && isfield(psths.(pattern_type), psth_label)
+            error_struct.message = strcat("a psth called ", pattern_type, ".", psth_label, " already exists in this dataset");
             error_struct.identifier = strcat('MEA_Analysis:', mfilename);
             error(error_struct);
         end
         
-        psths.(pattern_name).t_bin = t_bin;
-        psths.(pattern_name).t_spacing = time_spacing;
-        psths.(pattern_name).time_sequences = exp_psths.time_sequences{i_pattern};
-        psths.(pattern_name).psths(exp_cells, :) = exp_psths.responses{i_pattern};
+        psths.(pattern_type).(psth_label).t_bin = t_bin;
+        psths.(pattern_type).(psth_label).t_spacing = time_spacing;
+        psths.(pattern_type).(psth_label).time_sequences = exp_psths.time_sequences{i_pattern};
+        psths.(pattern_type).(psth_label).psths(exp_cells, :) = exp_psths.responses{i_pattern};
     end
 end
 save(getDatasetMat, 'psths', '-append');

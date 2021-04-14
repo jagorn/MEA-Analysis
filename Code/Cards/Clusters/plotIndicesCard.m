@@ -17,7 +17,8 @@ nRows = ceil(numel(experiments) / 3) + 1;
 figure('Name', card_title);
 
 subplot(nRows, 4, [1, 2, 3])
-plotPSTH(indices, getDefaultPattern());
+[default_pattern, default_label] = getDefaultPattern();
+plotPSTH(indices, default_pattern, default_label);
 
 subplot(nRows, 4, 4)
 plotTSTAs(indices);

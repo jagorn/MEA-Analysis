@@ -1,22 +1,23 @@
-function plotPSTH(indices, pattern)
+function plotPSTH(indices, pattern, label)
 % Plots the psths for a given set of cells to a given repeated stimulus.
 
 % Parameters;
 % indices:              the id numbers of the cells
-% pattern (optional):   the name of the repeated stimulus.
+% pattern:              the name of the repeated stimulus.
+% label:                the label of the psth
 %                       if not specified, the default psth is plotted.
 
 load(getDatasetMat(), 'psths')
-if ~exist('psths', 'var') || ~isfield(psths, pattern)
-    error_struct.message = strcat("The PSTH for pattern ", pattern, " does not exist.");
+if ~exist('psths', 'var') || ~isfield(psths, pattern) || ~isfield(psths.(pattern), label)
+    error_struct.message = strcat("The PSTH ", label, " for pattern ", pattern, " does not exist.");
     error_struct.identifier = strcat('MEA_Analysis:', mfilename);
     error(error_struct);
 end
 
 
-traces = psths.(pattern).psths(indices, :);
+traces = psths.(pattern).(label).psths(indices, :);
 traces = traces ./ max(traces, [], 2);
-xs = psths.(pattern).time_sequences;
+xs = psths.(pattern).(label).time_sequences;
 
 avgTrace = mean(traces, 1);
 stdTrace = std(traces, [], 1);

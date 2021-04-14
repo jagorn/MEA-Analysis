@@ -1,4 +1,4 @@
-function psths_list = getPsthsList()
+function psths_list = getPsthsPatternsList()
 
 load(getDatasetMat(), 'psths')
 if ~exist('psths', 'var')

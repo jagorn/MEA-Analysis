@@ -72,34 +72,25 @@ for i_section = 1:numel(sections_table)
         pattern_indices = find(strcmp(patterns, pattern));
     end
     
+    % for each pattern, save the psth.
     for i_pattern = pattern_indices
-        if isempty(section.conditions)
-            conditions_suffix = "";
-        else
-            conditions_suffix = strcat("_", join(section.conditions, '_'));
-            conditions_suffix = conditions_suffix{1};
-        end
+        pattern_type = pattern_psths.patterns{i_pattern};
+        psth_label = createLabelPSTH(label, section.conditions);
         
-        if isempty(label)
-            label_suffix = "";
-        else
-            label_suffix = strcat("_", label);
-        end
-        
-        pattern_name = strcat(pattern_psths.patterns{i_pattern}, conditions_suffix, label_suffix);
-        
-        if isfield(psths, pattern_name)
+        % if the psth label exists already, add a duplicate suffix
+        if isfield(psths, pattern_type) && isfield(psths.(pattern_type), psth_label)
             duplicate_suffix = 2;
-            while isfield(psths, strcat(pattern_name, '_', num2str(duplicate_suffix)))
+            while isfield(psths, strcat(psth_label, '_', num2str(duplicate_suffix)))
                 duplicate_suffix = duplicate_suffix+1;
             end
-            pattern_name = strcat(pattern_name, '_', num2str(duplicate_suffix));
+            psth_label = strcat(psth_label, '_', num2str(duplicate_suffix));
         end
         
-        psths.(pattern_name).t_bin = t_bin;
-        psths.(pattern_name).t_spacing = time_spacing;
-        psths.(pattern_name).time_sequences = pattern_psths.time_sequences{i_pattern};
-        psths.(pattern_name).psths = pattern_psths.responses{i_pattern};
+        % save everything
+        psths.(pattern_type).(psth_label).t_bin = t_bin;
+        psths.(pattern_type).(psth_label).t_spacing = time_spacing;
+        psths.(pattern_type).(psth_label).time_sequences = pattern_psths.time_sequences{i_pattern};
+        psths.(pattern_type).(psth_label).psths = pattern_psths.responses{i_pattern};
     end
 end
 save(getDatasetMat, 'psths', '-append');
