@@ -67,30 +67,33 @@ for i_section = 1:numel(sections_table)
     
     % if a patterns was chosen, esclude from the table all other patterns
     if isempty(pattern)
-        patterns = section.repetitions.names;
-        durations = section.repetitions.durations;
-        rep_begins = section.repetitions.rep_begins;
+        pattern_indices = 1:numel(pattern_psths.patterns);
     else
-        pattern_indices = strcmp(patterns, pattern);
-        
-        patterns = section.repetitions.names(pattern_indices);
-        durations = section.repetitions.durations(pattern_indices);
-        rep_begins = section.repetitions.rep_begins(pattern_indices);
+        pattern_indices = find(strcmp(patterns, pattern));
     end
     
-    
-    
-    for i_pattern = 1:numel(names)
-        if isempty(label)
-            pattern_name = names{i_pattern};
+    for i_pattern = pattern_indices
+        if isempty(section.conditions)
+            conditions_suffix = "";
         else
-            pattern_name = strcat(label, '_', names{i_pattern});
+            conditions_suffix = strcat("_", join(section.conditions, '_'));
+            conditions_suffix = conditions_suffix{1};
         end
         
-        if i_exp == 1 && isfield(psths, pattern_name)
-            error_struct.message = strcat("a psth called ", pattern_name, " already exists in this dataset");
-            error_struct.identifier = strcat('MEA_Analysis:', mfilename);
-            error(error_struct);
+        if isempty(label)
+            label_suffix = "";
+        else
+            label_suffix = strcat("_", label);
+        end
+        
+        pattern_name = strcat(pattern_psths.patterns{i_pattern}, conditions_suffix, label_suffix);
+        
+        if isfield(psths, pattern_name)
+            duplicate_suffix = 2;
+            while isfield(psths, strcat(pattern_name, '_', num2str(duplicate_suffix)))
+                duplicate_suffix = duplicate_suffix+1;
+            end
+            pattern_name = strcat(pattern_name, '_', num2str(duplicate_suffix));
         end
         
         psths.(pattern_name).t_bin = t_bin;

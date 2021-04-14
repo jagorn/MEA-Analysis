@@ -24,6 +24,7 @@ dt_frame = 1/freq;
 figure('Name', bin_file)
 
 hold on;
+warning_was_shown = false;
 for frame_id = frame_sequence
     
     tic;
@@ -35,8 +36,9 @@ for frame_id = frame_sequence
     imshow(frame', 'DisplayRange', [0, 255])
     t = toc;
     pause(dt_frame- t)
-%     
-%     if(dt_frame < t)
-%         warning('frame rate is too high to be displayed correctly')
-%     end
+    
+    if (dt_frame < t) && ~warning_was_shown
+        warning('frame rate is too high to be displayed correctly')
+        warning_was_shown = true;
+    end
 end
