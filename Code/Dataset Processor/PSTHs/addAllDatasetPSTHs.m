@@ -75,7 +75,7 @@ for i_section = 1:numel(sections_table)
     % for each pattern, save the psth.
     for i_pattern = pattern_indices
         pattern_type = pattern_psths.patterns{i_pattern};
-        psth_label = createLabelPSTH(label, section.conditions);
+        psth_label = createPSTHLabel(label, section.conditions);
         
         % if the psth label exists already, add a duplicate suffix
         if isfield(psths, pattern_type) && isfield(psths.(pattern_type), psth_label)

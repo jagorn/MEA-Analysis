@@ -144,7 +144,7 @@ for i_exp = 1:n_exp
     for i_pattern = 1:numel(names)
         
         pattern_type = exp_psths.patterns{i_pattern};
-        psth_label = createLabelPSTH(label, []);
+        psth_label = createPSTHLabel(label, []);
 
         if i_exp == 1 && isfield(psths, pattern_type) && isfield(psths.(pattern_type), psth_label)
             error_struct.message = strcat("a psth called ", pattern_type, ".", psth_label, " already exists in this dataset");

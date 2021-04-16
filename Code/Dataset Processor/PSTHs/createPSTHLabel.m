@@ -1,4 +1,4 @@
-function psth_label = createLabelPSTH(label, conditions)
+function psth_label = createPSTHLabel(label, conditions)
 
 if isempty(label) && isempty(conditions)
     psth_label = 'simple';

@@ -23,6 +23,9 @@ if ~strcmp(user_input, 'y') && ~strcmp(user_input, 'Y')
 end
 
 psths.(pattern) = rmfield(psths.(pattern), label);
+if isempty(fields(psths.(pattern)))
+    psths = rmfield(psths, pattern);
+end
 save(getDatasetMat, 'psths', '-append');
 fprintf('the psth has been deleted\n')
 
