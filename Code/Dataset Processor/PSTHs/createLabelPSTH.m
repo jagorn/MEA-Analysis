@@ -1,7 +1,7 @@
 function psth_label = createLabelPSTH(label, conditions)
 
 if isempty(label) && isempty(conditions)
-    psth_label = '_';
+    psth_label = 'simple';
 elseif isempty(conditions)
         psth_label = label;
 elseif isempty(label) 

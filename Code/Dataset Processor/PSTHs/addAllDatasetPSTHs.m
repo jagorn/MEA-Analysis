@@ -13,7 +13,7 @@ p = inputParser;
 addParameter(p, 'Time_Bin', 0.05);
 addParameter(p, 'Stimulus', []);
 addParameter(p, 'Pattern', []);
-addParameter(p, 'Smoothing_Coeff', 0.1);
+addParameter(p, 'Smoothing_Coeff', 0);
 addParameter(p, 'Time_Spacing', 0);
 addParameter(p, 'Label', []);
 
@@ -69,7 +69,7 @@ for i_section = 1:numel(sections_table)
     if isempty(pattern)
         pattern_indices = 1:numel(pattern_psths.patterns);
     else
-        pattern_indices = find(strcmp(patterns, pattern));
+        pattern_indices = find(strcmp(pattern_psths.patterns, pattern));
     end
     
     % for each pattern, save the psth.
@@ -79,11 +79,13 @@ for i_section = 1:numel(sections_table)
         
         % if the psth label exists already, add a duplicate suffix
         if isfield(psths, pattern_type) && isfield(psths.(pattern_type), psth_label)
+            fprintf("A psth called %s for pattern %s already exists in this dataset.\n", psth_label, pattern_type);
             duplicate_suffix = 2;
             while isfield(psths, strcat(psth_label, '_', num2str(duplicate_suffix)))
                 duplicate_suffix = duplicate_suffix+1;
             end
             psth_label = strcat(psth_label, '_', num2str(duplicate_suffix));
+            fprintf("The new psth will be saved with name %s instead.\n", psth_label);
         end
         
         % save everything
@@ -91,12 +93,11 @@ for i_section = 1:numel(sections_table)
         psths.(pattern_type).(psth_label).t_spacing = time_spacing;
         psths.(pattern_type).(psth_label).time_sequences = pattern_psths.time_sequences{i_pattern};
         psths.(pattern_type).(psth_label).psths = pattern_psths.responses{i_pattern};
+        psths.(pattern_type).(psth_label).firing_rates = pattern_psths.firing_rates{i_pattern};
+        psths.(pattern_type).(psth_label).stim_rate = section.rate;
     end
 end
 save(getDatasetMat, 'psths', '-append');
 
 fprintf('\nPSTHs succesfully computed.\nThe dataset %s now has the following psths saved:\n', getDatasetId());
-psth_fields = fields(psths);
-for i_psths = 1:numel(psth_fields)
-    fprintf('\t%i: %s\n', i_psths, psth_fields{i_psths});
-end
+listPSTHs();

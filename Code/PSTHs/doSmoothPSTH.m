@@ -14,6 +14,7 @@ function [psth, xpsth, mean_psth, firing_rates] = doSmoothPSTH(spikes, repetitio
 % MeanPSTH: average firing rate over the defined window
 
 time_bin = bin_size / sampling_rate;
+time_bin_edges = (0 : time_bin : n_bins*time_bin);
 time_bin_centers = (time_bin/2 : time_bin : time_bin/2 + (n_bins - 1) * time_bin);
 
 n_cells = length(cells_indices);
@@ -28,6 +29,6 @@ for i = 1:n_cells
     firing_rates(i, :, :) = getFiringRates(spike_times, time_bin_centers, rep_times, time_res);
 end
 
-xpsth = time_bin_centers; 
+xpsth = time_bin_edges(1:end-1); 
 psth = squeeze(mean(firing_rates, 2));
 mean_psth = squeeze(mean(psth, 2)).';

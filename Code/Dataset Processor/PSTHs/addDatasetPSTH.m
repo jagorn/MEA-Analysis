@@ -13,7 +13,7 @@ function addDatasetPSTH(stim_id, varargin)
 p = inputParser;
 addRequired(p, 'stim_id');
 addParameter(p, 'Time_Bin', 0.05);
-addParameter(p, 'Smoothing_Coeff', 0.1);
+addParameter(p, 'Smoothing_Coeff', 0);
 addParameter(p, 'Time_Spacing', 0);
 addParameter(p, 'Patterns', []);
 addParameter(p, 'Label', []);
@@ -156,12 +156,11 @@ for i_exp = 1:n_exp
         psths.(pattern_type).(psth_label).t_spacing = time_spacing;
         psths.(pattern_type).(psth_label).time_sequences = exp_psths.time_sequences{i_pattern};
         psths.(pattern_type).(psth_label).psths(exp_cells, :) = exp_psths.responses{i_pattern};
+        psths.(pattern_type).(psth_label).firing_rates(exp_cells, :, :) = exp_psths.firing_rates{i_pattern};
+        psths.(pattern_type).(psth_label).stim_rate = frame_rate;
     end
 end
 save(getDatasetMat, 'psths', '-append');
 
 fprintf('\nPSTHs succesfully computed.\nThe dataset %s now has the following psths saved:\n', getDatasetId());
-psth_fields = fields(psths);
-for i_psths = 1:numel(psth_fields)
-    fprintf('\t%i: %s\n', i_psths, psth_fields{i_psths});
-end
+listPSTHs();

@@ -30,6 +30,6 @@ for i = 1:n_cells
     end
 end
 
-xpsth = time_bin_centers; 
+xpsth = time_bin_edges(1:end-1); 
 psth = squeeze(mean(firing_rates, 2));
 mean_psth = squeeze(mean(psth, 2)).';

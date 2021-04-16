@@ -1,4 +1,4 @@
-function plotCellCard(cell_id, default_psth_pattern)
+function plotCellCard(cell_id, psth_pattern, psth_label)
 % Plots a panel with all information about a cell:
 % - Temporal Spike Triggered Average
 % - Inter-Spike Interval Histogram
@@ -12,8 +12,8 @@ function plotCellCard(cell_id, default_psth_pattern)
 
 
 % If the psth name is not specified, we use the default one.
-if ~exist('pattern', 'var')
-    [default_psth_pattern, default_psth_label] = getDefaultPattern();
+if ~exist('psth_pattern', 'var') || ~exist('psth_label', 'var')
+    [psth_pattern, psth_label] = getDefaultPSTH();
 end
 
 % load all info about the cell
@@ -33,8 +33,8 @@ figure('Name', ['Cell_#' char(cell_id)]);
 
 % PSTH
 subplot(2, 3, [1 2])
-plotPSTH(cell_id, default_psth_pattern, default_psth_label);
-title(strcat(default_psth_pattern, " ", default_psth_label, " PSTH"), "Interpreter", "none");
+plotPSTH(cell_id, psth_pattern, psth_label);
+title(strcat(psth_pattern, " ", psth_label, " PSTH"), "Interpreter", "none");
 
 % ISI
 subplot(2, 3, 4)

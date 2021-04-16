@@ -22,7 +22,7 @@ if ~strcmp(user_input, 'y') && ~strcmp(user_input, 'Y')
     return;
 end
 
-psths = rmfield(psths.(pattern), label);
+psths.(pattern) = rmfield(psths.(pattern), label);
 save(getDatasetMat, 'psths', '-append');
 fprintf('the psth has been deleted\n')
 

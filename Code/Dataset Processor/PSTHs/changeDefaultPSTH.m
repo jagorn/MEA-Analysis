@@ -1,4 +1,4 @@
-function changeDefaultPattern(psth_pattern, psth_label)
+function changeDefaultPSTH(psth_pattern, psth_label)
 % changes the default PSTH.
 % the default PSTH is the PSTH that is shown in all the plots and cards.
 
@@ -6,7 +6,7 @@ function changeDefaultPattern(psth_pattern, psth_label)
 % psth_pattern: the label of the new default psth.
 
 
-global default_psth_pattern
+global default_psth
 
 load(getDatasetMat(), 'psths');
 if ~exist('psths', 'var') || ~isfield(psths, psth_pattern) || ~isfield(psths.(psth_pattern), psth_label)
@@ -15,6 +15,6 @@ if ~exist('psths', 'var') || ~isfield(psths, psth_pattern) || ~isfield(psths.(ps
     error(error_struct);
 end
 
-default_psth_pattern = {psth_pattern, psth_label};
+default_psth = {psth_pattern, psth_label};
 
 

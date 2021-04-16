@@ -27,11 +27,12 @@ kw_labels = all_psths(all(label2keywords, 2));
 
 
 for i_pattern = 1:numel(kw_labels)
-    psth_label = kw_labels(i_pattern);
-    
+    psth_label = kw_labels{i_pattern};
+        
     responses = psths.(pattern).(psth_label).psths;
     time_seq = psths.(pattern).(psth_label).time_sequences;
-    [z, threshold] = estimateZscore(responses, time_seq, ctrl_win, resp_win, min_z, min_fr);
+    time_bin = psths.(pattern).(psth_label).t_bin;
+    [z, threshold] = estimateZscore(responses, time_seq, time_bin, ctrl_win, resp_win, min_z, min_fr);
     
     activations.(pattern).(psth_label).(act_label).z = z;
     activations.(pattern).(psth_label).(act_label).threshold = threshold;

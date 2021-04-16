@@ -19,7 +19,8 @@ figName = strcat("Figure");
 figure('Name', figName);
 
 subplot(2, 5, [1, 2, 3, 4])
-plotPSTH(indices, getDefaultPattern());
+[psth_pattern, psth_label] = getDefaultPSTH();
+plotPSTH(indices, psth_pattern, psth_label);
 
 subplot(2, 5, [6, 7])
 plotTSTAs(indices);

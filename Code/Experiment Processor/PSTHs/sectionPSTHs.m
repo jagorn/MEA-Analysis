@@ -7,8 +7,8 @@ addRequired(p, 'repetitions');
 addRequired(p, 'mea_rate');
 addParameter(p, 'Time_Bin', 0.05);
 addParameter(p, 'Time_Spacing', 00);
-addParameter(p, 'Smoothing_Coeff', 0.1);
-addParameter(p, 'Cell_Indices', 1:(min(numel(spike_times), 10)));
+addParameter(p, 'Smoothing_Coeff', 0);
+addParameter(p, 'Cell_Indices', 1:numel(spike_times));
 
 parse(p, spike_times, repetitions, mea_rate, varargin{:});
 t_bin = p.Results.Time_Bin;
@@ -23,11 +23,17 @@ n_patterns = numel(repetitions.names);
 for i_pattern = 1:n_patterns
     
     n_steps = repetitions.durations{i_pattern} + 2*t_spacing*mea_rate;
-    rep_begin = repetitions.rep_begins{i_pattern};
+    rep_begin = repetitions.rep_begins{i_pattern} - t_spacing*mea_rate;
     n_bins = round(n_steps / (t_bin*mea_rate));
     
-    [ypsth, xpsth, ~, ~] = doSmoothPSTH(spike_times, rep_begin, t_bin*mea_rate, n_bins, mea_rate, cell_idx, smoothing);
+    if smoothing == 0
+        [ypsth, xpsth, ~, firing_rates] = doPSTH(spike_times, rep_begin, t_bin*mea_rate, n_bins, mea_rate, cell_idx);
+    else
+        [ypsth, xpsth, ~, firing_rates] = doSmoothPSTH(spike_times, rep_begin, t_bin*mea_rate, n_bins, mea_rate, cell_idx, smoothing);
+    end
+    
     psth.responses{i_pattern} = ypsth;
-    psth.time_sequences{i_pattern} = xpsth;
+    psth.time_sequences{i_pattern} = xpsth - t_spacing;
+    psth.firing_rates{i_pattern} = firing_rates;
 end
 
