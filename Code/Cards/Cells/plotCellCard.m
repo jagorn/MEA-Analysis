@@ -29,7 +29,7 @@ else
 end
 
 
-figure('Name', ['Cell_#' char(cell_id)]);
+figure('Name', ['Cell_#' num2str(cell_id)]);
 
 % PSTH
 subplot(2, 3, [1 2])

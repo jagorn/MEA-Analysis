@@ -19,8 +19,6 @@ tSTA = tSTA - mean(tSTA, 2);
 tSTA = tSTA ./ std(tSTA, [], 2);
 tSTA = tSTA + mean(tSTA, 2);
 
-snr = doSNR(tSTA);
-
 for i=1:size(tSTA, 1)
     plot(tSTA(i, :), "Color", colors(i, :), "LineWidth", 1.5)
     hold on
@@ -29,9 +27,10 @@ end
 xlim([1, size(tSTA ,2)]);
 ylim([-4, 4]);
 
-if isnan(snr) || snr == 1
-    title("temporal STAs")
+if numel(indices) == 1
+    title(strcat("Cell #", num2str(indices), ": t-STA"))
+    
 else
-    avgSTD_string = string(snr);
-    title(strcat("temporal STAs (SNR = ", avgSTD_string, ")"))
+    snr = doSNR(tSTA);
+    title(strcat("Average t-STAs (SNR = ", num2str(snr), ")"))
 end
