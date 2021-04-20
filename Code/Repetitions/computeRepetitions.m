@@ -57,6 +57,6 @@ for i_pattern = 1:n_patterns
     
     
     repetitions.rep_begins{i_pattern} = triggers(indexes);   
-    addrepetitions.durations{i_pattern} = rep_durations{i_pattern} * frame2frame_interval;
+    repetitions.durations{i_pattern} = rep_durations{i_pattern} * frame2frame_interval;
 end
 
