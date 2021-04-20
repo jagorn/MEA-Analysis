@@ -99,7 +99,7 @@ for i_activation = 1:n_conditions
     threshold = thresholds(i_activation);
     resp_win = resp_wins(i_activation, :);
     color_threshold = color_active_one(i_activation, :);
-    plot(resp_win, [threshold threshold], 'Color', color_threshold, 'LineWidth', 5);
+    plot(resp_win, [threshold threshold], 'Color', [color_threshold 0.5], 'LineWidth', 5);
     ylim([0 max_psth])
 end
 
@@ -111,7 +111,5 @@ if show_legend
     L(n_conditions + 2) = plot(nan, nan, 'Color', color_inactive);
     activation_labels{n_conditions + 1} = 'all';
     activation_labels{n_conditions + 2} = 'none';
-    legend(L, activation_labels)
-    
-    
+    legend(L, activation_labels)    
 end

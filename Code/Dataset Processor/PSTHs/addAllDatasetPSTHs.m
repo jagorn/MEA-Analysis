@@ -15,6 +15,7 @@ addParameter(p, 'Stimulus', []);
 addParameter(p, 'Pattern', []);
 addParameter(p, 'Smoothing_Coeff', 0);
 addParameter(p, 'Time_Spacing', 0);
+addParameter(p, 'Add_Duplicates', false);
 addParameter(p, 'Label', []);
 
 parse(p, varargin{:});
@@ -23,6 +24,7 @@ stimulus = p.Results.Stimulus;
 pattern = p.Results.Pattern;
 smoothing = p.Results.Smoothing_Coeff;
 time_spacing = p.Results.Time_Spacing;
+add_duplicates = p.Results.Add_Duplicates;
 label = p.Results.Label;
 
 load(getDatasetMat, 'experiments', 'spikes', 'psths');
@@ -80,12 +82,14 @@ for i_section = 1:numel(sections_table)
         % if the psth label exists already, add a duplicate suffix
         if isfield(psths, pattern_type) && isfield(psths.(pattern_type), psth_label)
             fprintf("A psth called %s for pattern %s already exists in this dataset.\n", psth_label, pattern_type);
-            duplicate_suffix = 2;
-            while isfield(psths, strcat(psth_label, '_', num2str(duplicate_suffix)))
-                duplicate_suffix = duplicate_suffix+1;
+            if add_duplicates
+                duplicate_suffix = 2;
+                while isfield(psths, strcat(psth_label, '_', num2str(duplicate_suffix)))
+                    duplicate_suffix = duplicate_suffix+1;
+                end
+                psth_label = strcat(psth_label, '_', num2str(duplicate_suffix));
+                fprintf("The new psth will be saved with name %s instead.\n", psth_label);
             end
-            psth_label = strcat(psth_label, '_', num2str(duplicate_suffix));
-            fprintf("The new psth will be saved with name %s instead.\n", psth_label);
         end
         
         % save everything

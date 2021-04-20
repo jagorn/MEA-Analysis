@@ -6,6 +6,6 @@ mea_rate 	= 20000
 frame_rate 	= 1
 
 # Stimulus Configurations
-version 	= flicker_black_first
+version 	= flicker_white_first
 is_looping	= 1
 

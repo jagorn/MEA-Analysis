@@ -1,17 +1,18 @@
-function plotOnOffActivation(psth_pattern, psth_labels, varargin)
+function plotOnOffActivation(psth_pattern, varargin)
 % Funtion to plot a cell's psth and its activation to a certain stimulus
 
 % Parse Input
 p = inputParser;
 addRequired(p, 'psth_pattern');
-addRequired(p, 'psth_labels');
-addParameter(p, 'Show_Stimulus', 'trace');  % it can be 'trace', 'blocks' or 'none'
-addParameter(p, 'Show_Stimulus_Block_As_Luminance', false);  % it can be 'trace', 'blocks' or 'none'
+addParameter(p, 'Conditions', []);
+addParameter(p, 'Show_Stimulus', 'trace');                   % it can be 'trace', 'blocks' or 'none'
+addParameter(p, 'Show_Stimulus_Block_As_Luminance', false);  
 addParameter(p, 'Upper_Bound', 50);
 addParameter(p, 'One_By_One', false);
 addParameter(p, 'Output_Folder', []);
 
-parse(p, psth_pattern, psth_labels, varargin{:});
+parse(p, psth_pattern, varargin{:});
+psth_labels = p.Results.Conditions;
 show_stimulus = p.Results.Show_Stimulus;
 show_blocks_as_luminance = p.Results.Show_Stimulus_Block_As_Luminance;
 max_psth = p.Results.Upper_Bound;
@@ -26,6 +27,10 @@ activation_color_all = [1, 0, 1];
 
 load(getDatasetMat(), 'psths', 'activations', 'cellsTable');
 cell_idx = 1:numel(cellsTable);
+
+if isempty(psth_labels)
+    psth_labels = fields(activations.(psth_pattern));
+end
 
 n_plot_rows = 5;
 n_plot_columns = numel(psth_labels) + 1;
@@ -58,8 +63,8 @@ for i_plot = 1:n_plots
             
             subplot(n_plot_rows, n_plot_columns, i_subplot)
             
-            if i_subplot <=  n_plot_rows
-                title(psth_label, 'Interpreter', 'None');
+            if i_subplot <=  n_plot_columns
+                title(split(psth_label, '_'));
             end
             
             if i_label == 1
@@ -91,7 +96,7 @@ for i_plot = 1:n_plots
     end
     
     if ~isempty(output_folder)
-        file_name = strcat(getDatasetId, psth_pattern, "_Activations#", num2str(i_plot));
+        file_name = strcat(getDatasetId, "_", psth_pattern, "_Activations#", num2str(i_plot));
         filepath = fullfile(output_folder, file_name);
         export_fig(filepath, '-svg');
         close;

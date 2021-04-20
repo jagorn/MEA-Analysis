@@ -1,4 +1,4 @@
-function plotOnOffAnalysis(dataset, pattern_label)
+function plotOnOffAnalysis(dataset, pattern_label, output_folder)
 
 control_label = 'simple';
 
@@ -75,10 +75,15 @@ cond_idx = 1:numel(condition_labels);
 legend_onset =  'Activated at Onset';
 legend_offset = 'Activated at Offset';
 legend_silent = 'Never Activated';
-x_labels = regexprep(condition_labels(cond_idx), '_', '-');
+x_labels = condition_labels(cond_idx);
+x_labels = regexprep(x_labels, '_', '');
+x_labels = regexprep(x_labels, 'lap4', 'L');
+x_labels = regexprep(x_labels, 'acet', 'A');
+x_labels = regexprep(x_labels, 'cnqxcpp', 'C');
 
 % Plot the histograms
 figure;
+fullScreen();
 
 % First ON cells...
 subplot(2, 1, 1);
@@ -93,7 +98,7 @@ ylabel('Percentage (%) ')
 xlabel('Light Levels')
 ylim([0 100])
 
-set(gca,'FontSize',12)
+set(gca,'FontSize', 10)
 set(gca,'box','off')
 set(gca,'XTickLabel', x_labels)
 title(['ON Cells (' num2str(TotalON) ')'])
@@ -112,10 +117,16 @@ ylabel('Percentage (%) ')
 xlabel('Light Levels')
 ylim([0 100])
 
-set(gca,'FontSize',12)
+set(gca,'FontSize', 10)
 set(gca,'box','off')
 set(gca,'XTickLabel', x_labels)
 title( ['OFF Cells (' num2str(TotalOFF) ')'])
 
 % Figure Title
 suptitle(regexprep(dataset, '_', '-'))
+
+
+file_name = strcat(getDatasetId, "_", pattern_label, "_Statistics");
+filepath = fullfile(output_folder, file_name);
+export_fig(filepath, '-svg');
+close;
