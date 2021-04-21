@@ -9,7 +9,9 @@ pattern_activations = activations.(pattern_label);
 condition_labels = fields(pattern_activations);
 
 % remove the control condition from the list of conditions
-condition_labels(strcmp(condition_labels, control_label)) = [];
+if numel(condition_labels) > 2
+    condition_labels(strcmp(condition_labels, control_label)) = [];
+end
 
 n_conditions = numel(condition_labels);
 n_cells = numel(cellsTable);
@@ -41,7 +43,7 @@ TotalOFF = sum(OFFCells);
 
 
 % Remove inconsistent cells and ON-OFF cells
-bothOnsetOffset_idx     = any(zs_on & zs_off) | (z_on_control & z_off_control);     % cells that respond to both onset and offset
+bothOnsetOffset_idx     = any(zs_on & zs_off, 1) | (z_on_control & z_off_control);     % cells that respond to both onset and offset
 inconsistentOFF_idx     = ~z_off_control & OFFCells;                                % cells with OFF STA that respond like ON
 inconsistentON_idx      = ~z_on_control & ONCells;                                  % cells with ON STA that respond like OFF
 

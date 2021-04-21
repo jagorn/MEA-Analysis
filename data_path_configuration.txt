@@ -9,6 +9,7 @@
 # to change the data location in your matlab code, use the command:
 # changeDataPath(NAME_DATA_LOCATION)
 
+laptop = '/home/fran_tr/Data'
 local = '/home/francesco/Data'
 storage = '/storage/Francesco/Experiments'
 storage2 = '/mnt/storage_s3/Francesco/Experiments'
