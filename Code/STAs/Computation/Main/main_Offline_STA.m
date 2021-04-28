@@ -80,8 +80,8 @@ for ii = Channels(:)'
         Nspk = treated.Nspk(ii);
         
         if is_one_file_per_cell % Save result for 1 channel
-            results_save_path = [spikes_file int2str(ii) '_STA_' int2str(IS.Nlatency) 'TimeBins.mat'];
-            save(results_save_path,'STA','Nspk');
+%             results_save_path = [spikes_file int2str(ii) '_STA_' int2str(IS.Nlatency) 'TimeBins.mat'];
+%             save(results_save_path,'STA','Nspk');
         end
         
         fprintf( 'Cell %d has been processed in %d min %d s: %d spikes \n',ii, floor(t_ii/60), t_ii - 60*floor(t_ii/60),Nspk);
@@ -93,8 +93,8 @@ end
 if ~is_one_file_per_cell % Save result for ALL channels computed
     STAs = treated.STA;
     Nspks = treated.Nspk;
-    [sta_folder, ~, ~] = fileparts(spikes_file);
-    save([sta_folder '/' 'Sta.mat'], 'STAs', 'Nspks');
+%     [sta_folder, ~, ~] = fileparts(spikes_file);
+%     save([sta_folder '/' 'Sta.mat'], 'STAs', 'Nspks');
 end
 
 fprintf('Computation is finished \n')
