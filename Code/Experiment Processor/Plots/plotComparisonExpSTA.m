@@ -1,4 +1,4 @@
-function plotExpSTA(exp_id, cell_id, varargin)
+function plotComparisonExpSTA(exp_id, cell_id, varargin)
 
 % Parse Input
 p = inputParser;

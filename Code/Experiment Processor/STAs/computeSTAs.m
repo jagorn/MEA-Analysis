@@ -7,15 +7,20 @@ function computeSTAs(exp_id, varargin)
 % Parameters:
 % EXP_ID:                   the identifier of the experiment
 % DO_SMOOTHING (OPTIONAL):  if true, it smooths the stas before defactorization.
+% LABEL (OPTIONAL):         the name of the STAs (in case you want compute different versions of them).
 
 do_smoothing_def = true;
+label_def = "";
 
 % Parse Input
 p = inputParser;
 addRequired(p, 'exp_id');
 addParameter(p, 'Do_Smoothing', do_smoothing_def);
+addParameter(p, 'Label', label_def);
+
 parse(p, exp_id, varargin{:});
 do_smoothing = p.Results.Do_Smoothing;
+label = p.Results.Label;
 
 checker_id = 'checkerboard';
 checker_table = findSections(exp_id, checker_id);
@@ -61,4 +66,4 @@ save(params_file, 'sta_params');
 fprintf('\ncomputing stas...\n');
 main_Offline_STA
 [temporal, spatial, rfs, valid] = decomposeSTA(STAs, 'Do_Smoothing', do_smoothing);
-saveSTAs(exp_id, STAs, temporal, spatial, rfs, valid)
+saveSTAs(exp_id, STAs, temporal, spatial, rfs, valid, 'Label', label)
