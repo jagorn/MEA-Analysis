@@ -11,7 +11,6 @@ function plotRasterMEA(spike_times, evt_timesteps, evt_binsize, evt_spacing, mea
 
 
 % Parameters Default
-mea_channels_def = 1:size(mea_map, 1);
 n_max_rep_def = 30;
 
 % Parse Input
