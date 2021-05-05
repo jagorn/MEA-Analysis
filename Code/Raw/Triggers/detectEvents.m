@@ -92,7 +92,11 @@ for i_stim = 1:length(StimBegin_Indices)
     
     % Generate missing triggers
     if generate_missing
+        
+        all_missing_events_begin = [];
+        all_missing_events_end = [];
         intervals = diff(events_begin);
+        
         for i_interval = 1:numel(intervals)
             n_intervals = intervals(i_interval) /  median_period;
             res_intervals = mod(intervals(i_interval), median_period);
@@ -109,8 +113,8 @@ for i_stim = 1:length(StimBegin_Indices)
                         evt_begin_missing = evt_begin_missing + median_period;
                         evt_end_missing = evt_begin_missing + median_event_dt;
                         
-                        events_begin = sort([events_begin evt_begin_missing]);
-                        events_end = sort([events_end evt_end_missing]);
+                        all_missing_events_begin = [all_missing_events_begin evt_begin_missing];
+                        all_missing_events_end = [all_missing_events_end evt_end_missing];
                     end
                     
                     fprintf('%i missing events have been generated.\n\n', missing_intervals);
@@ -120,10 +124,14 @@ for i_stim = 1:length(StimBegin_Indices)
                 
             end
         end
+        
+        % Add missing events
+        events_begin = sort([events_begin all_missing_events_begin]);
+        events_end = sort([events_end all_missing_events_end]);
     end
     
     events{i_stim}.evtTimes_begin = events_begin;
-    events{i_stim}.evtTimes_end =events_end;
+    events{i_stim}.evtTimes_end = events_end;
     events{i_stim}.evtTimes_hz = round(mea_rate/median_period);
 end
 

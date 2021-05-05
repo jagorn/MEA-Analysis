@@ -41,9 +41,12 @@ for i=1:length(stas)
         end
 
         % Fit The ellipses
-        [xEll, yEll, ~, ~] =  fitEllipse(frame_for_fitting);
-        [is_valid, ~] = validateEllipse(xEll, yEll, frame_for_fitting);
-        
+        try
+            [xEll, yEll, ~, ~] =  fitEllipse(frame_for_fitting);
+            [is_valid, ~] = validateEllipse(xEll, yEll, frame_for_fitting);
+        catch
+            continue;
+        end
         
         if is_valid
             is_good_sta(i) = true;
