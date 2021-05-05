@@ -114,8 +114,10 @@ if extract_tags
 end
 
 % Test
-fprintf('\n\nplots...\n\n')
-plotEulerCheckerTest(exp_id)
+if extract_spikes && extract_tags && extract_repetitions
+    fprintf('\n\nplots...\n\n')
+    plotEulerCheckerTest(exp_id)
+end
   
 
 

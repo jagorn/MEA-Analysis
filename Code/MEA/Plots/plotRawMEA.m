@@ -22,17 +22,18 @@ addParameter(p, 'Color_Stim', color_stim_def);
 addParameter(p, 'Color_Dead', color_dead_def);
 addParameter(p, 'Encoding', encoding_def);
 
-parse(p, traces, mea_map, varargin{:});
+parse(p, raw_file, time_step, chunk_size, mea_map, varargin{:});
 
 dead_electrodes = p.Results.Dead_Electrodes;
 stim_electrodes = p.Results.Stim_Electrodes;
 color = p.Results.Color;
 color_stim = p.Results.Color_Stim;
 color_dead = p.Results.Color_Dead;
+encoding = p.Results.Encoding;
 
 mea_size = size(mea_map, 1);
 waves = extractDataMEA(raw_file, time_step, chunk_size, mea_size, encoding);
-waves = reshape(waves, mea_size, chunk_size)/10;
+waves = reshape(waves, mea_size, chunk_size);
 
 plotTracesMEA(waves, mea_map, 'Dead_Electrodes', dead_electrodes, ...
                               'Stim_Electrodes', stim_electrodes, ...

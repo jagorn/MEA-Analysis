@@ -21,10 +21,5 @@ ylabel('Electrode Indices (Rows)')
 title('Multi Electrode Array')
 hold on
 
+fullScreen();
 
-ss = get(0,'screensize');
-width = ss(3);
-height = ss(4);
-vert = 900;
-horz = 900;
-set(gcf,'Position',[(width/2)-horz/2, (height/2)-vert/2, horz, vert]);

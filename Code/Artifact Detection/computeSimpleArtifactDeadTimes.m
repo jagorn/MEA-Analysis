@@ -13,6 +13,7 @@ artifact_def = [];
 p = inputParser;
 addRequired(p, 'triggers');
 addRequired(p, 'mea_rate');
+addRequired(p, 'raw_file');
 addParameter(p, 'Artifact', artifact_def);
 addParameter(p, 'Dead_Electrodes', dead_electrodes_def);
 addParameter(p, 'Stim_Electrodes', stim_electrodes_def);
@@ -32,7 +33,7 @@ encoding = p.Results.Endcoding;
 mea_map = p.Results.MEA_Map;
 
 if isempty(frame_duration)
-    frame_duration = min(diff(triggers));
+    frame_duration = min(diff(triggers)) / mea_rate;
 end
 
 % If the artifacts are not given, compute them
@@ -45,9 +46,9 @@ if isempty(artifact)
     artifact.artifact_electrodes = elec_residuals;
     artifact.artifact_mea = mea_residual;
     artifact.dead_init = dead_init;
-    artifact.dead_init = dead_end;
-    artifact.params.time_spacing = time_spacing;
-    artifact.params.stim_duration = stim_duration;
+    artifact.dead_end = dead_end;
+    artifact.params.time_spacing = time_padding;
+    artifact.params.stim_duration = frame_duration;
     artifact.params.mea_rate = mea_rate;
 end
 
