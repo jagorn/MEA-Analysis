@@ -1,4 +1,4 @@
-function printValidSTAs(exp_id, varargin)
+function valid = printValidSTAs(exp_id, varargin)
 
 % Parse Input
 p = inputParser;

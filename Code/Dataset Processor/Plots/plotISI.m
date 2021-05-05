@@ -6,7 +6,9 @@ function plotISI(cell_id)
 
 load(getDatasetMat(), 'spikes', 'mea_rate');
 ISI = diff(spikes{cell_id} / mea_rate) * 1000;  % Convert to ms
-ISI = ISI(ISI<=25000);
-histogram(ISI, 100);
+ISI = ISI(ISI <= 250);
+histogram(ISI, 100, 'Normalization', 'probability');
+xlabel('inter-spike intervals (ms)')
+ylabel('interval probability')
 
 

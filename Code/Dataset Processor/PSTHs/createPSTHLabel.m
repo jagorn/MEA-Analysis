@@ -11,6 +11,5 @@ else
     joint_conditions = join(conditions, '_');
     psth_label = strcat(label, '_', joint_conditions{1});
 end
-        
 
 

@@ -1,6 +1,7 @@
 function plotOnOffAnalysis(dataset, pattern_label, output_folder)
 
 control_label = 'simple';
+control_pattern = 'flicker';
 
 changeDataset(dataset);
 load(getDatasetMat(), 'cellsTable', 'activations');
@@ -25,8 +26,15 @@ for i_cond = 1:n_conditions
     zs_off(i_cond, :) = pattern_activations.(condition_label).off.z;
 end
 
-z_on_control = pattern_activations.(control_label).on.z;
-z_off_control = pattern_activations.(control_label).off.z;
+try
+    z_on_control = pattern_activations.(control_label).on.z;
+    z_off_control = pattern_activations.(control_label).off.z;
+catch
+    fprintf('%s does not have a pattern labeled %s. As a control, %s will be used instead.\n', pattern_label, control_label, control_pattern);
+    z_on_control = activations.(control_pattern).(control_label).on.z;
+    z_off_control = activations.(control_pattern).(control_label).off.z;
+end
+
 
 % Assess cell polarities
 try

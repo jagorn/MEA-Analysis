@@ -9,7 +9,8 @@ function classifyDataset()
 load(getDatasetMat, 'cellsTable', 'psths', 'temporalSTAs', 'RFs');
 
 % clustering parameters
-clusters_params.features_psths = {"euler"};
+clusters_params.features_psth_patterns = {"euler"};
+clusters_params.features_psth_labels = {"simple"};
 clusters_params.min_size = 4;
 clusters_params.split_size = 6;
 clusters_params.min_psth_SNR = .6;
@@ -25,8 +26,8 @@ clusters_params.first_iteration_only_STAs = false;
 
 % features parameters
 features_psths = [];
-for i_psth = 1:numel(clusters_params.features_psths)
-    features_psths = [features_psths psths.(clusters_params.features_psths{i_psth}).psths];
+for i_psth = 1:numel(clusters_params.features_psth_patterns)
+    features_psths = [features_psths psths.(clusters_params.features_psth_patterns{i_psth}).(clusters_params.features_psth_labels{i_psth}).psths];
 end
 
 features_matrix = generateStandardFeatureVec(features_psths, temporalSTAs, getRFArea(RFs));

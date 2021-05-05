@@ -76,7 +76,7 @@ for i_exp = 1:numel(experiments)
     
     %----- validate ---------------------------%
     
-    valid_tags = find(Tags >= accepted_labels).';
+    valid_tags = find(Tags >= accepted_labels);
     bad_tags = numel(SpikeTimes) - numel(valid_tags);    
     fprintf('\t%i/%i cells excluded according to TAGS\n', bad_tags, numel(SpikeTimes))
     

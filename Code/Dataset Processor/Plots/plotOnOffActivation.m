@@ -51,7 +51,13 @@ for i_plot = 1:n_plots
         
         % Plot STAs in the first columns
         subplot(n_plot_rows, n_plot_columns, i_subplot)
-        plotTSTAs(i_cell)
+        try
+            plotTSTAs(i_cell)
+            title(strcat('Cell N#', num2str(cellsTable(i_cell).N), ': t-STA'));
+        catch
+            % no STA
+            title(strcat('Cell N#', num2str(cellsTable(i_cell).N)));
+        end
         axis off;
         i_subplot = i_subplot +1;
         
