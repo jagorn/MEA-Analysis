@@ -100,7 +100,6 @@ for i_activation = 1:n_conditions
     resp_win = resp_wins(i_activation, :);
     color_threshold = color_active_one(i_activation, :);
     plot(resp_win, [threshold threshold], 'Color', [color_threshold 0.5], 'LineWidth', 5);
-    ylim([0 max_psth])
 end
 
 if show_legend
