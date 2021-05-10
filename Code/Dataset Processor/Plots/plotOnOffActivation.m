@@ -7,7 +7,7 @@ addRequired(p, 'psth_pattern');
 addParameter(p, 'Conditions', []);
 addParameter(p, 'Show_Stimulus', 'trace');                   % it can be 'trace', 'blocks' or 'none'
 addParameter(p, 'Show_Stimulus_Block_As_Luminance', false);  
-addParameter(p, 'Upper_Bound', 50);
+addParameter(p, 'Upper_Bound', 70);
 addParameter(p, 'One_By_One', false);
 addParameter(p, 'Output_Folder', []);
 
@@ -37,10 +37,10 @@ n_plot_columns = numel(psth_labels) + 1;
 n_plots = ceil(numel(cell_idx)/n_plot_rows);
 
 
-for i_plot = 1:n_plots
+for i_plot = 17
     
-    i_cell_start = 1 + n_plot_rows*(i_plot-1);
-    i_cell_end = min(i_cell_start + n_plot_rows - 1, numel(cell_idx));
+    i_cell_start = 81;
+    i_cell_end = 85;
     plot_cells = cell_idx(i_cell_start:i_cell_end);
     
     figure();

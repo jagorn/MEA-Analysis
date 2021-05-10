@@ -132,7 +132,7 @@ for i_stim = 1:length(StimBegin_Indices)
     
     events{i_stim}.evtTimes_begin = events_begin;
     events{i_stim}.evtTimes_end = events_end;
-    events{i_stim}.evtTimes_hz = round(mea_rate/median_period);
+    events{i_stim}.evtTimes_hz = round(mea_rate/median_period * 100) / 100;
 end
 
 % save everything
