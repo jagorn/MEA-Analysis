@@ -1,6 +1,11 @@
 clear
 close all
 
+% parameters
+exclude_leaked_cells = true;
+n_trials_variance_sampling = 100;
+n_samples_variance_sampling = 40;
+
 % compare variance explained in euler PCAs
 dataset_id = "20210301_reachr2_noSTAs";
 % dataset_id = "20210302_reachr2_noSTAs";
@@ -21,12 +26,19 @@ n_cells = numel(cellsTable);
 
 good_cells_euler_bf_pharma = activations.euler.simple.on.z | activations.euler.simple.off.z;
 good_cells_euler_af_pharma = activations.euler.(condition_pharma).on.z | activations.euler.(condition_pharma).off.z;
+
+% choose wether to eliminate leaked cells or not
+leaking_cells = activations.flicker.(condition_control).on.z | activations.flicker.(condition_control).off.z;
+if exclude_leaked_cells
+    good_cells_euler_bf_pharma = good_cells_euler_bf_pharma & ~leaking_cells;
+    good_cells_euler_af_pharma = good_cells_euler_af_pharma & ~leaking_cells;
+end
+
 good_cells_always = good_cells_euler_bf_pharma & good_cells_euler_af_pharma;
 
+n_good_both = sum(good_cells_always)
 n_good_bf_pharma = sum(good_cells_euler_bf_pharma)
 n_good_af_pharma = sum(good_cells_euler_af_pharma)
-
-n_good_both = sum(good_cells_always)
 
 
 z_on_control = activations.flicker.simple.on.z;
@@ -37,13 +49,12 @@ OFFCells = z_off_control & ~z_on_control;
 Others = ~ONCells & ~OFFCells;    
 
 % rand sample the populations of cells to have populations of comparable size.
-n_trials = 100;
-n_samples = 40;
+n_samples = min(n_samples_variance_sampling, min(n_good_bf_pharma, n_good_af_pharma));
 
 explained_simple_avg = 0;
 explained_pharma_avg = 0;
 
-for i = 1:n_trials
+for i = 1:n_trials_variance_sampling
     all_indices_bf_pharma = find(good_cells_euler_bf_pharma);
     all_indices_af_pharma = find(good_cells_euler_af_pharma);
     
@@ -56,8 +67,8 @@ for i = 1:n_trials
     [coeff, score, latent, tsquared, explained_simple, mu] = pca(psth_simple_all);
     [coeff, score, latent, tsquared, explained_pharma, mu] = pca(psth_cond_all);
     
-    explained_simple_avg = explained_simple_avg + explained_simple/n_trials;
-    explained_pharma_avg = explained_pharma_avg + explained_pharma/n_trials;
+    explained_simple_avg = explained_simple_avg + explained_simple/n_trials_variance_sampling;
+    explained_pharma_avg = explained_pharma_avg + explained_pharma/n_trials_variance_sampling;
 end
 
 figure()
