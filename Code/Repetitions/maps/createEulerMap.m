@@ -22,4 +22,3 @@ repetitions_map.stim_duration = stim_duration;
 
 stim_file = fullfile(stimPath('euler'), strcat(lower(euler_version), '.mat'));
 save(stim_file, 'repetitions_map');
-

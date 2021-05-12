@@ -12,7 +12,7 @@ function section_table = getSection(exp_id, section_id)
 sections_table = getSectionsTable(exp_id);
 
 if ischar(section_id) || isstring(section_id)
-    i_section = find([sections_table.id] == section_id);
+    i_section = find(strcmp({sections_table.id}, section_id));
     
 elseif islogical(section_id)
     i_section = find(section_id);
