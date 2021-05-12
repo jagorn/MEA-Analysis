@@ -36,7 +36,7 @@ if isempty(pattern_name)
     title_plot = strcat(exp_id, ': ', section_id);
 
 else
-    i_pattern = find([repetitions.names] == pattern_name);
+    i_pattern = find(strcmp(repetitions.names, pattern_name));
     title_plot = strcat(exp_id, ': ', section_id, '-', pattern_name);
 
     if numel(i_pattern) ~= 1

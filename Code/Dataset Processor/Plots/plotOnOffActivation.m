@@ -37,10 +37,10 @@ n_plot_columns = numel(psth_labels) + 1;
 n_plots = ceil(numel(cell_idx)/n_plot_rows);
 
 
-for i_plot = 17
+for i_plot = 1:n_plots
     
-    i_cell_start = 81;
-    i_cell_end = 85;
+    i_cell_start = n_plot_rows * (i_plot-1) + 1; 
+    i_cell_end = min(i_cell_start + n_plot_rows -1, numel(cell_idx));
     plot_cells = cell_idx(i_cell_start:i_cell_end);
     
     figure();
@@ -53,10 +53,10 @@ for i_plot = 17
         subplot(n_plot_rows, n_plot_columns, i_subplot)
         try
             plotTSTAs(i_cell)
-            title(strcat('Cell N#', num2str(cellsTable(i_cell).N), ': t-STA'));
+            title(strcat('Cell#', num2str(i_cell), " (N= ", num2str(cellsTable(i_cell).N), "): t-STA"));
         catch
             % no STA
-            title(strcat('Cell N#', num2str(cellsTable(i_cell).N)));
+            title(strcat('Cell#', num2str(i_cell), " (N= ", num2str(cellsTable(i_cell).N), ")"));
         end
         axis off;
         i_subplot = i_subplot +1;

@@ -16,9 +16,11 @@ addRequired(p, 'indices');
 addRequired(p, 'pattern');
 addRequired(p, 'label');
 addParameter(p, 'Show_Stimulus', 'trace');
+addParameter(p, 'Normalize', true);
 
 parse(p, indices, pattern, label, varargin{:});
 show_stimulus = p.Results.Show_Stimulus;
+normalize = p.Results.Normalize;
 
 load(getDatasetMat(), 'psths')
 if ~exist('psths', 'var') || ~isfield(psths, pattern) || ~isfield(psths.(pattern), label)
@@ -29,7 +31,10 @@ end
 
 
 traces = psths.(pattern).(label).psths(indices, :);
-traces = traces ./ max(traces, [], 2);
+if normalize
+    traces = traces ./ max(traces, [], 2);
+end
+lim_y = max(traces(:));
 xs = psths.(pattern).(label).time_sequences;
 
 avgTrace = mean(traces, 1);
@@ -44,13 +49,13 @@ if strcmp(show_stimulus, 'trace')
     try
         stim_pattern = getPatternProfile(pattern);
         stim_rate =  psths.(pattern).(label).stim_rate;
-        plotStimProfile(stim_pattern.profile, stim_rate)
+        plotStimProfile(stim_pattern.profile, stim_rate, 'Scale', lim_y)
     end
 elseif strcmp(show_stimulus, 'blocks')
     try
         stim_pattern = getPatternProfile(pattern);
         stim_rate =  psths.(pattern).(label).stim_rate;
-        plotStimStates(stim_pattern.profile, stim_rate)
+        plotStimStates(stim_pattern.profile, stim_rate, 'Scale', lim_y)
     end
 end
 
@@ -63,7 +68,8 @@ fill(x2, inBetween, [0.75, 0.75, 0.75]);
 plot(xs, avgTrace, 'r', 'LineWidth', 3)
 
 xlim([0, xs(end)]);
-ylim([-0.1, +1.1]);
+ylim([-0.1, lim_y+0.1]);
+
 xlabel('Time (s)')
 ylabel('Normalized Firing-Rate')
 
