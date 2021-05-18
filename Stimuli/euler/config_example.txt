@@ -3,7 +3,6 @@
 
 # Setup Configuration
 mea_rate 	= 20000
-frame_rate 	= 40
 
 # Stimulus Configurations
 version 	= euler_180530
