@@ -1,7 +1,6 @@
 function plotMEA()
 % Plots a 16 * 16 space representing a Multi Electrode Array
 
-figure()
 
 ax1 = axes();
 
