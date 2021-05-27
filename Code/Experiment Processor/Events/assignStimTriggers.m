@@ -4,7 +4,7 @@ function stimTable = assignStimTriggers(stimTable, evt_times)
 % struct 'stimTable'.
 
 if numel(stimTable) ~= numel(evt_times)
-    fprintf('the number of visual stimuli does not match with the sessions of triggers found\n')
+    fprintf('the number of stimuli listed in the table does not match with the number of trigger sessions found\n')
     
     for i_evt = 1:numel(evt_times)
         triggers = evt_times{i_evt}.evtTimes_begin;
