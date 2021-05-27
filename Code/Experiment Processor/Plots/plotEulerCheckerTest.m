@@ -12,7 +12,6 @@ end
 
 if isempty(euler_sections)
     disp('Euler Section (without conditions) not found');
-    
 else
     euler_section_id = euler_sections(1).id;
     plotSectionPsth(exp_id, euler_section_id);

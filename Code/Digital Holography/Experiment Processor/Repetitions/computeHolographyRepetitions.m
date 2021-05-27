@@ -1,12 +1,13 @@
-function everything = computeHolographyRepetitions(dh_times_init, dh_times_end, holography_total_block, holography_block_type)
+function repetitions = computeHolographyRepetitions(dh_times_init, dh_durations, holography_total_block, holography_block_type)
 
+set_types = ["train", "test"];  % 0 = training set, 1 = testing set
 [patterns, sequence2pattern, sequence] = unique(holography_total_block', 'rows');
-training_set = ~holography_block_type(sequence2pattern);
-testing_set = holography_block_type(sequence2pattern);
+n_patterns = numel(sequence2pattern);
+
 
 % Errors and warnings
-if length(dh_times_init) ~= length(dh_times_end)
-    error_struct.message = strcat("Mismatch between the number of trigger onsets and offsets for holographic stimulation");
+if length(dh_times_init) ~= length(dh_durations)
+    error_struct.message = strcat("Mismatch between the number of triggers amd durations for holographic stimulation");
     error_struct.identifier = strcat('MEA_Analysis:', mfilename);
     error(error_struct);
 end
@@ -21,12 +22,39 @@ if(length(dh_times_init) < length(sequence))
     fprintf('\tWARNING: %i triggers expected, but only %i were found\n', length(sequence), length(dh_times_init));
 end
 
-everything.rep_begin = cell(1, max(sequence));
-everything.durations = cell(1, max(sequence));
-everything.patterns = patterns;
+repetitions.patterns = patterns;
+repetitions.rep_begin = cell(n_patterns, 1);
+repetitions.durations = zeros(n_patterns, 1);
+repetitions.set_type = strings(n_patterns, 1);
 
-for t = 1:length(dh_times_init)
-    frame_id = sequence(t);
-    everything.rep_begin{frame_id} = [everything.rep_begin{frame_id} dh_times_init(t)];
-    everything.rep_end{frame_id} = [everything.rep_end{frame_id} dh_times_end(t)];
+for p = 1:n_patterns
+    p_idx = sequence == p;
+    
+    if any(p_idx)
+           
+        rep_begins = dh_times_init(p_idx);
+        durations = dh_durations(p_idx);
+        sets = set_types(holography_block_type(p_idx) + 1);
+
+        % make sure durations are all the same
+        delta_durations = abs(durations - durations(1)) / durations(1);
+        if any (delta_durations > 0.02)
+            max_offset = max(abs(durations - durations(1)));
+            warning(strcat("Duration of holographic pattern is not consistent across repetitions (", num2str(max_offset), " time_steps of difference)"));
+        end
+
+        % make sure pattern is only test or only training set are all the same
+        if ~all(strcmp(sets(1), sets))
+            error_struct.message = strcat("Inconsistent training/testing set in holographic patterns");
+            error_struct.identifier = strcat('MEA_Analysis:', mfilename);
+            error(error_struct);
+        end
+        
+        duration = median(durations);
+        set = sets(1);
+
+        repetitions.rep_begin{p} = rep_begins;
+        repetitions.durations(p) = duration;
+        repetitions.set_type(p) = set;
+    end
 end

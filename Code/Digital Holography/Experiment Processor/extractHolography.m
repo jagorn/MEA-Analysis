@@ -43,6 +43,7 @@ raw_file = fullfile(raw_path, strcat(raw_name, '.raw'));
 % Triggers
 if extract_triggers
     fprintf('\n\nextracting holography triggers...\n\n')
+    mea_rate = getMeaRate(exp_id);
     extractDHTimes(exp_id, raw_file, mea_rate);
 end
 
@@ -50,8 +51,8 @@ end
 % Initialize Holography
 if ~isfile(stimHoloFile(exp_id)) 
     initializeExperimentHolo(exp_id)
-    fprintf('The configuration file stims_holo.txt has been created.')
-    fprintf('Fill the configuration file, and then run this function again.')
+    fprintf('The configuration file stims_holo.txt has been created.\n')
+    fprintf('Fill the configuration file, and then run this function again.\n')
 else
     
     % Initialize Table
@@ -60,26 +61,17 @@ else
     % Repetitions
     if extract_repetitions
 
-        fprintf('\n\ncomputing holography triggers...\n\n')
+        fprintf('\ncomputing holography triggers...\n')
         dh_times = getDHTimes(exp_id);
         holography_table = assignStimTriggers(holography_table, dh_times);
         setHolographyTable(exp_id, holography_table);
 
 
-        fprintf('\n\ncomputing holography repetitions...\n\n')
+        fprintf('\ncomputing holography repetitions...\n')
         holography_table = assignHolographyRepetitions(holography_table, exp_id);
         setHolographyTable(exp_id, holography_table);
     end
 
     % Test
-    if extract_spikes && extract_repetitions
-        fprintf('\n\nplots...\n\n')
-        plotEulerCheckerTest(exp_id)
-    end
-
+    plotHoloTest(exp_id, 1);
 end
-  
-
-
-
-

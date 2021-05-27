@@ -12,7 +12,7 @@ for i_section = 1:numel(stimTable)
     section_id = stimTable(i_section).id;
     stim_id = stimTable(i_section).stimulus;
     triggers = stimTable(i_section).triggers;
-    durations = 1/stimTable(i_section).frame_rate;
+    durations = stimTable(i_section).durations;
     
     [holography_total_block, holography_block_type] = getHolographyFrames(exp_id, stim_id);
     repetitions = computeHolographyRepetitions(triggers, durations, holography_total_block, holography_block_type);

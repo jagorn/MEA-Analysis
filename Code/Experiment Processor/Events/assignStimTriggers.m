@@ -18,7 +18,10 @@ end
 
 for i_evt = 1:numel(evt_times)
     triggers = evt_times{i_evt}.evtTimes_begin;
+    durations = evt_times{i_evt}.evtTimes_end - evt_times{i_evt}.evtTimes_begin;
     rate = evt_times{i_evt}.evtTimes_hz; 
-    stimTable(i_evt).rate = rate;
+
     stimTable(i_evt).triggers = triggers;
+    stimTable(i_evt).durations = durations;
+    stimTable(i_evt).rate = rate;
 end

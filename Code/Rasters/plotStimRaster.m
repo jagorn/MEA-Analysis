@@ -97,7 +97,7 @@ n_steps_resp =  n_steps_stim + pre_stim_steps + post_stim_dt;
 stim_duration = n_steps_stim / rate;
 response_duration = n_steps_resp / rate;
 
-for reps = repetitions
+for reps = repetitions(:)'
     n_max_repetitions = max(n_max_repetitions, numel(reps{:}));
 end
 n_tot_repetitions = numel(pattern_idx) * (n_max_repetitions + line_spacing);
@@ -137,7 +137,7 @@ for i_pattern = pattern_idx
         i_row = i_row + 1;
         
         if r <= numel(repetitions{i_pattern})
-            spikes_segment = and(spikes > rs_init(r) + pre_stim_steps, spikes < rs_end(r) + post_stim_steps);
+            spikes_segment = and(spikes > rs_init(r) - pre_stim_steps, spikes < rs_end(r) + post_stim_steps);
             spikes_rep = spikes(spikes_segment) - rs_init(r);
             spikes_rep = spikes_rep(:).';
             y_spikes_rep = ones(1, length(spikes_rep)) * i_row;
@@ -152,7 +152,7 @@ yticklabels(labels);
 title(title_txt, 'Interpreter', 'None')
 
 % add edges
-if empty(edges_colors)
+if isempty(edges_colors)
     edges_colors = getColors(max(numel(edges_onsets), numel(edges_offsets)));
 end
     

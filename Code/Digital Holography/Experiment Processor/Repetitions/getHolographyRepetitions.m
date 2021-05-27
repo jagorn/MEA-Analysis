@@ -7,7 +7,7 @@ function repetitions = getHolographyRepetitions(exp_id, section_id)
 %
 % OUTPUT:
 % repetitions: a struct describing the structure of the stimulus.
-section_table = getHolographySection(exp_id, section_id);
+section_table = getHoloSection(exp_id, section_id);
 if ~isfield(section_table, 'repetitions')
     error_struct.message = strcat("repetitions of holographic section ",  num2str(section_id), " not found in experiment ", exp_id);
     error_struct.identifier = strcat('MEA_Analysis:', mfilename);

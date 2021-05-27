@@ -2,7 +2,7 @@ function [TotalBlock, BlockSign] = getHolographyFrames(exp_id, stim_id)
 
 stim_file = fullfile(holoPath(exp_id), strcat(stim_id, '.mat'));
 if ~isfile(stim_file)
-    error_struct.message = strcat("Holography frames file ", stim_file, " not found in experiment ", exp_id);
+    error_struct.message = strcat("Holography frames file ", stim_file, " not found");
     error_struct.identifier = strcat('MEA_Analysis:', mfilename);
     error(error_struct);
 end
