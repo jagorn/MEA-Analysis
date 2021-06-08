@@ -1,4 +1,4 @@
-function setH_All()
+function initializeHomographies()
 
 setH_Checker2DMD();
 setH_DMD2Camera();

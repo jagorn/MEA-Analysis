@@ -107,6 +107,7 @@ ylim([-line_spacing, n_tot_repetitions])
 
 
 hold on
+set(gca, 'YDir','reverse')
 set(gca,'ytick',[])
 xlabel("Spike Times (s)")
 ylabel("Patterns")

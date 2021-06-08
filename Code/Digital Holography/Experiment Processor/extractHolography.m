@@ -10,12 +10,14 @@ function  extractHolography(exp_id, varargin)
 % exp_ID:           the identifier of the experiment.
 % extract_triggers (optional):      if true, it extracts and saves the experiment dh triggers.
 % compute_repetitions (optional):   if true, it computes the repetitions of the dh patterns for each section.
+% compute_psths (optional):   if true, it computes the psths for the dh patterns for each section.
 % raw_path (optional):              path to the raw file (by default it is the "sorted" folder in the experiment folder).
 % raw_name (optional):              name of the raw file (by default it is the same as exp_id).
 
 % Parameters Extraction
 extract_triggers_def = true;
 compute_repetitions_def = true;
+compute_psths_def = true;
 
 % Parameters Raw Files
 raw_path_def = sortedPath(exp_id);
@@ -26,6 +28,7 @@ p = inputParser;
 addRequired(p, 'exp_id');
 addParameter(p, 'Extract_Triggers', extract_triggers_def);
 addParameter(p, 'Compute_Repetitions', compute_repetitions_def);
+addParameter(p, 'Compute_PSTHs', compute_psths_def);
 addParameter(p, 'Raw_Path', raw_path_def);
 addParameter(p, 'Raw_Name', raw_name_def);
 
@@ -33,6 +36,7 @@ parse(p, exp_id, varargin{:});
 
 extract_triggers = p.Results.Extract_Triggers;
 extract_repetitions = p.Results.Compute_Repetitions;
+compute_psths = p.Results.Compute_PSTHs;
 raw_path = p.Results.Raw_Path; 
 raw_name = p.Results.Raw_Name; 
 
@@ -72,6 +76,10 @@ else
         setHolographyTable(exp_id, holography_table);
     end
 
+    if compute_psths
+        fprintf('\ncomputing holography psths...\n')
+        computeHolographyPSTHs(exp_id)
+    end
     % Test
     plotHoloTest(exp_id, 1);
 end

@@ -23,8 +23,8 @@ if(length(dh_times_init) < length(sequence))
 end
 
 repetitions.patterns = patterns;
-repetitions.rep_begin = cell(n_patterns, 1);
 repetitions.durations = zeros(n_patterns, 1);
+repetitions.rep_begins = cell(n_patterns, 1);
 repetitions.set_type = strings(n_patterns, 1);
 
 for p = 1:n_patterns
@@ -53,8 +53,8 @@ for p = 1:n_patterns
         duration = median(durations);
         set = sets(1);
 
-        repetitions.rep_begin{p} = rep_begins;
         repetitions.durations(p) = duration;
+        repetitions.rep_begins{p} = rep_begins;
         repetitions.set_type(p) = set;
     end
 end

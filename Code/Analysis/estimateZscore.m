@@ -1,4 +1,4 @@
-function [z, threshold] = estimateZscore(psth, xpsth, dt_psth, ctrl_win, resp_win, k, min_fr)
+function [z, threshold, score] = estimateZscore(psth, xpsth, dt_psth, ctrl_win, resp_win, k, min_fr)
 
 % make sure the control and response window are inside the xpsth boundaries
 
@@ -27,4 +27,5 @@ for icell=1:size(psth_dt_by_cell,2)
         z(icell) = 0;
     end
     threshold(icell) = max(m+k*s ,min_fr);
+    score(icell) = max(psth_dt_by_cell(find(xpsth>= resp_win(1)& xpsth< resp_win(2)),icell)) - threshold(icell);
 end
