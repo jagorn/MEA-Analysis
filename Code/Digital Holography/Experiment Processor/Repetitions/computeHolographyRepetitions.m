@@ -20,6 +20,7 @@ end
 
 if(length(dh_times_init) < length(sequence))
     fprintf('\tWARNING: %i triggers expected, but only %i were found\n', length(sequence), length(dh_times_init));
+    sequence = sequence(1:length(dh_times_init));
 end
 
 repetitions.patterns = patterns;

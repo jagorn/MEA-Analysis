@@ -17,7 +17,7 @@ function  extractHolography(exp_id, varargin)
 % Parameters Extraction
 extract_triggers_def = true;
 compute_repetitions_def = true;
-compute_psths_def = true;
+compute_psths_def = false;
 
 % Parameters Raw Files
 raw_path_def = sortedPath(exp_id);

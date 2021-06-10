@@ -56,12 +56,24 @@ save(spikes_file, 'SpikeTimes');
 binary_file = fullfile(stimPath('checkerboard'), 'binary', 'binarysource1000Mbits');
 
 fprintf('\nsaving parameters...\n');
-sta_params('triggers_file') = frames_file;
+sta_params('frame_rate') = round(getSection(exp_id, checker_table.id).rate);
+sta_params('triggers_file') = num2str(frames_file);
 sta_params('binary_file') = binary_file;
 sta_params('spikes_file') = spikes_file;
 sta_params('channels') = 1:numel(SpikeTimes);
 params_file = fullfile(sectionPath(exp_id, checker_table.id), 'StaParameters.mat');
 save(params_file, 'sta_params');
+
+fprintf('\nstas will be computed with the following parameters:\n');
+sta_params_keys = keys(sta_params);
+for i_params = 1:numel(sta_params_keys)
+    key = sta_params_keys{i_params};
+    val = sta_params(key);
+    if isnumeric(val)
+        val = num2str(val);
+    end
+    fprintf('\t %s: %s\n', key, val)
+end
 
 fprintf('\ncomputing stas...\n');
 main_Offline_STA

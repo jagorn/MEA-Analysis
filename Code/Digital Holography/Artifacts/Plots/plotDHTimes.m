@@ -80,7 +80,7 @@ end
 triggers_begin = dhTimes{n}.evtTimes_begin;
 triggers_end = dhTimes{n}.evtTimes_end;
 if isempty(nsteps_dh)
-    nsteps_dh = min(triggers_end - triggers_begin);
+    nsteps_dh = median(triggers_end - triggers_begin);
 end
 
 
