@@ -18,20 +18,22 @@ addRequired(p, 'stim_rate');
 addParameter(p, 'Scale', 1);
 addParameter(p, 'Colors', getColors(n_states + 1));
 addParameter(p, 'States_Luminance', false);
+addParameter(p, 'Time_Spacing', 0);
 addParameter(p, 'Exclude_0', true);
 
 parse(p, stim_pattern, stim_rate, varargin{:});
 scale = p.Results.Scale;
 colors = p.Results.Colors;
 state_is_luminance = p.Results.States_Luminance;
+t_spacing = p.Results.Time_Spacing;
 exclude_0 = p.Results.Exclude_0;
 
 stim_period = 1/stim_rate;
-xs = cumsum(ones(size(stim_pattern))*stim_period) - stim_period;
+xs = cumsum(ones(size(stim_pattern))*stim_period) - stim_period + t_spacing;
 
 prev_state = 0;
 current_block = 0;
-block_start = 0;
+block_start = t_spacing;
 
 for i_state = 1:numel(stim_pattern)
     state = stim_pattern(i_state);

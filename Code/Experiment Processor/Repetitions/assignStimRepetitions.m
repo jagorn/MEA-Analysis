@@ -13,8 +13,7 @@ for i_section = 1:numel(stimTable)
     stim_id = stimTable(i_section).stimulus;
     triggers = stimTable(i_section).triggers;
 
-	configs_file = configFile(exp_id, section_id);
-	configs = parseConfigurationFile(configs_file);
+	configs = loadConfigs(exp_id, section_id);
     
 
     if ~isKey(configs, 'version')

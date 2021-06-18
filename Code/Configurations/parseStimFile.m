@@ -66,7 +66,7 @@ try
             stim_id = strcat(stim_id, '_(', join(string(conditions), '_'), ')');
         end
         
-        stim_table(stim_count).id = stim_id;
+        stim_table(stim_count).id = string(stim_id);
         stim_table(stim_count).stimulus = string(stim);
         stim_table(stim_count).conditions = string(conditions);
         stim_table(stim_count).notes = string(comment);

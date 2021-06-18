@@ -19,25 +19,23 @@ mea_rate = getMeaRate(exp_id);
 p = inputParser;
 addRequired(p, 'exp_id');
 addRequired(p, 'section_id');
-addParameter(p, 'CellIndices', 1:(min(numel(spike_times), 10)));
+addParameter(p, 'Cell_Indices', 1:(min(numel(spike_times), 10)));
 addParameter(p, 'Pattern_Name', []);
-addParameter(p, 'TimeBin', 0.05);
+addParameter(p, 'Time_Bin', 0.05);
 addParameter(p, 'Smoothing_Coeff', 0.1);
 
 parse(p, exp_id, section_id, varargin{:});
 
-cell_idx = p.Results.CellIndices;
+cell_idx = p.Results.Cell_Indices;
 pattern_name = p.Results.Pattern_Name;
-t_bin = p.Results.TimeBin;
+t_bin = p.Results.Time_Bin;
 smoothing = p.Results.Smoothing_Coeff;
 
 if isempty(pattern_name)
     i_pattern = 1;
-    title_plot = strcat(exp_id, ': ', section_id);
-
+    pattern_name = repetitions.names{i_pattern};
 else
     i_pattern = find(strcmp(repetitions.names, pattern_name));
-    title_plot = strcat(exp_id, ': ', section_id, '-', pattern_name);
 
     if numel(i_pattern) ~= 1
         error_struct.message = strcat("section ",  num2str(section_id), ": pattern ", pattern_name, " not found in experiment ", exp_id);
@@ -65,5 +63,6 @@ end
 xlabel("Time (s)")
 ylabel("Firing Rate (Hz)")
 
+title_plot = strcat(exp_id, ": ", section_id, " - ", pattern_name);
 h = suptitle(title_plot);
 h.Interpreter = 'None';
