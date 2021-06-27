@@ -47,8 +47,10 @@ else
 end
 
 traces = dh_artifacts(n).artifact_electrodes;
+dead_times_windows = [dh_artifacts(n).dead_init', dh_artifacts(n).dead_end'] + dh_artifacts(n).params.time_spacing * dh_artifacts(n).params.mea_rate;
 
 plotMEA();
 plotGridMEA();
 plotTracesMEA(traces, mea_map, 'Trace_Scale_mv', scale_mv)
+plotTimeWindowsMEA(dead_times_windows, size(traces, 2), mea_map)
 title(strcat("Experiment ", exp_id, ", DH Artifact ", label, " (session#", num2str(n), ")"), 'Interpreter', 'None')

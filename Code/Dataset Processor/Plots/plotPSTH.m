@@ -31,7 +31,9 @@ end
 
 
 traces = psths.(pattern).(label).psths(indices, :);
-if normalize
+t_spacing = psths.(pattern).(label).t_spacing;
+
+if normalize && any(traces(:))
     traces = traces ./ max(traces, [], 2);
 end
 lim_y = max(traces(:));
@@ -67,17 +69,17 @@ fill(x2, inBetween, [0.75, 0.75, 0.75]);
 % Plot Mean
 plot(xs, avgTrace, 'r', 'LineWidth', 3)
 
-xlim([0, xs(end)]);
+xlim([xs(1), xs(end)]);
 ylim([-0.1, lim_y+0.1]);
 
 xlabel('Time (s)')
 ylabel('Normalized Firing-Rate')
 
 if numel(indices) == 1
-    title(strcat("Cell #", num2str(indices), ": ", pattern, " PSTH"))
+    title(strcat("Cell #", num2str(indices), ": ", pattern, " PSTH"), 'Interpreter', 'None')
     
 else
     snr = doSNR(traces);
-    title(strcat("Average ", pattern, " PSTH (SNR = ", num2str(snr), ")"))
+    title(strcat("Average ", pattern, " PSTH (SNR = ", num2str(snr), ")"), 'Interpreter', 'None')
 end
 

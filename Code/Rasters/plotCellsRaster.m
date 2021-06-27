@@ -107,6 +107,7 @@ xlim([min(0, -pre_stim_dt), max(stim_duration, response_duration - pre_stim_dt +
 ylim([-line_spacing, n_tot_repetitions])
 
 hold on
+set(gca, 'YDir','reverse')
 set(gca,'ytick',[])
 xlabel("Spike Times (s)")
 ylabel("Cells")

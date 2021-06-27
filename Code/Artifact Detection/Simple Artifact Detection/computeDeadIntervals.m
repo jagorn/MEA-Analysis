@@ -1,7 +1,7 @@
 function [dead_init, dead_end] = computeDeadIntervals(residual, time_spacing, varargin)
 
 % Params
-dead_threshold_def = 300;    % mV
+dead_threshold_def = 300;    % uV
 dead_padding_def = 250;     % steps
 
 % Parse input

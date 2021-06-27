@@ -10,7 +10,7 @@ reps = getRepetitions(exp_id, section_id);
 
 for i = 1:numel(reps)
     rep_begin_time{i} = reps.rep_begins{i};
-    rep_end_time{i} = reps.rep_begins{i} + reps.durations{i};
+    rep_end_time{i} = reps.rep_begins{i} + reps.durations{i} - 1;
 end
 
 sorting_folder = fullfile(sortedPath(exp_id), raw_name);

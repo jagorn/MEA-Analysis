@@ -1,0 +1,22 @@
+# Use this file to specify:
+# 1. which holographic stimuli were played during the experiment 
+# 2. in which order they were displayed
+# 3. all the conditions under which they were displayed (pharmacology, blockers, etc..)
+# 4. other comments
+# Use the following sintax:
+#
+# DH_FRAMES_FILE_NAME_1 (CONDITION1, CONDITION2, CONDITION3)  # COMMENTS 
+# DH_FRAMES_FILE_NAME_2   # COMMENTS
+# DH_FRAMES_FILE_NAME_3 (CONDITION1)  
+# DH_FRAMES_FILE_NAME_4 (CONDITION1, CONDITION2) # COMMENTS
+#
+# the DH_FRAMES_FILE_NAME should correspond to an existing .mat frames file saved in the Holography folder.
+# if during a session an unknown stimulus was played, use the keyword UNKNOWN.
+#
+#
+# Example:
+#
+# DHFrames_20210403_1433 	(lap4, acet)
+# DHFrames_20210403_1454 	(lap4, acet)
+# DHFrames_20210403_1630	# pharmacology removed
+

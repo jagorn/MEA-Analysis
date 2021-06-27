@@ -1,4 +1,8 @@
-function stim_table = parseStimFile(stim_file)
+function stim_table = parseStimFile(stim_file, case_sensitive)
+
+if ~exist('case_sensitive', 'var')
+    case_sensitive = false;
+end
 
 if ~isfile(stim_file)
     error_struct.message = strcat(stim_file, " does not exist");
@@ -36,7 +40,6 @@ try
 
         if isempty(start_conditions)
             stim = regexprep(infos, '[ |\t]+', '');
-            stim = lower(stim);
             conditions = [];
         else
             begin_condition_index = start_conditions(1);
@@ -44,7 +47,6 @@ try
             
             stim = infos(1:begin_condition_index-1);
             stim = regexprep(stim, '[ |\t]+', '');
-            stim = lower(stim);
             
             conditions_raw = infos(begin_condition_index+1:end_condition_index-1);
             conditions = regexp(conditions_raw, ',','split');
@@ -53,12 +55,18 @@ try
             end
         end
         
+        if ~case_sensitive
+            stim = lower(stim);
+            conditions = lower(conditions);
+        end
+        
+        
         stim_id = strcat(num2str(stim_count), '-', stim);
         if ~isempty(conditions)
             stim_id = strcat(stim_id, '_(', join(string(conditions), '_'), ')');
         end
         
-        stim_table(stim_count).id = stim_id;
+        stim_table(stim_count).id = string(stim_id);
         stim_table(stim_count).stimulus = string(stim);
         stim_table(stim_count).conditions = string(conditions);
         stim_table(stim_count).notes = string(comment);

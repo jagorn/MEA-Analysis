@@ -4,7 +4,7 @@ function plotTracesMEA(traces, mea_map, varargin)
 % Default Parameters
 dead_electrodes_def = [];
 stim_electrodes_def = [127 128 255 256];
-trace_scale_def = 1000;
+trace_scale_def = 100;
 stim_scale_def = 10000;
 color_def = 'k';
 color_stim_def = 'b';
@@ -61,5 +61,5 @@ for i_electrode = 1:mea_size
 end
 
 L = plot(nan, nan, 'Color', 'k');
-label = {strcat("square size = ", num2str(trace_scale), " mv")};
+label = {strcat("square size = ", num2str(trace_scale), " uV")};
 legend(L, label)  
