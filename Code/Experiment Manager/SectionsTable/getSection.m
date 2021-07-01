@@ -1,4 +1,4 @@
-function section_table = getSection(exp_id, section_id)
+function [section_table , i_section] = getSection(exp_id, section_id)
 % Returns a struct representing an experiment section.
 %
 % PARAMETERS:
