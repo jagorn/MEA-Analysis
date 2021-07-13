@@ -1,4 +1,4 @@
-function section_table = getHoloSection(exp_id, section_id)
+function [section_table , i_section] = getHoloSection(exp_id, section_id)
 % Returns a struct representing an holography section.
 %
 % PARAMETERS:

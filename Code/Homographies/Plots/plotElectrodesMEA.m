@@ -27,5 +27,5 @@ for x = 1:n_electrode_size
     end
 end
 
-scatter(xs, ys, 'r');
+scatter(xs, ys, 'k+');
 

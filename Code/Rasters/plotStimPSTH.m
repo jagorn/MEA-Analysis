@@ -1,5 +1,4 @@
 % raster for one cell, responding to several repetitions of distinct patterns
-
 function plotStimPSTH(psths, tbin, varargin)
 
 [n_patterns, n_bins] = size(psths);
@@ -9,14 +8,18 @@ offset_default = 0;
 onset_default = 0;
 labels_default = [];
 dead_times_default = {};
-pattern_indices_default = 1:n_patterns;
+pattern_indices_default = [];
 sampling_rate_default = [];  
 psth_max_default = max(psths(:));
 
-size_line_default = 2;
+size_line_default = 1.5;
 rect_color_default = [.85 .9 .9];
-colors_default = getColors(n_patterns);
+colors_default = [];
 title_default = 'Stim Raster Plot';
+
+edges_onset_default = [];
+edges_offset_default = [];
+edges_color_default = [];
 
 % Parse Input
 p = inputParser;
@@ -34,6 +37,9 @@ addParameter(p, 'PSTH_Colors', colors_default);
 addParameter(p, 'PSTH_max', psth_max_default);
 addParameter(p, 'Title', title_default);
 addParameter(p, 'Column_Size', []);
+addParameter(p, 'Edges_Onsets', edges_offset_default);
+addParameter(p, 'Edges_Offsets', edges_onset_default);
+addParameter(p, 'Edges_Colors', edges_color_default);
 
 parse(p, psths, tbin, varargin{:});
 
@@ -53,8 +59,24 @@ title_txt = p.Results.Title;
 psth_tickness = 10;
 line_spacing = 3;
 
+edges_onsets = p.Results.Edges_Onsets; 
+edges_offsets = p.Results.Edges_Offsets; 
+edges_colors = p.Results.Edges_Colors; 
+
+if isempty(pattern_idx)
+    pattern_idx = 1:n_patterns;
+end
+
+if isempty(psth_colors)
+    psth_colors = getColors(n_patterns);
+end
+
 if isempty(column_size)
     column_size = numel(pattern_idx);
+end
+
+if isempty(labels)
+    labels = pattern_idx;
 end
 
 psth_dt = n_bins*tbin;
@@ -62,7 +84,7 @@ x_psth = linspace(0, psth_dt, n_bins);
 plot_height = column_size * (psth_tickness + line_spacing);
 stim_dt = psth_dt - onset_seconds + offset_seconds;
 
-% build figure with background rectangle representing holo stimulation
+% build figure with background rectangle representing the stimulus
 xlim([min(0, onset_seconds), max(stim_dt, psth_dt)])
 ylim([-line_spacing, plot_height])
 
@@ -71,11 +93,12 @@ set(gca,'ytick',[])
 xlabel("Spike Times (s)")
 ylabel("Patterns")
 
+
 % add a stripe o spike trains for each pattern
 i_row = 0;
 y_ticks = [];
 
-for i_pattern = pattern_idx
+for i_pattern = pattern_idx(:)'
 
     color = psth_colors(i_pattern, :);    
     rect_edges = [onset_seconds, i_row-1, stim_dt, psth_tickness+1];
@@ -91,18 +114,35 @@ for i_pattern = pattern_idx
         end
     end
     
-    norm_psth = psths(i_pattern, :)/psth_max * psth_tickness/2;
-    plot(x_psth, norm_psth + i_row + psth_tickness/2, 'Color', color, 'LineWidth', line_size);
+    norm_psth = psths(i_pattern, :)/psth_max * psth_tickness  + i_row;
+    
+    
+    base = ones(size(norm_psth)) * i_row;
+    x_between = [x_psth, fliplr(x_psth)];
+    in_between = [norm_psth, fliplr(base)];
+    fill(x_between, in_between, color, 'EdgeColor', color);
+    
+    %     plot(x_psth, norm_psth, 'Color', color, 'LineWidth', line_size);
     
     y_ticks = [y_ticks, i_row + psth_tickness/2];  
     i_row = i_row + line_spacing + psth_tickness;
 end
 yticks(y_ticks)
 yticklabels(labels);
+set(gca,'TickLabelInterpreter','none')
 title(title_txt, 'Interpreter', 'None')
 
-% add window
-% add window
-xline(offset_seconds, 'LineWidth', 1.5, 'Color', 'red');
-xline(psth_dt - offset_seconds, 'LineWidth', 1.5, 'Color', 'red');
 
+
+% add edges
+if isempty(edges_colors)
+    edges_colors = getColors(max(numel(edges_onsets), numel(edges_offsets)));
+end
+    
+for i_onset = 1:numel(edges_onsets)
+    xline(edges_onsets(i_onset), 'LineWidth', line_size, 'Color', edges_colors(i_onset, :));
+end
+
+for i_offset = 1:numel(edges_offsets)
+    xline(edges_offsets(i_offset), 'LineWidth', line_size, 'Color', edges_colors(i_offset, :));
+end

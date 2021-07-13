@@ -1,4 +1,4 @@
-function computeVisualHoloRepetitions(visual_triggers, visual_sequence, dh_sequence, holography_total_block, holography_block_type)
+function repetitions = computeVisualHoloRepetitions(state_labels, visual_triggers, visual_sequence, dh_sequence, holography_total_block, holography_block_type)
 
 % make sure visual sequence and dh sequence have the same length
 if numel(visual_sequence) ~= numel(dh_sequence)
@@ -8,28 +8,55 @@ if numel(visual_sequence) ~= numel(dh_sequence)
 end
 
 % make sure visual triggers have less steps than the sequences
-if numel(visual_triggers) > numel(visual_sequence) || numel(visual_triggers) > numel(dh_sequence) || numel(visual_triggers) > size(holography_total_block, 1)
+if numel(visual_triggers) > numel(visual_sequence) || numel(visual_triggers) > numel(dh_sequence)
     error_struct.message = strcat("The number of visual steps exceeds the event sequence");
     error_struct.identifier = strcat('MEA_Analysis:', mfilename);
     error(error_struct);
 end
 
-visual_states = unique(visual_sequence);
 
-dh_begins_idx = diff([0 dh_sequence(:)] > 0 );
-dh_ends_idx = diff([dh_sequence(:) 0] < 0 );
+visual_sequence = visual_sequence(1:numel(visual_triggers));
+dh_sequence = dh_sequence(1:numel(visual_triggers));
 
-for visual_state = visual_states
-    state_idx = visual_sequence == visual_state;
+
+dh_visual_indexes = containers.Map;
+
+dh_begins = find(diff([0 dh_sequence(:)']) > 0);
+dh_ends = find(diff([dh_sequence(:)' 0]) < 0);
+dh_centers = round((dh_begins + dh_ends) / 2);
+n_dh_steps = numel(dh_begins);
+
+holography_total_block = holography_total_block(:, 1:n_dh_steps);
+holography_total_block = holography_total_block(:, 1:n_dh_steps);
+
+% divide the Holographic Events by visual state.
+for i_dh = 1:n_dh_steps
+    dh_center = dh_centers(i_dh);
+    visual_state = state_labels(visual_sequence(dh_center) + 1);
     
-    state_dh_begins = visual_triggers(state_idx & dh_begins_idx);
-    state_dh_ends = visual_triggers(state_idx & dh_ends_idx);
+    if isKey(dh_visual_indexes, visual_state)
+        dh_visual_indexes(visual_state) = [dh_visual_indexes(visual_state) i_dh];
+    else
+        dh_visual_indexes(visual_state) = i_dh;
+    end
+end
+
+
+for i_state = 1:numel(state_labels)
+    visual_state = state_labels(i_state);
+    dh_indexes = dh_visual_indexes(visual_state);
+    state_dh_total_block = holography_total_block(:, dh_indexes);
+    state_dh_block_type = holography_block_type(dh_indexes);
     
-    state_dh_total_block = visual_triggers(holography_total_block);
-    state_dh_block_type = visual_triggers(holography_block_type);
-    state_dh_duratinos = state_dh_ends - state_dh_ends;
+    state_dh_begins = visual_triggers(dh_begins(dh_indexes));
+    state_dh_ends = visual_triggers(dh_ends(dh_indexes));
+    state_dh_durations = state_dh_ends - state_dh_begins;
+    
     
     % dh repetitions
-    state_dh_repetitions = computeHolographyRepetitions(state_dh_begins, state_dh_duratinos, state_dh_total_block, state_dh_block_type);
+    repetitions(i_state).repetitions = computeHolographyRepetitions(state_dh_begins, state_dh_durations, state_dh_total_block, state_dh_block_type);
+    repetitions(i_state).label = visual_state;
 end
+
+
 
