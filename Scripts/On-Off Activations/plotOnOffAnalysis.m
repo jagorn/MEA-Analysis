@@ -136,7 +136,7 @@ title( ['OFF Cells (' num2str(TotalOFF) ')'])
 suptitle(regexprep(dataset, '_', '-'))
 
 
-% file_name = strcat(getDatasetId, "_", pattern_label, "_Statistics");
-% filepath = fullfile(output_folder, file_name);
-% export_fig(filepath, '-svg');
-% close;
+file_name = strcat(getDatasetId, "_", pattern_label, "_Statistics");
+filepath = fullfile(output_folder, file_name);
+export_fig(filepath, '-svg');
+close;

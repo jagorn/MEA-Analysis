@@ -27,7 +27,7 @@ spatial_sta = squeeze(spatial(cell_id, :, :));
 
 background = spatial_sta;
 background = background - min(background(:));
-background = background / max(background(:)) * 255;
+background = background / max(background(:));
 colormap('summer');
 imagesc(background);
 
@@ -49,4 +49,5 @@ if ~exist('label', 'var') || isempty(label) || (label == "")
 else
     text_title = strcat("Exp ", exp_id, " Cell# ", num2str(cell_id), ": STA-", label);
 end
-suptitle(text_title);
+t = suptitle(text_title);
+t.Interpreter = 'None';

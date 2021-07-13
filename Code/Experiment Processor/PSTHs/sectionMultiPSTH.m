@@ -26,11 +26,13 @@ multi_psth.patterns = multi_repetitions.patterns;
 multi_psth.set_type = multi_repetitions.set_type;
 
 n_patterns = size(multi_repetitions.patterns, 1);
-for i_pattern = 1:n_patterns
+
+n_steps = median(multi_repetitions.durations + 2*t_spacing*mea_rate);
+n_bins = round(n_steps / (t_bin*mea_rate));
     
-    n_steps = multi_repetitions.durations(i_pattern) + 2*t_spacing*mea_rate;
+for i_pattern = 1:n_patterns
+
     rep_begin = multi_repetitions.rep_begins{i_pattern} - t_spacing*mea_rate;
-    n_bins = round(n_steps / (t_bin*mea_rate));
     
     if smoothing == 0
         [ypsth, xpsth, ~, firing_rates] = doPSTH(spike_times, rep_begin, t_bin*mea_rate, n_bins, mea_rate, cell_idx);

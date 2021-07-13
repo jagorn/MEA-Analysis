@@ -33,14 +33,13 @@ function plotStimRaster(spikes, repetitions, n_steps_stim, rate, varargin)
 n_patterns = numel(repetitions);
 
 % Default Parameters
-title_default = 'Stim Raster Plot';
-labels_default = 1:n_patterns;
-pattern_indices_default = 1:n_patterns;
+labels_default = [];
+pattern_indices_default = [];
 pre_stim_dt_default = 0.2;
 post_stim_dt_default = 0.2;
 size_points_default = 15;
 line_spacing_default = 3;
-patterns_colors_default = getColors(n_patterns);
+raster_colors_default = [];
 stim_color_default = [.85 .9 .85];
 dead_times_default = {};
 edges_onset_default = [];
@@ -55,14 +54,13 @@ addRequired(p, 'repetitions');
 addRequired(p, 'n_steps_stim');
 addRequired(p, 'rate');
 
-addParameter(p, 'Title', title_default);
 addParameter(p, 'Labels', labels_default);
 addParameter(p, 'Pattern_Indices', pattern_indices_default);
 addParameter(p, 'Pre_Stim_DT', post_stim_dt_default);
 addParameter(p, 'Post_Stim_DT', pre_stim_dt_default);
 addParameter(p, 'Point_Size', size_points_default);
 addParameter(p, 'Line_Spacing', line_spacing_default);
-addParameter(p, 'Raster_Colors', patterns_colors_default);
+addParameter(p, 'Raster_Colors', raster_colors_default);
 addParameter(p, 'Stim_Color', stim_color_default);
 addParameter(p, 'Dead_Times', dead_times_default);
 addParameter(p, 'Edges_Onsets', edges_offset_default);
@@ -72,8 +70,6 @@ addParameter(p, 'N_Max_Repetitions', n_max_reps_default);
 
 parse(p, spikes, repetitions, n_steps_stim, rate, varargin{:});
 
-
-title_txt = p.Results.Title; 
 labels = p.Results.Labels; 
 pattern_idx = p.Results.Pattern_Indices; 
 pre_stim_dt = p.Results.Pre_Stim_DT; 
@@ -88,6 +84,18 @@ edges_offsets = p.Results.Edges_Offsets;
 edges_colors = p.Results.Edges_Colors; 
 n_max_repetitions = p.Results.N_Max_Repetitions; 
 
+
+if isempty(pattern_idx)
+    pattern_idx = 1:n_patterns;
+end
+
+if isempty(raster_colors)
+    raster_colors = getColors(n_patterns);
+end
+
+if isempty(labels)
+    labels = pattern_idx;
+end
 
 pre_stim_steps = pre_stim_dt*rate;
 post_stim_steps = post_stim_dt*rate;
@@ -107,7 +115,6 @@ ylim([-line_spacing, n_tot_repetitions])
 
 
 hold on
-set(gca, 'YDir','reverse')
 set(gca,'ytick',[])
 xlabel("Spike Times (s)")
 ylabel("Patterns")
@@ -116,7 +123,7 @@ ylabel("Patterns")
 i_row = 0;
 y_ticks = [];
 
-for i_pattern = pattern_idx
+for i_pattern = pattern_idx(:)'
     rs_init = repetitions{i_pattern};
     rs_end = repetitions{i_pattern} + n_steps_stim;
     color = raster_colors(i_pattern, :);
@@ -150,7 +157,7 @@ for i_pattern = pattern_idx
 end
 yticks(y_ticks)
 yticklabels(labels);
-title(title_txt, 'Interpreter', 'None')
+set(gca,'TickLabelInterpreter','none')
 
 % add edges
 if isempty(edges_colors)

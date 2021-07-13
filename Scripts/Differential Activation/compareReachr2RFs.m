@@ -1,35 +1,35 @@
-plot_path = '/home/fran_tr/Plots/20201125_reachr2_RF_comparison_Cell#';
-dataset_id = "20201125_reachr2_noSTAs";
-exp_id = "20201125_reachr2";
-condition = 'LA20nd50p';
+plot_path = '/home/fran_tr/Plots/20210517_gtacr_comparison_Cell#';
+dataset_id = "20210517_gtacr";
+exp_id = "20210517_gtacr";
+condition = 'optogenetics';
 
 changeDataset(dataset_id);
 loadDataset();
 
 % exclude all cells still active at cnqxcpp
-good_cells_idx = ~activations.flicker.lap4_acet_cnqxcpp_nd20p50.off.z & ~activations.flicker.lap4_acet_cnqxcpp_nd20p50.on.z;
-good_cells = [cellsTable(good_cells_idx).N];
-bad_cells = [cellsTable(~good_cells_idx).N];
+% good_cells_idx = ~activations.flicker.lap4_acet_cnqxcpp_nd20p50.off.z & ~activations.flicker.lap4_acet_cnqxcpp_nd20p50.on.z;
+% good_cells = [cellsTable(good_cells_idx).N];
+% bad_cells = [cellsTable(~good_cells_idx).N];
 
 % among the good cells, find the ones that have a RF before & after pharma application
-[temporal_bf_pharma, spatial_bf_pharma, rfs_bf_pharma, good_stas_bf_pharma] = getSTAsComponents("20201125_reachr2");
-[temporal_af_pharma, spatial_af_pharma, rfs_af_pharma, good_stas_af_pharma] = getSTAsComponents("20201125_reachr2", 'Label', 'LA20nd50p');
+[temporal_bf_pharma, spatial_bf_pharma, rfs_bf_pharma, good_stas_bf_pharma] = getSTAsComponents(exp_id);
+[temporal_af_pharma, spatial_af_pharma, rfs_af_pharma, good_stas_af_pharma] = getSTAsComponents(exp_id, 'Label', condition);
 
 % exclude also cells with receptive fields too small (they are probably just noise).
-min_area  = 3;
+min_area  = 2;
 good_RF_af_pharma = intersect(good_stas_af_pharma, find(area(rfs_af_pharma) > min_area));
 good_RF_bf_pharma = intersect(good_stas_bf_pharma, find(area(rfs_bf_pharma) > min_area));
 good_RF_all = intersect(good_RF_bf_pharma, good_RF_af_pharma);
 
 % compare the Receptive Fields
-cells_for_comparison = intersect(good_RF_all, good_cells)'
+cells_for_comparison = good_RF_all; %intersect(good_RF_all, good_cells)'
 
 % Plot the receptive field comparisons
-% for cell_id = cells_for_comparison
-%     plotComparisonExpSTA(exp_id, cell_id, condition);
-%         export_fig(strcat(plot_path, num2str(cell_id)), '-svg');
-%         close()
-% end
+for cell_id = cells_for_comparison
+    plotComparisonExpSTA(exp_id, cell_id, condition);
+        export_fig(strcat(plot_path, num2str(cell_id)), '-svg');
+        close()
+end
 
 % How many of my cells with no response on the control have a receptive field after pharma?
 n_good_cells = numel(good_cells)

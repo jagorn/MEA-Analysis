@@ -49,6 +49,7 @@ for i_rep = 1:numel(repetitions)
         stim_id = strcat(stim_id, '_(', join(string(visual_conditions), '_'), ')');
     end
         
+    visual_section.positions = holo_section.positions;
     h_table(n_entries_h + i_rep) = visual_section;
     h_table(n_entries_h + i_rep).id = stim_id;
     h_table(n_entries_h + i_rep).stimulus = strcat('holo_', label);

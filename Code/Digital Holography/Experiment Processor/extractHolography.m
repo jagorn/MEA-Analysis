@@ -40,7 +40,6 @@ compute_psths = p.Results.Compute_PSTHs;
 raw_path = p.Results.Raw_Path; 
 raw_name = p.Results.Raw_Name; 
 
-
 % Folder Paths
 raw_file = fullfile(raw_path, strcat(raw_name, '.raw'));
 
@@ -50,7 +49,6 @@ if extract_triggers
     mea_rate = getMeaRate(exp_id);
     extractDHTimes(exp_id, raw_file, mea_rate);
 end
-
 
 % Initialize Holography
 if ~isfile(stimHoloFile(exp_id)) 
@@ -64,22 +62,21 @@ else
     
     % Repetitions
     if extract_repetitions
-
         fprintf('\ncomputing holography triggers...\n')
         dh_times = getDHTimes(exp_id);
         holography_table = assignStimTriggers(holography_table, dh_times);
         setHolographyTable(exp_id, holography_table);
 
-
         fprintf('\ncomputing holography repetitions...\n')
         holography_table = assignHolographyRepetitions(holography_table, exp_id);
         setHolographyTable(exp_id, holography_table);
     end
+    
+    % Patterns
+    addHoloPositions(exp_id);
 
     if compute_psths
         fprintf('\ncomputing holography psths...\n')
         computeHolographyPSTHs(exp_id)
     end
-    % Test
-    plotHoloTest(exp_id, 1);
 end
