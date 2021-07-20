@@ -9,10 +9,7 @@ H2 = getHomography(['img' num2str(img_id)], 'mea', exp_id);
 discs.overlaps = zeros(numel(spatialSTAs), numel(discs_reps));
 discs.distances = zeros(numel(spatialSTAs), numel(discs_reps));
 
-
 % figure();
-
-    
 for i_cell = 1:numel(spatialSTAs)
     rf = spatialSTAs(i_cell);
     rf.Vertices = transformPointsV(H2*H1, rf.Vertices);    

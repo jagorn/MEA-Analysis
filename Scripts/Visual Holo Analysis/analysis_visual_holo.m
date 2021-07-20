@@ -6,8 +6,6 @@ holo_visual_section = 4;
 exp_id = '20210517_gtacr';
 
 changeDataset(exp_id);
-load(getDatasetMat(), 'cellsTable');
-
 
 visual_minus_holo_score = compareHoloVisualActivations();
 distance_matrix = getCell2PatternDistances(exp_id, holo_visual_section);
@@ -21,10 +19,12 @@ only_holo_scores(only_holo_scores < 0) = 0;
 good_cells = find(sum(only_holo_psth.activations.zs) > 0);
 n_cells = size(only_holo_psth.activations.zs, 2);
 
-[~, ~, ~, valid_cells] = getSTAsComponents(exp_id);
-
+[temporal, ~, rfs, valid_cells] = getSTAsComponents(exp_id);
+polarities = getPolarity(temporal);
+off_cells = find(strcmp(polarities, 'OFF'));
 
 good_cells_with_sta = intersect(good_cells, valid_cells);
+valid_offs = intersect(valid_cells, off_cells);
 
 percentage_good_cells_from_sta = numel(good_cells_with_sta) / numel(valid_cells) * 100
 percentage_good_cells_from_activated = numel(good_cells_with_sta) / numel(good_cells) * 100
@@ -34,7 +34,8 @@ figure()
 
 scores = [];
 distances = [];
-for i_cell = valid_cells(:)'
+for i_cell = valid_offs(:)'
+    rf = rfs(i_cell);
     scores = [scores visual_minus_holo_score(i_cell, :)];
     distances = [distances distance_matrix(i_cell, :)];
 end
