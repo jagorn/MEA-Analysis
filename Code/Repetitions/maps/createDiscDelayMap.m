@@ -24,8 +24,8 @@ rep_begin_black = find(visual_sequence(1:end-1) == 0 &  visual_sequence(2:end) =
 rep_end_white = find(visual_sequence(1:end-1) == white_state &  visual_sequence(2:end) == 0) + 1;
 rep_end_black = find(visual_sequence(1:end-1) == black_state &  visual_sequence(2:end) == 0) + 1;
 
-pure_visual_white = false(numel(rep_begin_white));
-pure_visual_black = false(numel(rep_begin_black));
+pure_visual_white = false(1, numel(rep_begin_white));
+pure_visual_black = false(1, numel(rep_begin_black));
 
 for i_white = 1:numel(rep_begin_white)
     begin_white = rep_begin_white(i_white);
@@ -52,13 +52,18 @@ for i_black = 1:numel(rep_begin_black)
         pure_visual_black(i_black) = true;
     end
 end
+ 
+rep_begin_white = rep_begin_white(pure_visual_white);
+rep_end_white = rep_end_white(pure_visual_white);
 
+rep_begin_black = rep_begin_black(pure_visual_black);
+rep_end_black = rep_end_black(pure_visual_black);
 
 repetitions_map.names{1} = 'white_disc';
 repetitions_map.names{2} = 'black_disc';
 
-repetitions_map.start_indexes{1} = rep_begin_white(pure_visual_white);
-repetitions_map.start_indexes{2} = rep_begin_black(pure_visual_black);
+repetitions_map.start_indexes{1} = rep_begin_white;
+repetitions_map.start_indexes{2} = rep_begin_black;
 
 repetitions_map.durations{1} = median(rep_end_white - rep_begin_white);
 repetitions_map.durations{2} = median(rep_end_black - rep_begin_black);
