@@ -8,7 +8,7 @@ addParameter(p, 'Conditions', []);
 addParameter(p, 'Show_Stimulus', 'trace');                   % it can be 'trace', 'blocks' or 'none'
 addParameter(p, 'Show_Stimulus_Block_As_Luminance', false);  
 addParameter(p, 'Upper_Bound', 70);
-addParameter(p, 'One_By_One', false);
+addParameter(p, 'One_By_One', true);
 addParameter(p, 'Output_Folder', []);
 
 parse(p, psth_pattern, varargin{:});

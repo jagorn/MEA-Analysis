@@ -83,6 +83,7 @@ end
 
 % plot the stimulus in the background
 ylim([0, max_psth*1.1])
+xlim([x_psth(1), x_psth(end)])
 hold on
 
 if strcmp(show_stimulus, 'trace')
