@@ -20,5 +20,6 @@ for i_panel = 1:n_panels
     cells_idx = (1:n_cells_in_panel) + ((i_panel-1) * n_cells_in_panel);
     plotCellsRaster(spike_times, repetitions, n_steps_stim, rate, ...
                     'Cells_Indices', cells_idx, ...
-                    'Title', title_text)   
+                    'Title', title_text)
+                waitforbuttonpress();
 end
