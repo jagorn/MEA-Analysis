@@ -27,8 +27,10 @@ cells_for_comparison = good_RF_all; %intersect(good_RF_all, good_cells)'
 % Plot the receptive field comparisons
 for cell_id = cells_for_comparison(:)'
     plotComparisonExpSTA(exp_id, cell_id, condition);
-        export_fig(strcat(plot_path, num2str(cell_id)), '-svg');
-        close()
+    waitforbuttonpress();
+    close();
+%         export_fig(strcat(plot_path, num2str(cell_id)), '-svg');
+%         close()
 end
 
 % How many of my cells with no response on the control have a receptive field after pharma?

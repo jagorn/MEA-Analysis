@@ -10,7 +10,7 @@ for iExp = 1:numel(expIds)
     expId = expIds{iExp};
     ids = cellsIds{iExp};
     
-    for n = 1:size(ids,1)
+    for n = 1:numel(ids)
         cellsTable(cellCount).experiment = string(expId);
         cellsTable(cellCount).N = ids(n);
         cellsTable(cellCount).Grade = grades(n);

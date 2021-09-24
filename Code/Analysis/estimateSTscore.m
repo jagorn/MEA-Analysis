@@ -22,5 +22,6 @@ st_scores = zeros(1, size(psth, 1));
 for icell=1:size(psth_dt_by_cell,2)
     psth_sustained = psth_dt_by_cell(find(xpsth>= sust_win(1)& xpsth< sust_win(2)), icell);
     psth_transient = psth_dt_by_cell(find(xpsth>= trans_win(1)& xpsth< trans_win(2)), icell);
-    st_scores(icell) = max(psth_sustained) /  max(psth_transient);
+%     st_scores(icell) = min(1, max(psth_sustained) /  max(psth_transient));
+    st_scores(icell) = max(psth_sustained) /  (max(psth_sustained) + max(psth_transient));
 end

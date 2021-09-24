@@ -1,26 +1,30 @@
 clear
 close all
 
-exp_id = '20210302_reachr2';
+dataset_id = '20210517_gtacr_noSTAs';
+exp_id = '20210517_gtacr';
+
 mea_rate = 20000;
-on_cell_id = 23;
-off_cell_id = 1;
+on_cell_id = 66;     % 12
+off_cell_id = 56;   % 54
 
 psth_pattern = 'flicker';
 activation_labels = {'on', 'off'};
 
 psth_label_visual = 'simple';
-psth_label_opto = 'lap4_acet_30nd100p';
+psth_label_opto = 'lap4_acet_30nd50p';
 
-section_id_visual = '4-flicker';
-section_id_opto = '30-flicker_(lap4_acet_30nd100p)';
+section_id_visual = '5-flicker';
+section_id_opto = '15-flicker_(lap4_acet_30nd50p)';
 pattern_id = 3;
 
-color_active_one = [1, 0, 0; 0, 0, 1];
+color_active_ON = [1, 0, 0; 1, 0, 0];
+color_active_OFF = [0, 0, 1; 0, 0, 1];
+
 x_lims = [-0.5, 2.5];
 up_bound = 80;
 
-changeDataset(exp_id);
+changeDataset(dataset_id);
 load(getDatasetMat(), 'psths', 'activations', 'cellsTable');
 
 spike_times = getSpikeTimes(exp_id);
@@ -45,10 +49,8 @@ plotActivations(on_cell_id, psth_pattern, psth_label_visual, activation_labels, 
     'Show_Legend', false, ...
     'PSTHS', psths, ...
     'ACTIVATIONS', activations, ...
-    'Colors_Active_One', color_active_one);
+    'Colors_Active_One', color_active_ON);
 xlim(x_lims)
-xlabel('Time (s)');
-ylabel('Firing Rate (Hz)');
 
 subplot(4, 2, 5);
 title('ON Cell (optogenetic response)');
@@ -59,25 +61,20 @@ plotActivations(on_cell_id, psth_pattern, psth_label_opto, activation_labels, ..
     'Show_Legend', false, ...
     'PSTHS', psths, ...
     'ACTIVATIONS', activations, ...
-    'Colors_Active_One', color_active_one);
+    'Colors_Active_One', color_active_ON);
 xlim(x_lims)
-xlabel('Time (s)');
-ylabel('Firing Rate (Hz)');
 
-subplot(4, 2, 3);
+subplot(4, 2, 2);
 plotCellsRaster(spike_times(on_cell_N), rep_begin_visual, n_steps_visual, mea_rate, 'Raster_Colors', [1, 0, 0]);
 title('ON Cell (visual response)');
 xlim(x_lims)
-ylabel('Repetitions');
 
-subplot(4, 2, 7);
+subplot(4, 2, 6);
 plotCellsRaster(spike_times(on_cell_N), rep_begin_opto, n_steps_opto, mea_rate, 'Raster_Colors', [1, 0, 0]);
 title('ON Cell (optogenetic response)');
 xlim(x_lims)
-ylabel('Repetitions');
 
-
-subplot(4, 2, 2);
+subplot(4, 2, 3);
 title('OFF Cell (visual response)');
 plotActivations(off_cell_id, psth_pattern, psth_label_visual, activation_labels, ...
     'Show_Stimulus', 'blocks', ...
@@ -86,12 +83,11 @@ plotActivations(off_cell_id, psth_pattern, psth_label_visual, activation_labels,
     'Show_Legend', false, ...
     'PSTHS', psths, ...
     'ACTIVATIONS', activations, ...
-    'Colors_Active_One', color_active_one);
+    'Colors_Active_One', color_active_OFF);
 xlim(x_lims)
-xlabel('Time (s)');
-ylabel('Firing Rate (Hz)');
 
-subplot(4, 2, 6);
+
+subplot(4, 2, 7);
 title('OFF Cell (optogenetic response)');
 plotActivations(off_cell_id, psth_pattern, psth_label_opto, activation_labels, ...
     'Show_Stimulus', 'blocks', ...
@@ -100,19 +96,15 @@ plotActivations(off_cell_id, psth_pattern, psth_label_opto, activation_labels, .
     'Show_Legend', false, ...
     'PSTHS', psths, ...
     'ACTIVATIONS', activations, ...
-    'Colors_Active_One', color_active_one);
+    'Colors_Active_One', color_active_OFF);
 xlim(x_lims)
-xlabel('Time (s)');
-ylabel('Firing Rate (Hz)');
 
-subplot(4, 2, 4);
+subplot(2, 4, 7);
 plotCellsRaster(spike_times(off_cell_N), rep_begin_visual, n_steps_visual, mea_rate, 'Raster_Colors', [0, 0, 1]);
 title('OFF Cell (visual response)');
 xlim(x_lims)
-ylabel('Repetitions');
 
-subplot(4, 2, 8);
+subplot(2, 4, 8);
 plotCellsRaster(spike_times(off_cell_N), rep_begin_opto, n_steps_opto, mea_rate, 'Raster_Colors', [0, 0, 1]);
 title('OFF Cell (optogenetic response)');
 xlim(x_lims)
-ylabel('Repetitions');

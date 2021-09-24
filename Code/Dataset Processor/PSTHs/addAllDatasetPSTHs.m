@@ -97,12 +97,17 @@ for i_section = 1:numel(sections_table)
         end
         
         % save everything
+        try
         psths.(pattern_type).(psth_label).t_bin = t_bin;
         psths.(pattern_type).(psth_label).t_spacing = time_spacing;
         psths.(pattern_type).(psth_label).time_sequences = pattern_psths.time_sequences{i_pattern};
         psths.(pattern_type).(psth_label).psths = pattern_psths.responses{i_pattern};
         psths.(pattern_type).(psth_label).firing_rates = pattern_psths.firing_rates{i_pattern};
         psths.(pattern_type).(psth_label).stim_rate = section.rate;
+        catch
+            warning_txt = strcat(psth_label, " name no valid: this section will be ignored");
+            warning(warning_txt);
+        end
     end
 end
 save(getDatasetMat, 'psths', '-append');

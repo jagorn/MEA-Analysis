@@ -7,17 +7,17 @@ n_trials_variance_sampling = 100;
 n_samples_variance_sampling = 40;
 
 % compare variance explained in euler PCAs
-dataset_id = "20210301_reachr2_noSTAs";
+% dataset_id = "20210301_reachr2_noSTAs";
 % dataset_id = "20210302_reachr2_noSTAs";
-% dataset_id = "20201125_reachr2_noSTAs";
+dataset_id = "20201125_reachr2_noSTAs";
 
-condition_pharma = "lap4_acet_30nd100p";
 % condition_pharma = "lap4_acet_30nd100p";
-% condition_pharma = "lap4_acet_nd30p50";
+% condition_pharma = "lap4_acet_30nd100p";
+condition_pharma = "lap4_acet_30nd50p";
 
-condition_control = "lap4_acet_cnqxcpp_30nd100p";
 % condition_control = "lap4_acet_cnqxcpp_30nd100p";
-% condition_control = "lap4_acet_cnqxcpp_nd20p50";
+% condition_control = "lap4_acet_cnqxcpp_30nd100p";
+condition_control = "lap4_acet_cnqxcpp_20nd50p";
 
 
 changeDataset(dataset_id);

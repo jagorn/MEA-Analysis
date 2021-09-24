@@ -37,11 +37,11 @@ subplot(2, 4, 5)
 hold on
 
 if any(valid1 == cell_id)
-    plot(temporal1(cell_id, :), 'r', 'LineWidth', 1.5)
+    plot((-20/30):(1/30):0, temporal1(cell_id, :), 'r', 'LineWidth', 1.5)
 end
 
 if any(valid2 == cell_id)
-    plot(temporal2(cell_id, :), 'b', 'LineWidth', 1.5)
+    plot((-20/30):(1/30):0, temporal2(cell_id, :), 'b', 'LineWidth', 1.5)
 end
 
 legend({condition1, condition2})

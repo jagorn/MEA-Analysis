@@ -14,12 +14,18 @@ st_scores_good_simple = [];
 st_scores_good_pharma = [];
 labels_good = [];
 
+scores_only_on = [];
+scores_only_off = [];
+
+scores_only_on_pharma = [];
+scores_only_off_pharma = [];
+
 for i_exp = 1:numel(dataset_idx)
     
     dataset_id = dataset_idx(i_exp);
     condition_pharma = conditions_pharma(i_exp);
     condition_control = conditions_control(i_exp);
-
+    
     changeDataset(dataset_id);
     loadDataset();
     n_cells = numel(cellsTable);
@@ -41,7 +47,7 @@ for i_exp = 1:numel(dataset_idx)
     OFFCells_pharma = z_off_pharma & ~z_on_pharma;
     
     % Choose good cells
-    good_cells = (ONCells | OFFCells) & (ONCells_pharma | OFFCells_pharma);
+    good_cells = (ONCells & ONCells_pharma) | (OFFCells & OFFCells_pharma);
     
     % choose wether to eliminate leaked cells or not
     LeakCells = z_on_control | z_off_control;
@@ -72,9 +78,13 @@ for i_exp = 1:numel(dataset_idx)
                 st_scores_simple(i_cell) = st_scores.simpleOn.scores(i_cell);
                 labels{i_cell} = 'ON';
                 
+                scores_only_on = [scores_only_on st_scores_simple(i_cell)];
+                
             elseif OFFCells(i_cell)
                 st_scores_simple(i_cell) = st_scores.simpleOff.scores(i_cell);
                 labels{i_cell} = 'OFF';
+                
+                scores_only_off = [scores_only_off st_scores_simple(i_cell)];
                 
             else
                 error('this cell is neither ON nor OFF')
@@ -83,13 +93,21 @@ for i_exp = 1:numel(dataset_idx)
             % add the st-scores for the pharmacology condition
             if ONCells_pharma(i_cell)
                 st_scores_pharma(i_cell) = st_scores.pharmaOn.scores(i_cell);
-                
+                scores_only_on_pharma = [scores_only_on_pharma st_scores_pharma(i_cell)];
+
             elseif OFFCells_pharma(i_cell)
                 st_scores_pharma(i_cell) = st_scores.pharmaOff.scores(i_cell);
-                
+                scores_only_off_pharma = [scores_only_off_pharma st_scores_pharma(i_cell)];
             else
+                i_cell
                 error('this cell is neither ON nor OFF')
             end
+            
+            if (OFFCells_pharma(i_cell) &&  ONCells(i_cell)) || (ONCells_pharma(i_cell) &&  OFFCells(i_cell))
+                i_cell
+                error('this cell changed polarity')
+            end
+            
         end
     end
     
@@ -106,24 +124,38 @@ end
 
 % plot
 figure()
-
-subplot(1, 2, 2)
+subplot(1, 3, 1)
 hold on
-% daspect([1 1 1])
-xlim([0 5])
-ylim([0 5])
-plot([0, 5], [0, 5], 'k--', 'LineWidth', 1.5)
-
-gscatter(st_scores_good_simple, st_scores_good_pharma, labels_good)
-xlabel('Normal Responses')
-ylabel('Optogenetic Responses')
-title('Sustained-Transient Response Ratio')
-
-subplot(1, 2, 1)
-hold on
-histogram(st_scores_good_simple, 0:0.25:5, 'EdgeColor', 'None', 'FaceColor', 'r', 'FaceAlpha', 0.5)
-histogram(st_scores_good_pharma, 0:0.25:5, 'EdgeColor', 'None', 'FaceColor', 'g', 'FaceAlpha', 0.5)
-legend({'Simple Response', 'Optogenetic Response'})
-xlabel('Sustained-Transient Ratio')
+histogram(scores_only_on, 0:0.1:1, 'EdgeColor', 'None', 'FaceColor', 'r', 'FaceAlpha', 0.5)
+histogram(scores_only_on_pharma, 0:0.1:1, 'EdgeColor', 'None', 'FaceColor', 'g', 'FaceAlpha', 0.5)
+legend({'Photoreceptor Responses', 'Optogenetic Responses'})
+xlabel('Sustained-Transient Index')
 ylabel('Number of Cells')
-title('Sustained-Transient Response Ratio')
+title('ST Index Distribution (ON cells)')
+ylim([0 15])
+
+
+subplot(1, 3, 2)
+hold on
+histogram(scores_only_off,  0:0.1:1, 'EdgeColor', 'None', 'FaceColor', 'r', 'FaceAlpha', 0.5)
+histogram(scores_only_off_pharma,  0:0.1:1, 'EdgeColor', 'None', 'FaceColor', 'g', 'FaceAlpha', 0.5)
+legend({'Photoreceptor Responses', 'Optogenetic Responses'})
+xlabel('Sustained-Transient Index')
+ylabel('Number of Cells')
+title('ST Index Distribution (OFF cells)')
+ylim([0 8])
+
+subplot(1, 3, 3)
+hold on
+daspect([1 1 1])
+xlim([0 1.1])
+ylim([0 1.1])
+plot([0, 1], [0, 1], 'k--', 'LineWidth', 1.5)
+
+% gscatter(st_scores_good_simple, st_scores_good_pharma, labels_good, 'br', 'oo')
+on_plt = scatter(scores_only_on, scores_only_on_pharma, 50, [0.9, 0.2, 0.2], 'o', 'filled', 'MarkerFaceAlpha', .5);
+off_plt = scatter(scores_only_off, scores_only_off_pharma, 50, [0.2, 0.2, 0.95], 'o', 'filled', 'MarkerFaceAlpha', .5);
+legend('', 'ON cells', 'OFF cells');
+xlabel('Photoreceptor Responses')
+ylabel('Optogenetic Responses')
+title('Sustained-Transient Index Comparison')
