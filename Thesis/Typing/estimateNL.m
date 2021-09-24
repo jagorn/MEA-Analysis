@@ -12,7 +12,7 @@ end
 time_bin = 0.05;
 
 %Load data
-exp_file = fullfile("Data", strcat(exp_id, ".mat"));
+exp_file = fullfile("/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/Data", strcat(exp_id, ".mat"));
 load(exp_file, 'mea_rate', 'rep_begin');
 load(exp_file, 'SpikeTimes', 'temporal', 'Valid_STAs_idx');
 load(exp_file, 'euler', 'euler_freq', 'euler_polarity_inverse', 'euler_onset_idx', 'euler_offset_idx');

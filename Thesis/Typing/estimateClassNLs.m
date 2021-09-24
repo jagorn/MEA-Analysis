@@ -1,7 +1,7 @@
 clear
 close all
 
-load('Data/mosaics_comparison.mat', 'cellsTable', 'mosaicsTable');
+load('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/Data/mosaics_comparison.mat')
 [sta_scores_sorted, sta_entries_sorted] = sort([mosaicsTable.bestControlScore], 'descend');
 worst_sta_entries = sta_entries_sorted(end-3: end);
 figures_folder = "NL Comparison";
