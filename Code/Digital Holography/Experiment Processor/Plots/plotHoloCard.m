@@ -4,11 +4,12 @@ function plotHoloCard(exp_id, cell_id, section_ids, varargin)
 p = inputParser;
 addRequired(p, 'exp_id');
 addRequired(p, 'cell_id');
+addRequired(p, 'section_ids');
 addParameter(p, 'Label', "");
 addParameter(p, 'Image', "X10");
 addParameter(p, 'Mode', 'raster'); % raster or psth
 
-parse(p, exp_id, cell_id, varargin{:});
+parse(p, exp_id, cell_id, section_ids, varargin{:});
 label = p.Results.Label;
 img_id = p.Results.Image;
 mode = p.Results.Mode;
@@ -69,7 +70,7 @@ for i_section = 1:numel(section_ids)
             'Edges_Offsets', multi_psth.resp_win(2) +  multi_psth.psth.t_spacings);
         
     end
-    title(multi_psth.psth.name);
+    title(multi_psth.psth.name, 'Interpreter', 'None');
     
 end
 st = suptitle(strcat("Experiment ", exp_id, ", Cell#", num2str(cell_id)));

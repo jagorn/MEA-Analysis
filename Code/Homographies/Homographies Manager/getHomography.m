@@ -23,7 +23,11 @@ elseif length(id) > 1
     error(error_struct);
     
 else
-    error_struct.message = "error: Homography does not exist.";
+    if ~exist('exp_id', 'var')
+        error_struct.message = strcat("error: Homography ", rf1,  " ==> ", rf2, " does not exist.");
+    else
+        error_struct.message = strcat("error: Homography ", rf1,  " ==> ", rf2, " (", exp_id, ") does not exist.");
+    end
     error_struct.identifier = strcat('MEA_Analysis:', mfilename);
     error(error_struct);
 end

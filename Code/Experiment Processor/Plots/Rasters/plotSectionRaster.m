@@ -16,7 +16,8 @@ n_panels = n_cells / n_cells_in_panel;
 
 for i_panel = 1:n_panels
     figure();
-    title_text = strcat("exp ", exp_id, ": ", section_id, "-", pattern_id, ", panel#", num2str(i_panel));
+    
+    title_text = strcat("exp ", exp_id, ": ", num2str(section_id), "-", pattern_id, ", panel#", num2str(i_panel));
     cells_idx = (1:n_cells_in_panel) + ((i_panel-1) * n_cells_in_panel);
     plotCellsRaster(spike_times, repetitions, n_steps_stim, rate, ...
                     'Cells_Indices', cells_idx, ...

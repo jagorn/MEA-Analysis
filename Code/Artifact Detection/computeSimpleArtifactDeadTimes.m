@@ -33,7 +33,7 @@ encoding = p.Results.Endcoding;
 mea_map = p.Results.MEA_Map;
 
 if isempty(frame_duration)
-    frame_duration = min(diff(triggers)) / mea_rate;
+    frame_duration = round(min(diff(triggers)) / mea_rate);
 end
 
 % If the artifacts are not given, compute them

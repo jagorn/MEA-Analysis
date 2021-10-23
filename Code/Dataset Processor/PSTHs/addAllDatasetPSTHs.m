@@ -60,12 +60,14 @@ end
 
 % Compute PSTHs
 for i_section = 1:numel(sections_table)
-    
+        
     section = sections_table(i_section);
     if isempty(section.repetitions)
         continue;
     end
     
+    section
+
     pattern_psths = sectionPSTHs(spikes, section.repetitions, mea_rate, ...
         'Time_Bin', t_bin, ...
         'Time_Spacing', time_spacing, ...

@@ -4,7 +4,7 @@ function plotTracesMEA(traces, mea_map, varargin)
 % Default Parameters
 dead_electrodes_def = [];
 stim_electrodes_def = [127 128 255 256];
-trace_scale_def = 100;
+trace_scale_def = 1000;
 stim_scale_def = 10000;
 color_def = 'k';
 color_stim_def = 'b';

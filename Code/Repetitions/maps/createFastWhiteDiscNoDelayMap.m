@@ -9,7 +9,7 @@ function createFastWhiteDiscNoDelayMap()
 %   repetitions_map.durations{i}: the duration (in frames) of the i-th repeated pattern
 
 stim_name = 'discdelay';
-stim_version = 'spots_fast_white_disc_delay';
+stim_version = 'spots_fast_white_disc_no_delay';
 stim_vec = importdata(getVecFile(stim_name, stim_version));
 
 white_state = 1;

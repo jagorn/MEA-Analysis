@@ -40,7 +40,7 @@ post_stim_dt_default = 0.5;
 size_points_default = 5;
 line_spacing_default = 3;
 cells_colors_default = getColors(n_cells);
-stim_color_default = [.85 .9 .85];
+stim_color_default = [.7, .7, .7, 0.5];
 dead_times_default = {};
 edges_onset_default = [];
 edges_offset_default = [];
@@ -107,7 +107,6 @@ xlim([min(0, -pre_stim_dt), max(stim_duration, response_duration - pre_stim_dt +
 ylim([-line_spacing, n_tot_repetitions])
 
 hold on
-set(gca, 'YDir','reverse')
 set(gca,'ytick',[])
 xlabel("Spike Times (s)")
 ylabel("Cells")
@@ -136,13 +135,14 @@ for i_cell = cells_idx
     end
 
     for r = 1:n_repetitions
-        i_row = i_row + 1;
         
         spikes_segment = and(spikes_cell > rs_init(r) - pre_stim_steps, spikes_cell < rs_end(r) + post_stim_steps);
         spikes_rep = spikes_cell(spikes_segment) - rs_init(r);
         spikes_rep = spikes_rep(:).';
         y_spikes_rep = ones(1, length(spikes_rep)) * i_row;
         scatter(spikes_rep / rate, y_spikes_rep, point_size, color, 'Filled', 'o')
+        i_row = i_row + 1;
+
     end  
     y_ticks = [y_ticks, i_row - n_repetitions/2];  
     i_row = i_row + line_spacing;

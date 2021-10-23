@@ -13,7 +13,7 @@ sampling_rate_default = [];
 psth_max_default = max(psths(:));
 
 size_line_default = 1.5;
-rect_color_default = [.85 .9 .9];
+rect_color_default = [.7, .7, .7, 0.5];
 colors_default = [];
 title_default = 'Stim Raster Plot';
 
@@ -101,7 +101,7 @@ y_ticks = [];
 for i_pattern = pattern_idx(:)'
 
     color = psth_colors(i_pattern, :);    
-    rect_edges = [onset_seconds, i_row-1, stim_dt, psth_tickness+1];
+    rect_edges = [onset_seconds, i_row, stim_dt, psth_tickness+1];
     rectangle('Position', rect_edges, 'FaceColor', stim_color, 'EdgeColor', 'none')
     
     if ~isempty(dead_times)
@@ -109,7 +109,7 @@ for i_pattern = pattern_idx(:)'
             dt_begin = dead_times{i_pattern}.begin(i_dt)/dt_rate;
             dt_end = dead_times{i_pattern}.end(i_dt)/dt_rate;
 
-            rect_edges = [- offset_seconds + dt_begin, i_row-1, dt_end - dt_begin, psth_tickness+1];
+            rect_edges = [- offset_seconds + dt_begin, i_row, dt_end - dt_begin, psth_tickness+1];
             rectangle('Position', rect_edges, 'FaceColor', 'k', 'EdgeColor', 'k')
         end
     end
