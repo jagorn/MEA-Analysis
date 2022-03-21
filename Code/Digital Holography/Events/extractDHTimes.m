@@ -4,7 +4,7 @@ function dhTimes = extractDHTimes(exp_id, raw_file, mea_rate, varargin)
 p = inputParser;
 addRequired(p, 'raw_file');
 addRequired(p, 'mea_rate');
-addParameter(p, 'Inter_Section_DT', 15);
+addParameter(p, 'Inter_Section_DT', 20);
 parse(p, raw_file, mea_rate, varargin{:});
 
 inter_section_dt = p.Results.Inter_Section_DT; 

@@ -1,7 +1,7 @@
 function residuals = computeElectrodeResiduals(raw_file, triggers, stim_duration, padding, mea_map, encoding)
 
 mea_size = size(mea_map, 1);
-residuals = zeros(mea_size, stim_duration + padding*2);
+residuals = zeros(mea_size, round(stim_duration + padding*2));
 
 fprintf('computing residual artifact...\n')
 

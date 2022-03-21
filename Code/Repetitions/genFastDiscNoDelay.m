@@ -2,6 +2,8 @@
 clear all
 close all
 
+rng(0);
+
 %% Parameters: in pixel units. 
 
 vec_name = 'spots_fast_white_disc_no_delay.vec';

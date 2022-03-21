@@ -7,7 +7,7 @@ function evtTimes = extractEvtTimes(exp_id, raw_file, mea_rate, varargin)
 p = inputParser;
 addRequired(p, 'raw_file');
 addRequired(p, 'mea_rate');
-addParameter(p, 'Inter_Section_DT', 5);
+addParameter(p, 'Inter_Section_DT', 10);
 parse(p, raw_file, mea_rate, varargin{:});
 
 inter_section_dt = p.Results.Inter_Section_DT; 

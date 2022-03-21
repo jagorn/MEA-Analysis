@@ -63,6 +63,7 @@ end
 xlabel("Time (s)")
 ylabel("Firing Rate (Hz)")
 
-title_plot = strcat(exp_id, ": ", section_id, " - ", pattern_name);
+
+title_plot = strcat(exp_id, ": ", num2str(section_id), " - ", pattern_name);
 h = suptitle(title_plot);
 h.Interpreter = 'None';

@@ -35,7 +35,7 @@ for p = 1:n_patterns
            
         rep_begins = dh_times_init(p_idx);
         durations = dh_durations(p_idx);
-        sets = set_types(holography_block_type(p_idx) + 1);
+        sets = set_types(logical(holography_block_type(p_idx)) + 1);
 
         % make sure durations are all the same
         delta_durations = abs(durations - durations(1)) / durations(1);
@@ -46,13 +46,13 @@ for p = 1:n_patterns
 
         % make sure pattern is only test or only training set are all the same
         if ~all(strcmp(sets(1), sets))
-            error_struct.message = strcat("Inconsistent training/testing set in holographic patterns");
-            error_struct.identifier = strcat('MEA_Analysis:', mfilename);
-            error(error_struct);
+            warning("Same holographic pattern labelled both as training and as testing set");
+            set = set_types(2);
+        else
+            set = sets(1);
         end
         
         duration = median(durations);
-        set = sets(1);
 
         repetitions.durations(p) = duration;
         repetitions.rep_begins{p} = rep_begins;

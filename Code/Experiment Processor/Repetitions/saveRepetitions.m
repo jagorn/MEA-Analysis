@@ -7,14 +7,18 @@ for i_section = 1:numel(sections_table)
     
     try
         triggers = section_table.triggers;
-        save(reps_file, 'triggers')
+        if ~isempty(triggers)
+            save(reps_file, 'triggers')
+        end
         
         repetitions = section_table.repetitions;
-        save(reps_file, 'repetitions', '-append')
-        fprintf('repetitions saved for section %s\n', section_table.id);
+        if ~isempty(repetitions)
+            save(reps_file, 'repetitions', '-append')
+            fprintf('repetitions saved for section %s\n', section_table.id);
+        end
     catch
     end
-
+    
 end
 
 

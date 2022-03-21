@@ -22,6 +22,7 @@ compute_psths_def = false;
 % Parameters Raw Files
 raw_path_def = sortedPath(exp_id);
 raw_name_def = exp_id;
+mea_spacing_def = 30;
 
 % Parse Input
 p = inputParser;
@@ -31,6 +32,7 @@ addParameter(p, 'Compute_Repetitions', compute_repetitions_def);
 addParameter(p, 'Compute_PSTHs', compute_psths_def);
 addParameter(p, 'Raw_Path', raw_path_def);
 addParameter(p, 'Raw_Name', raw_name_def);
+addParameter(p, 'MEA_Spacing', mea_spacing_def);
 
 parse(p, exp_id, varargin{:});
 
@@ -39,6 +41,7 @@ extract_repetitions = p.Results.Compute_Repetitions;
 compute_psths = p.Results.Compute_PSTHs;
 raw_path = p.Results.Raw_Path; 
 raw_name = p.Results.Raw_Name; 
+mea_spacing = p.Results.MEA_Spacing; 
 
 % Folder Paths
 raw_file = fullfile(raw_path, strcat(raw_name, '.raw'));
@@ -62,19 +65,20 @@ else
     
     % Repetitions
     if extract_repetitions
-        fprintf('\ncomputing holography triggers...\n')
+        fprintf('\ncomputing holography triggers...\n');
         dh_times = getDHTimes(exp_id);
         holography_table = assignStimTriggers(holography_table, dh_times);
         setHolographyTable(exp_id, holography_table);
 
-        fprintf('\ncomputing holography repetitions...\n')
+        fprintf('\ncomputing holography repetitions...\n');
         holography_table = assignHolographyRepetitions(holography_table, exp_id);
         setHolographyTable(exp_id, holography_table);
     end
     
     % Patterns
     addHoloPositions(exp_id);
-
+    addHoloPictures(exp_id);
+    
     if compute_psths
         fprintf('\ncomputing holography psths...\n')
         computeHolographyPSTHs(exp_id)

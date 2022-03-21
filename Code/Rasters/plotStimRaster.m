@@ -37,15 +37,15 @@ labels_default = [];
 pattern_indices_default = [];
 pre_stim_dt_default = 0.2;
 post_stim_dt_default = 0.2;
-size_points_default = 15;
+size_points_default = 5;
 line_spacing_default = 3;
 raster_colors_default = [];
-stim_color_default = [.85 .9 .85];
+stim_color_default = [.7, .7, .7, 0.5];
 dead_times_default = {};
 edges_onset_default = [];
 edges_offset_default = [];
 edges_color_default = [];
-n_max_reps_default = 0;
+n_max_reps_default = 30;
 
 % Parse Input
 p = inputParser;
@@ -82,7 +82,7 @@ dead_times = p.Results.Dead_Times;
 edges_onsets = p.Results.Edges_Onsets; 
 edges_offsets = p.Results.Edges_Offsets; 
 edges_colors = p.Results.Edges_Colors; 
-n_max_repetitions = p.Results.N_Max_Repetitions; 
+threshold_repetitions = p.Results.N_Max_Repetitions; 
 
 
 if isempty(pattern_idx)
@@ -105,9 +105,11 @@ n_steps_resp =  n_steps_stim + pre_stim_steps + post_stim_dt;
 stim_duration = n_steps_stim / rate;
 response_duration = n_steps_resp / rate;
 
+n_max_repetitions = 1;
 for reps = repetitions(:)'
     n_max_repetitions = max(n_max_repetitions, numel(reps{:}));
 end
+n_max_repetitions = min(threshold_repetitions, n_max_repetitions);
 n_tot_repetitions = numel(pattern_idx) * (n_max_repetitions + line_spacing);
 
 xlim([min(0, -pre_stim_dt), max(stim_duration, response_duration - pre_stim_dt + post_stim_dt)])
@@ -128,7 +130,7 @@ for i_pattern = pattern_idx(:)'
     rs_end = repetitions{i_pattern} + n_steps_stim;
     color = raster_colors(i_pattern, :);
     
-    rect_edges = [0, i_row-1, n_steps_stim/rate, n_max_repetitions+1];
+    rect_edges = [0, i_row-1, n_steps_stim/rate,  numel(repetitions{i_pattern}) + 1];
     rectangle('Position', rect_edges, 'FaceColor', stim_color, 'EdgeColor', 'none')
     
     if ~isempty(dead_times)
@@ -136,7 +138,7 @@ for i_pattern = pattern_idx(:)'
             dt_begin = dead_times{i_pattern}.begin(i_dt)/rate;
             dt_end = dead_times{i_pattern}.end(i_dt)/rate;
 
-            rect_edges = [dt_begin, i_row-1, dt_end - dt_begin, n_max_repetitions+1];
+            rect_edges = [dt_begin, i_row-1, dt_end - dt_begin,  numel(repetitions{i_pattern}) + 1];
             rectangle('Position', rect_edges, 'FaceColor', 'k', 'EdgeColor', 'none')
         end
     end

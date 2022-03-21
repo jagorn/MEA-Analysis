@@ -45,7 +45,7 @@ for i_dh = 1:numel(dhTimes)
     triggers_begin = dhTimes{i_dh}.evtTimes_begin;
     triggers_end = dhTimes{i_dh}.evtTimes_end;
     
-    duration = median(triggers_end - triggers_begin) / mea_rate;
+    duration = round(median(triggers_end - triggers_begin) / mea_rate);
     fprintf('\n detecting artifacts on a %f seconds window\n', duration);
     [dead_times, artifact] = computeSimpleArtifactDeadTimes(triggers_begin, mea_rate, raw_file, 'Frame_Duration', duration);
     full_dead_times = [full_dead_times; dead_times];
@@ -57,6 +57,6 @@ end
 full_dead_times = full_dead_times(order, :);
 
 writematrix(full_dead_times, dead_times_file, 'Delimiter', 'tab');
-save(dh_artifats_file, 'dh_artifacts');
+save(dh_artifats_file, 'dh_artifacts', '-v7.3');
 disp('artifact computed');
 

@@ -43,6 +43,17 @@ nsteps_dh = p.Results.DH_N_Steps;
 nsteps_padding = p.Results.N_Steps_Padding;
 encoding = p.Results.Endcoding;
 mea_map = p.Results.MEA_Map;
+raw_path = p.Results.Raw_Path;
+raw_name = p.Results.Raw_Name;
+show_dead_times = p.Results.Show_Dead_Times;
+dead_times_path = p.Results.Dead_Times_Path;
+dead_times_name = p.Results.Dead_Times_Name;
+dead_electrodes = p.Results.Dead_Electrodes;
+stim_electrodes = p.Results.Stim_Electrodes;
+nsteps_dh = p.Results.DH_N_Steps;
+nsteps_padding = p.Results.N_Steps_Padding;
+encoding = p.Results.Endcoding;
+mea_map = p.Results.MEA_Map;
 
 % path
 raw_file = fullfile(raw_path, strcat(raw_name, '.raw'));

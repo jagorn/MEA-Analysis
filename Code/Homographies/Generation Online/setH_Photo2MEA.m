@@ -1,7 +1,10 @@
-function setH_Photo2MEA(exp_id, img_name, img_ext, mea_spacing_micron)
+function setH_Photo2MEA(exp_id, img_name, img_ext, h_name, mea_spacing_micron)
 
 if ~exist('mea_spacing_micron', 'var')
     mea_spacing_micron = 30;
+end
+if ~exist('h_name', 'var')
+    h_name = img_name;
 end
 
 % LOAD THE MEA IMAGE
@@ -21,10 +24,9 @@ end
 prompt = 'Do you want to save the homography? (1=YES, 0=NO)\n';
 resp = input(prompt);
 
-
 if resp == 1
-    addHomography(H_img2mea, strcat('CAMERA_', img_name), 'MEA', exp_id)
-    addHomography(H_mea2img, 'MEA', strcat('CAMERA_', img_name), exp_id)
+    addHomography(H_img2mea, strcat('CAMERA_', h_name), 'MEA', exp_id)
+    addHomography(H_mea2img, 'MEA', strcat('CAMERA_', h_name), exp_id)
     fprintf("Homographies have been saved.\n")
 else
     fprintf("Homography have not been saved.\n")

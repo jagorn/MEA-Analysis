@@ -19,6 +19,7 @@ for i_section = 1:numel(holo_table)
     end
     
     if ~img_id_found
+        condition = "X40";
         h_img2mea = getHomography("CAMERA_X40", "MEA");
         fprintf('\nno image to register was found for session %s. The pattern positions will be registered respect to the default image.\n', dh_section)
     end
@@ -26,6 +27,7 @@ for i_section = 1:numel(holo_table)
     try
         holo_positions_img = getHolographyPositionsImg(exp_id, dh_section);
         holo_positions_mea = transformPointsV(h_img2mea, holo_positions_img);
+        holo_table(i_section).h_ref = strcat("CAMERA_", condition);
         holo_table(i_section).positions.img = holo_positions_img;
         holo_table(i_section).positions.mea = holo_positions_mea;
     catch

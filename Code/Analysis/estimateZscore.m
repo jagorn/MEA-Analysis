@@ -21,11 +21,15 @@ psth_dt_by_cell = psth';
 for icell=1:size(psth_dt_by_cell,2)
     m = mean(psth_dt_by_cell(find(xpsth>= ctrl_win(1)& xpsth< ctrl_win(2)),icell));
     s = std(psth_dt_by_cell(find(xpsth>= ctrl_win(1)& xpsth< ctrl_win(2)),icell));
-    if any(psth_dt_by_cell(find(xpsth>= resp_win(1)& xpsth< resp_win(2)),icell) > max(m+k*s ,min_fr))
+    u = max(psth_dt_by_cell(find(xpsth>= resp_win(1)& xpsth< resp_win(2)),icell));
+    
+    threshold =  max(m+k*s ,m+min_fr);
+    
+    if any(psth_dt_by_cell(find(xpsth>= resp_win(1)& xpsth< resp_win(2)),icell) > threshold)
         z(icell) = 1;
     else
         z(icell) = 0;
     end
-    threshold(icell) = max(m+k*s ,min_fr);
-    score(icell) = max(psth_dt_by_cell(find(xpsth>= resp_win(1)& xpsth< resp_win(2)),icell)) - threshold(icell);
+    threshold(icell) = threshold;
+    score(icell) = (u - m) * z(icell);
 end

@@ -1,0 +1,10 @@
+# Use this file to specify the settings used to display the euler stimulus.
+
+
+# Setup Configuration
+mea_rate 	= 20000
+
+# Stimulus Configurations
+version 	= 181123_PairedPulseBg_230
+is_looping	= 0
+

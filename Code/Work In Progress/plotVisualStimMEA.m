@@ -2,11 +2,11 @@ function plotVisualStimMEA(~)
 % TODO
 
 % Parameters
-exp_id = '20210517_gtacr';
+exp_id = '20210517_a2';
 stim_name = 'discdelay';
 stim_version = 'spots_new_disc_delay';
 stim_frame_id = 2;
-img_id = 'left';
+img_id = 'mea_left';
 
 % Load Disc
 bin_file = getBinaryFile(stim_name, stim_version);

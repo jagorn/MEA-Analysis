@@ -49,11 +49,5 @@ hold on
 plotElectrodesMEA();
 m = imshow(mea_checker_color, ref_mea_checker);
 set(m, 'AlphaData', 0.3);
-%  
-% figure()
-% imshow(mea_checker_color, ref_mea_checker)
-
-figure();
-imshow(camera_img_40x);
 
 

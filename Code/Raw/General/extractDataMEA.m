@@ -47,8 +47,14 @@ end
 n_reps = length(time_steps);
 mea_snippets = zeros(n_reps, mea_size, chunk_size);
 
-header_size = getHeaderSize(raw_file);
-fid = fopen(raw_file, 'r');
+try
+    header_size = getHeaderSize(raw_file);
+    fid = fopen(raw_file, 'r');
+catch
+    error_struct.message = strcat("the file ",  raw_file, " does not exist");
+    error_struct.identifier = strcat('MEA_Analysis:', mfilename);
+    error(error_struct);
+end
 
 for i_rep = 1:n_reps
     t = time_steps(i_rep);
