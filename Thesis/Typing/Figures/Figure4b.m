@@ -18,7 +18,7 @@ for i_c = 1:numel(class_names)
     subplot(2, 2, i_c);
     
     class_name = class_names{i_c};
-    class_folder = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/', class_name, '.mat');
+    class_folder = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/', class_name, 'mat');
     
     symbol_id = strcmp(class_name, names);
     symbol = symbols(symbol_id);

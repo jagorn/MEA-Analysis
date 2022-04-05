@@ -16,7 +16,7 @@ for i_class = 1:numel(mosaics_classes)
     class_idx = strcmp(class_name, [mosaicsTable.class]);
     sta_classification_entry = mosaicsTable(class_idx);
     
-    class_file = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/', class_name, '.mat');
+    class_file = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/', class_name, 'mat');
     load(class_file, 'cellsTable');
     load(class_file, 'non_linearities_sta', 'nl_x_sta', 'cells_sta');
     load(class_file, 'non_linearities_both', 'nl_x_both', 'cells_both');

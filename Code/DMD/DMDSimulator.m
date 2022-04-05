@@ -5,7 +5,7 @@ fid = fopen(bin_file,'r','ieee-le');
 stim_data = fread(fid, [1, 4], 'uint16');
 TotalX = stim_data(1);
 TotalY = stim_data(2);
-nbTotalFrames = stim_data(3) + 1;
+nbTotalFrames = stim_data(3);
 nBit = stim_data(4);
 
 % Read Frames from Bin File

@@ -2,10 +2,10 @@ clear
 close all
 
 % params
-% class_folder = 'RGC.3.8..mat';
-% class_folder = 'RGC.4.4..mat';
-class_folder = 'RGC.8.2.1..mat';
-% class_folder = 'RGC.8.2.4_PRUNED..mat';
+% class_folder = 'RGC.3.8.mat';
+% class_folder = 'RGC.4.4.mat';
+class_folder = 'RGC.8.2.1.mat';
+% class_folder = 'RGC.8.2.4_PRUNED.mat';
 
 nl_func = @funSigmoid;
 params_0 = [0, 1, 0.1, 0.6];

@@ -2,7 +2,7 @@ clear
 close all
 clc
 
-experiments = ["20210326", "20211007", "xyz"];
+experiments = ["20210326", "20211007", "20211109"];
 
 psth_euler_control = [];
 psth_euler_strychnine = [];
@@ -24,21 +24,18 @@ i_cell = 1;
 
 for exp = experiments   
     
-    euler_file = strcat('/home/fran_tr/Desktop/Simone/Data/', exp, '_euler_grade_isi.mat');
-    surround_file = strcat('/home/fran_tr/Desktop/Simone/Data/', exp, '_surround_data.mat');
-    sta_file = strcat('/home/fran_tr/Desktop/Simone/Data/', exp, '_sta_data.mat');
+    euler_file = strcat('Strychnine/Data/', exp, '_euler_grade_isi.mat');
+    surround_file = strcat('Strychnine/Data/', exp, '_surround_psths.mat');
+    sta_file = strcat('Strychnine/Data/', exp, '_sta_data.mat');
     
     load(euler_file, 'euler_bin_edges');
-    load(surround_file, 'surround_flash_bin_edges');
+    load(surround_file, 't_psth');
     load(sta_file, 'spatial', 'temporal');
     
-    sta_spatial = [sta_spatial; spatial];
-    sta_temporal = [sta_temporal; temporal];
-    
     if exist('t_surround_psth', 'var')
-        assert(isequal(t_surround_psth, surround_flash_bin_edges));
+        assert(isequal(t_surround_psth, t_psth));
     else
-        t_surround_psth = surround_flash_bin_edges;
+        t_surround_psth = t_psth;
     end
         
     if exist('t_euler_psth', 'var')
@@ -58,10 +55,21 @@ for exp = experiments
             
             d = eval(datafield);
             
+            % cell grade
+            grade = d.grade;
+            if ~ischar(grade)
+                grade = char('F' - grade);
+            end
+            
+            if ~(grade == 'A' || grade == 'B')
+                i_trace = i_trace + 1;
+                continue;
+            end
+            
             % cellsTable
             cellsTable(i_cell).N = i_trace;
             cellsTable(i_cell).experiment = exp;
-            cellsTable(i_cell).grade = d.grade;
+            cellsTable(i_cell).grade = grade;
             
             % isi
             isi(i_cell, :) = histc(d.isi, t_isi);
@@ -74,13 +82,16 @@ for exp = experiments
             clear(datafield)
             
             % surround
-            load(surround_file, datafield);
+            load(surround_file, 'psths');
+                        
+            psth_surround_control(i_cell, :) = psths.surround_flash_control(i_trace + 1, :);
+            psth_surround_strychnine(i_cell, :) = psths.surround_flash_strychnine(i_trace + 1, :);
             
-            s = eval(datafield);
             
-            psth_surround_control(i_cell, :) = s.control.surround_flash_count_smoothed;
-            psth_surround_strychnine(i_cell, :) = s.strychnine.surround_flash_count_smoothed;
-            
+            % sta
+            sta_spatial(i_cell, :, :) = spatial(i_trace + 1, :, :);
+            sta_temporal(i_cell, :) = temporal(i_trace + 1, :);
+    
             % clear
             clear(datafield);
             i_trace = i_trace + 1;
@@ -92,6 +103,6 @@ for exp = experiments
     end
 end
 
-save('/home/fran_tr/Desktop/Simone/strychnine.mat', 'cellsTable', 'isi', 't_isi', 'psth_euler_control', 'psth_euler_strychnine', 't_euler_psth');
-save('/home/fran_tr/Desktop/Simone/strychnine.mat', 'psth_surround_control', 'psth_surround_strychnine', 't_surround_psth', '-append');
-save('/home/fran_tr/Desktop/Simone/strychnine.mat', 'sta_spatial', 'sta_temporal', '-append');
+save('strychnine.mat', 'cellsTable', 'isi', 't_isi', 'psth_euler_control', 'psth_euler_strychnine', 't_euler_psth');
+save('strychnine.mat', 'psth_surround_control', 'psth_surround_strychnine', 't_surround_psth', '-append');
+save('strychnine.mat', 'sta_spatial', 'sta_temporal', '-append');
