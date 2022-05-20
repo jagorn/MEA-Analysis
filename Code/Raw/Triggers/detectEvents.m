@@ -13,10 +13,12 @@ function events = detectEvents(raw_trace, mea_rate, varargin)
 %         start and end of each event
 
 % Parameters
-sessions_time_separation_def = 5;
 peak_is_positive_def = true;
 discard_last_event_def = false;
 generate_missing_def = false;
+
+sessions_time_separation_def = 10;
+event_max_duration_def = 2;
 
 % Parse Input
 p = inputParser;
@@ -26,6 +28,7 @@ addParameter(p, 'Session_Time_Separation', sessions_time_separation_def);
 addParameter(p, 'Peak_Is_Positive', peak_is_positive_def);
 addParameter(p, 'Discard_Last_Event', discard_last_event_def);
 addParameter(p, 'Generate_Missing_Triggers', generate_missing_def);
+addParameter(p, 'Event_Max_Duration', event_max_duration_def);
 
 parse(p, raw_trace, mea_rate, varargin{:});
 
@@ -33,6 +36,7 @@ sessions_time_separation = p.Results.Session_Time_Separation;
 peak_is_positive = p.Results.Peak_Is_Positive;
 discard_last_event = p.Results.Discard_Last_Event;
 generate_missing = p.Results.Generate_Missing_Triggers;
+event_max_duration = p.Results.Event_Max_Duration;
 
 % normalize the trace
 base =  median(raw_trace);
@@ -44,8 +48,8 @@ if ~peak_is_positive
 end
 
 % Detect events
-detection_threshold = max(base_trace) * 0.15;
-detection_peak = max(base_trace) * 0.20;
+detection_threshold = max(base_trace) * 0.05;
+detection_peak = max(base_trace) * 0.10;
 
 EvtTime_init = find(base_trace(1:end-1)<detection_threshold & base_trace(2:end) >= detection_threshold )+1;
 EvtTime_end = find(base_trace(1:end-1)>detection_threshold & base_trace(2:end)<=detection_threshold )+1;
@@ -62,6 +66,10 @@ end
 false_positives = [];
 for i_event = 1:numel(EvtTime_init)
     if max(base_trace(EvtTime_init(i_event):EvtTime_end(i_event))) < detection_peak
+        false_positives = [false_positives, i_event];
+    end
+    
+    if (EvtTime_end(i_event) - EvtTime_init(i_event)) > (event_max_duration * mea_rate)
         false_positives = [false_positives, i_event];
     end
 end

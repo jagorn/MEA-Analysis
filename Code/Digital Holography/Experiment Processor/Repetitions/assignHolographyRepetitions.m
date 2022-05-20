@@ -19,12 +19,10 @@ for i_section = 1:numel(stimTable)
         try
             repetitions = computeHolographyRepetitions(triggers, durations, holography_total_block, holography_block_type);
             stimTable(i_section).repetitions = repetitions;
+            fprintf("\t%s : repetitions computed\n", section_id);
         catch error
             warning(strcat(error.identifier,  ": ", error.message));
             fprintf('repetitions cannot be computed for section %i\n', i_section);
             stimTable(i_section).repetitions = [];
-        end
-        fprintf("\t%s : repetitions computed\n", section_id);
-
-    
+        end    
 end

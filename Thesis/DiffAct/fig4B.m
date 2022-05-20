@@ -1,7 +1,7 @@
-experiments = ["20201117_gtacr_noSTAs"; "20210517_gtacr_noSTAs"];
+experiments = ["20201117_gtacr_noSTAs"];
 pattern_label = 'flicker';
 
-cond_idx = 7:-1:2;
+cond_idx = 7:-1:1;  %7:-1:2;
 
 
 all_condition_labels = [];
@@ -114,7 +114,7 @@ hold on
 % Get the x coordinate of the bars
 x = nan(nbars, ngroups);
 for i = 1:nbars
-    x(i,:) = b(i).XEndPoints;
+    x(i,:) = b(i).XData + (i-2)/4;
 end
 % Plot the errorbars
 errorbar(x',avg_graph_on(cond_idx, :),std_graph_on(cond_idx, :),'k','linestyle','none');
@@ -129,11 +129,12 @@ set(gca,'FontSize', 10)
 set(gca,'box','off')
 set(gca,'XTick', 1:numel(x_labels))
 set(gca,'XTickLabel', x_labels)
+xtickangle(30);
 
 set(gca,'YTick', 0:0.2:1)
 set(gca,'yTickLabel', 0:20:100)
 
-title(['ON Cells (' num2str(TotalON) ')'])
+title(['ON Cells (' num2str(sum(total_on)) ')'])
 
 
 % ...then OFF cells
@@ -150,7 +151,7 @@ hold on
 % Get the x coordinate of the bars
 x = nan(nbars, ngroups);
 for i = 1:nbars
-    x(i,:) = b(i).XEndPoints;
+    x(i,:) = b(i).XData + (i-2)/4;
 end
 % Plot the errorbars
 errorbar(x',avg_graph_off(cond_idx, :),std_graph_off(cond_idx, :),'k','linestyle','none');
@@ -166,11 +167,12 @@ set(gca,'FontSize', 10)
 set(gca,'box','off')
 set(gca,'XTick', 1:numel(x_labels))
 set(gca,'XTickLabel', x_labels)
+xtickangle(30);
 
 set(gca,'YTick', 0:0.2:1)
 set(gca,'yTickLabel', 0:20:100)
 
-title( ['OFF Cells (' num2str(TotalOFF) ')'])
+title( ['OFF Cells (' num2str(sum(total_off)) ')'])
 
 % Figure Title
 suptitle('Optogenetic Activation (GTACR)')

@@ -27,7 +27,6 @@ function plotStimRaster(spikes, repetitions, n_steps_stim, rate, varargin)
 % Edges_onsets:         list of times (seconds) at which to draw some vertical edges
 % Edges_offsets:        list of times (seconds) at which to draw some vertical edges
 % Edges_colors:         list of colors for the vertical edges
-% N_Max_Repetitions:    maximum number of repetitions shown for each pattern.
 
 
 n_patterns = numel(repetitions);
@@ -45,7 +44,6 @@ dead_times_default = {};
 edges_onset_default = [];
 edges_offset_default = [];
 edges_color_default = [];
-n_max_reps_default = 30;
 
 % Parse Input
 p = inputParser;
@@ -66,24 +64,21 @@ addParameter(p, 'Dead_Times', dead_times_default);
 addParameter(p, 'Edges_Onsets', edges_offset_default);
 addParameter(p, 'Edges_Offsets', edges_onset_default);
 addParameter(p, 'Edges_Colors', edges_color_default);
-addParameter(p, 'N_Max_Repetitions', n_max_reps_default);
 
 parse(p, spikes, repetitions, n_steps_stim, rate, varargin{:});
 
-labels = p.Results.Labels; 
-pattern_idx = p.Results.Pattern_Indices; 
-pre_stim_dt = p.Results.Pre_Stim_DT; 
-post_stim_dt = p.Results.Post_Stim_DT; 
-point_size = p.Results.Point_Size; 
-line_spacing = p.Results.Line_Spacing; 
-raster_colors = p.Results.Raster_Colors; 
-stim_color = p.Results.Stim_Color; 
-dead_times = p.Results.Dead_Times; 
-edges_onsets = p.Results.Edges_Onsets; 
-edges_offsets = p.Results.Edges_Offsets; 
-edges_colors = p.Results.Edges_Colors; 
-threshold_repetitions = p.Results.N_Max_Repetitions; 
-
+labels = p.Results.Labels;
+pattern_idx = p.Results.Pattern_Indices;
+pre_stim_dt = p.Results.Pre_Stim_DT;
+post_stim_dt = p.Results.Post_Stim_DT;
+point_size = p.Results.Point_Size;
+line_spacing = p.Results.Line_Spacing;
+raster_colors = p.Results.Raster_Colors;
+stim_color = p.Results.Stim_Color;
+dead_times = p.Results.Dead_Times;
+edges_onsets = p.Results.Edges_Onsets;
+edges_offsets = p.Results.Edges_Offsets;
+edges_colors = p.Results.Edges_Colors;
 
 if isempty(pattern_idx)
     pattern_idx = 1:n_patterns;
@@ -109,12 +104,6 @@ n_max_repetitions = 1;
 for reps = repetitions(:)'
     n_max_repetitions = max(n_max_repetitions, numel(reps{:}));
 end
-n_max_repetitions = min(threshold_repetitions, n_max_repetitions);
-n_tot_repetitions = numel(pattern_idx) * (n_max_repetitions + line_spacing);
-
-xlim([min(0, -pre_stim_dt), max(stim_duration, response_duration - pre_stim_dt + post_stim_dt)])
-ylim([-line_spacing, n_tot_repetitions])
-
 
 hold on
 set(gca,'ytick',[])
@@ -137,24 +126,21 @@ for i_pattern = pattern_idx(:)'
         for i_dt = 1:numel(dead_times{i_pattern}.begin)
             dt_begin = dead_times{i_pattern}.begin(i_dt)/rate;
             dt_end = dead_times{i_pattern}.end(i_dt)/rate;
-
+            
             rect_edges = [dt_begin, i_row-1, dt_end - dt_begin,  numel(repetitions{i_pattern}) + 1];
             rectangle('Position', rect_edges, 'FaceColor', 'k', 'EdgeColor', 'none')
         end
     end
     
-    for r = 1:n_max_repetitions
+    for r = 1:numel(repetitions{i_pattern})
         i_row = i_row + 1;
-        
-        if r <= numel(repetitions{i_pattern})
-            spikes_segment = and(spikes > rs_init(r) - pre_stim_steps, spikes < rs_end(r) + post_stim_steps);
-            spikes_rep = spikes(spikes_segment) - rs_init(r);
-            spikes_rep = spikes_rep(:).';
-            y_spikes_rep = ones(1, length(spikes_rep)) * i_row;
-            scatter(spikes_rep / rate, y_spikes_rep, point_size, color, 'Filled', 'o')
-        end
-    end  
-    y_ticks = [y_ticks, i_row - n_max_repetitions/2];  
+        spikes_segment = and(spikes > rs_init(r) - pre_stim_steps, spikes < rs_end(r) + post_stim_steps);
+        spikes_rep = spikes(spikes_segment) - rs_init(r);
+        spikes_rep = spikes_rep(:).';
+        y_spikes_rep = ones(1, length(spikes_rep)) * i_row;
+        scatter(spikes_rep / rate, y_spikes_rep, point_size, color, 'Filled', 'o')
+    end
+    y_ticks = [y_ticks, i_row -  numel(repetitions{i_pattern}) /2];
     i_row = i_row + line_spacing;
 end
 yticks(y_ticks)
@@ -165,11 +151,14 @@ set(gca,'TickLabelInterpreter','none')
 if isempty(edges_colors)
     edges_colors = getColors(max(numel(edges_onsets), numel(edges_offsets)));
 end
-    
+
 for i_onset = 1:numel(edges_onsets)
-    xline(edges_onsets(i_onset), 'LineWidth', 1.5, 'Color', edges_colors(i_onset, :));
+    xline(edges_onsets(i_onset), '--', 'LineWidth', 1, 'Color', edges_colors(i_onset, :));
 end
 
 for i_offset = 1:numel(edges_offsets)
-    xline(edges_offsets(i_offset), 'LineWidth', 1.5, 'Color', edges_colors(i_offset, :));
+    xline(edges_offsets(i_offset), '--', 'LineWidth', 1, 'Color', edges_colors(i_offset, :));
 end
+
+xlim([min(0, -pre_stim_dt), max(stim_duration, response_duration - pre_stim_dt + post_stim_dt)])
+ylim([-line_spacing, i_row])

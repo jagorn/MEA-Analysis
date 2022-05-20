@@ -1,24 +1,23 @@
-clear
-close all
+% clear
+% close all
 
 nl_func = @funSigmoid;
 params_0 = [0, 1, 0.1, 0.6];
 params_lb = [-inf, 0, 0, 0];
 params_ub = [+inf, +inf, 1, 1];
+features_idx = 1:4;
 
-show_plots = false;
+global show_plots, show_plots = 0;
 n_trials = 1000;
 
 load('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/typing_colors.mat')
 
-class_names = {'RGC.8.2.1.', 'RGC.8.2.4_PRUNED.', 'RGC.4.4.', 'RGC.3.8.'};
-figure()
+class_names = {'RGC.8.2.1.', 'RGC.8.2.4_PRUNED.', 'RGC.4.4.', 'RGC.3.8.', 'RGC.4.2.', 'RGC.2.5.'};
 
 for i_c = 1:numel(class_names)
-    subplot(2, 2, i_c);
     
     class_name = class_names{i_c};
-    class_folder = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/', class_name, 'mat');
+    class_folder = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/Data_Fit/', class_name, 'mat');
     
     symbol_id = strcmp(class_name, names);
     symbol = symbols(symbol_id);
@@ -27,12 +26,14 @@ for i_c = 1:numel(class_names)
     
     % fit
     load(class_folder);
-    params_sta = fit_all_nl(non_linearities_sta, nl_x_sta, nl_func, params_0, params_lb, params_ub, show_plots);
-    params_both = fit_all_nl(non_linearities_both, nl_x_both, nl_func, params_0, params_lb, params_ub, show_plots);
-    
+    params_sta = fit_all_nl(non_linearities_sta, nl_x_sta, nl_func, params_0, params_lb, params_ub);
+    params_both = fit_all_nl(non_linearities_both, nl_x_both, nl_func, params_0, params_lb, params_ub);
+%     save(class_folder, 'params_sta', 'params_both', '-append');
+
     % train gaussian classifier
     params_data = [params_both; params_sta];
     labels = cell(size(params_data, 1), 1);
+    params_data = params_data(:, features_idx);
     
     % write labels
     for y_both = 1:size(params_both, 1)
@@ -61,6 +62,8 @@ for i_c = 1:numel(class_names)
         control_loss(i) = resubLoss(gaussian_classifier);
     end
     
+    figure(1)
+    subplot(2, 3, i_c);
     hold on
     histogram(control_loss, 0:0.05:0.8, 'Normalization', 'probability', 'FaceColor', color);
     xline(loss, 'k', 'LineWidth', 2)
@@ -72,8 +75,9 @@ for i_c = 1:numel(class_names)
     title(strcat("Cluster ", symbol));
 end
 
-function params_all = fit_all_nl(non_linearities, nl_x, nl_func, params_0, params_lb, params_ub, show_plots)
+function params_all = fit_all_nl(non_linearities, nl_x, nl_func, params_0, params_lb, params_ub)
 
+global show_plots;
 n_params_nl = numel(params_0);
 
 % params_all containes all parameters for each nonlinearity to fit
@@ -85,9 +89,11 @@ if show_plots
     max_n_columns = 5;
     n_rows = ceil(n_nls/max_n_columns);
     n_columns = min(max_n_columns, n_nls);
-    figure();
+    show_plots = show_plots + 1;
+    figure(show_plots);
 end
 
+i_p = 1;
 for i_nl = 1:n_nls
     nl = non_linearities(i_nl, :);
     x = nl_x;
@@ -100,28 +106,27 @@ for i_nl = 1:n_nls
     % fit the nl function
     [params_sing, residual] = lsqcurvefit(@funOffset, 0, nl_to_fit_x, nl_to_fit_y, -inf, +inf);
     if residual < 0.01
-        params = [params_sing, 0, 0, 1-params_sing];
+%         params = [params_sing, 0, 0, 1-params_sing];
+        continue;
     else
         params = lsqcurvefit(nl_func, params_0, nl_to_fit_x, nl_to_fit_y, params_lb, params_ub);
     end
     
     % plot
     if show_plots
-        subplot(n_rows, n_columns, i_nl);
+        subplot(n_rows, n_columns, i_p);
         hold on
         plot(nl_x, nl, 'b', 'LineWidth', 1.2);
-        plot(nl_x, nl_func(params, nl_x), 'm', 'LineWidth', 1.2);
-        xline(params(1));
-        yline(params(3));
-        yline(1-params(4));
-        
+        plot(nl_x, nl_func(params, nl_x), 'm', 'LineWidth', 1.2);       
         xlim([min(nl_x), max(nl_x)]);
         ylim([-0.2, 1.2]);
         legend({'Empirical', 'Func Fit'});
     end
     
-    params_all(i_nl, :) = params;
+    params_all(i_p, :) = params;
+    i_p = i_p + 1;
 end
+
 end
 
 

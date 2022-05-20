@@ -18,7 +18,7 @@ pt_size = 30;
 % fit
 load(class_folder);
 params_sta = fit_all_nl(non_linearities_sta, nl_x_sta, nl_func, params_0, params_lb, params_ub, false);
-params_both = fit_all_nl(non_linearities_both, nl_x_both, nl_func, params_0, params_lb, params_ub, true);
+params_both = fit_all_nl(non_linearities_both, nl_x_both, nl_func, params_0, params_lb, params_ub, false);
 
 % train gaussian classifier
 params_data = [params_both; params_sta];

@@ -10,7 +10,7 @@ labels_default = [];
 dead_times_default = {};
 pattern_indices_default = [];
 sampling_rate_default = [];  
-psth_max_default = max(psths(:));
+psth_max_default = 80;
 
 size_line_default = 1.5;
 rect_color_default = [.7, .7, .7, 0.5];

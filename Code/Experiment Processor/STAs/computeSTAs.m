@@ -56,7 +56,8 @@ save(spikes_file, 'SpikeTimes');
 binary_file = fullfile(stimPath('checkerboard'), 'binary', 'binarysource1000Mbits');
 
 fprintf('\nsaving parameters...\n');
-sta_params('frame_rate') = round(getSection(exp_id, checker_table.id).rate);
+section = getSection(exp_id, checker_table.id);
+sta_params('frame_rate') = round(section.rate);
 sta_params('triggers_file') = num2str(frames_file);
 sta_params('binary_file') = binary_file;
 sta_params('spikes_file') = spikes_file;

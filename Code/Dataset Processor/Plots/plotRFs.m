@@ -12,15 +12,13 @@ addParameter(p, 'Zooming_Factor', 0.2);
 parse(p, indices, varargin{:});
 zoom_factor = p.Results.Zooming_Factor;
 
-load(getDatasetMat(), 'RFs', 'spatialSTAs');
+load(getDatasetMat(), 'RFs');
 rfs = RFs(indices);
 
 colormap gray
 
 colors = getColors(sum(indices>0));
-y_size = size(spatialSTAs, 2);
-x_size = size(spatialSTAs, 3);
-background = ones(y_size, x_size)*255;
+background = ones(51, 38)*255;
 
 image(background);
 

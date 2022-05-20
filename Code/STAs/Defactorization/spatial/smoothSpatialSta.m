@@ -10,9 +10,9 @@ kernel = kernel / sum(kernel(:));
 smoothSTA = convn(sta, kernel, 'same');
 
 % compensate for padding
-% meanValue = mean(sta(:));
-% smoothSTA(1, :) = meanValue;
-% smoothSTA(:, 1) = meanValue;
-% smoothSTA(dim_x, :) = meanValue;
-% smoothSTA(:, dim_y) = meanValue;
+meanValue = mean(sta(:));
+smoothSTA(1, :) = meanValue;
+smoothSTA(:, 1) = meanValue;
+smoothSTA(dim_x, :) = meanValue;
+smoothSTA(:, dim_y) = meanValue;
 

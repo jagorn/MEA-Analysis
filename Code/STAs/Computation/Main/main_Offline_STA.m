@@ -1,5 +1,5 @@
 
-addpath(genpath(pwd));
+% addpath(genpath(pwd));
 
 % EXPLANATIONS about the program (stimulus file known in advance)
 

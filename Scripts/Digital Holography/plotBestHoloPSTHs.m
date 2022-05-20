@@ -9,7 +9,7 @@ addParameter(p, 'N_Spots', 1);
 addParameter(p, 'Set_Types', ["test", "train"]);
 addParameter(p, 'Mode', 'raster'); % raster or psth
 addParameter(p, 'One_By_One', true);
-addParameter(p, 'Save', true);
+addParameter(p, 'Save', false);
 
 parse(p, exp_id, dh_session_id, varargin{:});
 n_spots = p.Results.N_Spots;
@@ -37,11 +37,16 @@ norm_scores(norm_scores < 0) = 0;
 n_patterns_show = min(n_patterns_show, numel(good_patterns_idx));
 good_patterns = patterns(good_patterns_idx(1:n_patterns_show));
 
-[cells_activations, good_cells] = sort(sum(multi_psth.activations.zs(good_patterns, :)), 'descend');
-% good_cells = good_cells(cells_activations>=0);
+% Choose the best cells
+[~, ~, ~, valid_cells] =  getSTAsComponents(exp_id);
+tagged_cells = find(tags>=3);
+best_cells = intersect(valid_cells(:)', tagged_cells(:)');
+
+[~, best_cells_idx] = sort(sum(multi_psth.activations.zs(good_patterns, best_cells)), 'descend');
+best_cells = best_cells(best_cells_idx);
 
 % recap plots
-z_plot = multi_psth.activations.zs(patterns, good_cells);
+z_plot = multi_psth.activations.zs(patterns, best_cells);
 
 figure();
 subplot(2, 2, 3);
@@ -64,7 +69,7 @@ axis off
 
 i_column = 1;
 i_plot = 0;
-for i_cell = good_cells(:)'
+for i_cell = best_cells(:)'
     
     if i_column == 1
         figure();
@@ -105,7 +110,7 @@ for i_cell = good_cells(:)'
         
         if do_save
             file_name = strcat(getHoloSection(exp_id, dh_session_id).id, '_Rasters#', num2str(i_plot));
-            file_folder = fullfile(plotsPath(getDatasetId), 'Holography');
+            file_folder = fullfile(plotsPath(exp_id), 'Holography');
             
             if ~exist(file_folder, 'dir')
                 mkdir(file_folder);

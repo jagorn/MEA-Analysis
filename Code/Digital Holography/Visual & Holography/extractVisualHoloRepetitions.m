@@ -44,19 +44,32 @@ for i_rep = 1:numel(repetitions)
     label = repetitions(i_rep).label;
     reps = repetitions(i_rep).repetitions;
     
+    % compose id
     stim_id = strcat(num2str(n_entries_h + i_rep), '-', visual_stim_id, '-', label);
     if ~isempty(visual_conditions)
         stim_id = strcat(stim_id, '_(', join(string(visual_conditions), '_'), ')');
     end
     
-    try
-        visual_section.positions = holo_section.positions;
+    % correct for missing fields
+    fields_visual = fields(visual_section);
+    fields_holo = fields(h_table);
+    
+    for i_field = 1:numel(fields_visual)
+        field_visual = fields_visual{i_field};
+        if ~isfield(h_table, field_visual)
+            for i_ht = 1:numel(h_table)
+                h_table(i_ht).(field_visual) = [];
+            end
+        end
+    end
+    for i_field = 1:numel(fields_holo)
+        field_holo = fields_holo{i_field};
+        if ~isfield(visual_section, field_holo)
+            visual_section.(field_holo) = holo_section.(field_holo);
+        end
     end
     
-    try
-        visual_section.image = holo_section.image;
-    end
-    
+    % add all
     h_table(n_entries_h + i_rep) = visual_section;
     h_table(n_entries_h + i_rep).id = stim_id;
     h_table(n_entries_h + i_rep).stimulus = strcat('holo_', label);

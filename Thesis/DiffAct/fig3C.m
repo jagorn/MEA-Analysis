@@ -115,7 +115,7 @@ hold on
 % Get the x coordinate of the bars
 x = nan(nbars, ngroups);
 for i = 1:nbars
-    x(i,:) = b(i).XEndPoints;
+    x(i,:) = b(i).XData + (i-2)/4;
 end
 % Plot the errorbars
 errorbar(x',avg_graph_on(cond_idx, :),std_graph_on(cond_idx, :),'k','linestyle','none');
@@ -151,7 +151,7 @@ hold on
 % Get the x coordinate of the bars
 x = nan(nbars, ngroups);
 for i = 1:nbars
-    x(i,:) = b(i).XEndPoints;
+    x(i,:) = b(i).XData + (i-2)/4;
 end
 % Plot the errorbars
 errorbar(x',avg_graph_off(cond_idx, :),std_graph_off(cond_idx, :),'k','linestyle','none');
@@ -165,8 +165,8 @@ ylim([0 1])
 
 set(gca,'FontSize', 10)
 set(gca,'box','off')
-set(gca,'XTick', 1:numel(x_labels))
-set(gca,'XTickLabel', x_labels)
+% set(gca,'XTick', 1:numel(x_labels))
+% set(gca,'XTickLabel', x_labels)
 
 set(gca,'YTick', 0:0.2:1)
 set(gca,'yTickLabel', 0:20:100)

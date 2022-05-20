@@ -1,10 +1,13 @@
 clear
 close all
 
+do_shuffle = false;
+
 load('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/Data/mosaics_comparison.mat')
 load('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/typing_colors.mat')
 
-mosaics_classes = {'RGC.8.2.1.', 'RGC.8.2.4_PRUNED.', 'RGC.4.4.', 'RGC.3.8.'};
+mosaics_classes = {'RGC.8.2.1.', 'RGC.8.2.4_PRUNED.', 'RGC.4.4.', 'RGC.3.8.', 'RGC.4.2.', 'RGC.2.5.'};
+mosaics_classes = {'RGC.8.2.1.', 'RGC.8.2.4_PRUNED.', 'RGC.4.4.', 'RGC.3.8.', 'RGC.4.2.', 'RGC.2.5.', 'RGC.1.1.', 'RGC.1.3.1.', 'RGC.3.1.', 'RGC.3.2.2.', 'RGC.6.3.1.'};
 
 
 figure();
@@ -25,9 +28,17 @@ for i_class = 1:numel(mosaics_classes)
     symbol = symbols(symbol_id);
     color = colors(symbol_id, :);
     
+    
+    if do_shuffle
+        nls = [non_linearities_sta; non_linearities_both];
+        nls_shuffled = nls(randperm(size(nls, 1)), :);
+        non_linearities_sta = nls_shuffled(1:size(non_linearities_sta, 1), :);
+        non_linearities_both = nls_shuffled((size(non_linearities_sta, 1) + 1) : end, :);
+    end
+    
     % plot
     i_plot = i_plot + 1;
-    subplot(2, 2, i_plot);
+    subplot(3, 4, i_plot);
     hold on
     k = plot_std_surface(non_linearities_sta, nl_x_sta, 'k');
     r = plot_std_surface(non_linearities_both, nl_x_both, color);
@@ -42,20 +53,3 @@ for i_class = 1:numel(mosaics_classes)
     legend([k, r], {'Cells only in STA mosaic', 'Cells in both mosaics'}, 'location', 'northwest')
 end
 suptitle("average non-linearities");
-
-function p = plot_std_surface(ys, x, color)
-
-avgY = mean(ys, 1);
-stdY = std(ys, [], 1);
-stdY_up = avgY + stdY / 2;
-stdY_down = avgY - stdY / 2;
-
-x_plot = [x, fliplr(x)];
-y_plot = [stdY_up, fliplr(stdY_down)];
-
-x_plot(isnan(y_plot)) = [];
-y_plot(isnan(y_plot)) = [];
-
-fill(x_plot, y_plot, color, 'EdgeColor', 'None', 'facealpha', 0.5);
-p = plot(x, avgY, '.-', 'Color', color, 'LineWidth', 1.2);
-end

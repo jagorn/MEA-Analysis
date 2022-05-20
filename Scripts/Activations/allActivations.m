@@ -1,5 +1,5 @@
 
-addAllDatasetPSTHs('Time_Spacing', 0.5)
+addAllDatasetPSTHs('Time_Spacing', 0.50)
 
 try
     computeAllActivations('flicker', {}, 'on', [-0.3, 0], [0 0.5], 5, 10)
@@ -23,15 +23,14 @@ catch
 end
 
 try
-    computeAllActivations('white_disc', {}, 'on', [-0.2, 0], [0 0.3], 5, 10)
-    computeAllActivations('white_disc', {}, 'off', [0.1, 0.3], [0.3 0.6], 5, 10)
+    computeAllActivations('white_disc_long', {}, 'on', [-0.475, -0.175], [0 0.325], 5, 10)
+    computeAllActivations('white_disc_long', {}, 'off', [0.175 0.325], [0.325 0.625], 5, 10)
 catch
     fprintf('no discs available\n')
 end
 
 try
     computeAllActivations('white_pulse', {}, 'on', [-0.5, -0.2], [0.0, .175], 5, 10)
-    computeAllActivations('white_pulse', {}, 'off', [-0.5, -0.2], [0.175, .350], 5, 10)
 catch
     fprintf('no pulses available\n')
 end
