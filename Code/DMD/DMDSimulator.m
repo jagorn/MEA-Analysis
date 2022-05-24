@@ -19,21 +19,26 @@ vec = load(vec_file);
 % add 1 for matlab convention
 frame_sequence = vec(2:end, 2)' + 1;
 
+% Invert colors
+if is_polarity_inverted
+    frames = 255 - frames;
+end
+
 % Plot The Frames
 dt_frame = 1/freq;
-figure('Name', bin_file)
-
-hold on;
+previous_frame = -1;
 warning_was_shown = false;
+
+figure('Name', bin_file)
+hold on;
 for frame_id = frame_sequence
-    
-    tic;
-    if is_polarity_inverted
-        frame = 255 - frames(:, :, frame_id);
-    else
+
+    tic;           
+    if frame_id  ~= previous_frame
         frame = frames(:, :, frame_id);
+        imshow(frame', 'DisplayRange', [0, 255])
+        previous_frame = frame_id;
     end
-    imshow(frame', 'DisplayRange', [0, 255])
     t = toc;
     pause(dt_frame- t)
     
@@ -42,3 +47,5 @@ for frame_id = frame_sequence
         warning_was_shown = true;
     end
 end
+
+fclose(fid);
