@@ -10,7 +10,7 @@
 # changeDataPath(NAME_DATA_LOCATION)
 
 laptop = '/home/fran_tr/Data'
-local = '/home/francesco/Data'
+local = '/home/fran_tr/Data'
 storage = '/storage/Francesco/Experiments'
 storage2 = '/mnt/storage_s3/Francesco/Experiments'
 rbc_holo = '/mnt/hodgkin/Francesco/MEA_Experiments/RBC Holography'
