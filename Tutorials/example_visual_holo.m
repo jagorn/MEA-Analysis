@@ -11,7 +11,7 @@
 listDataPaths;
 
 % to change your current data path:
-changeDataPath('a2_holo')
+changeDataPath('laptop')
 
 
 
@@ -63,16 +63,37 @@ extractExperiment('my_test', 20000, 'Raw_Name', 'full',  'Sorting_Name', 'full')
 % You can look at a summary of your sections using:
 printSectionsTable('my_test'); 
 
-
-
-% STAs and RECEPTIVE FIELDS
-
 % To compute STAs and receptive fields:
 computeSTAs('my_test')
 % ...and all RFs will be computed and saved in the experiment folder.
 % If you have more than one checkerboard section, you can use the optional
 % parameters to choose which one to use to compute the RFs.
 
+% to visualize the STA of a cell:  (cell #17 for example...)
+plotExpSTA("my_test", 17)
+
+% You can now visualize your data plotting raster-plots or PSTHs.
+euler_section = 2;
+plotSectionRaster("my_test", euler_section, 'euler')
+% you need to specify the number of the visual section you want to plot
+% (as reported in the section table) and the name of the stimulus.
+
+plotSectionPsth("my_test", euler_section)
+% check the function documentation for more info on optional parameters
+
+% to compute the PSTHs of your responses:
+repetitions = getRepetitions("my_test", euler_section);
+spike_times = getSpikeTimes("my_test");
+mea_rate = getMeaRate("my_test");
+
+psth_euler = sectionPSTHs(spike_times, repetitions, mea_rate, 'Time_Spacing' , 0.5);
+% this variable is a structure with all the data you need about concerning the RGC responses
+
+% plot:
+figure();
+plot(psth_euler.responses{1}');
+waitforbuttonpress();
+close();
 
 
 % HOMOGRAPHIES
@@ -116,10 +137,11 @@ extractVisualHoloRepetitions('my_test', 3, 1)
 
 % After you run the command you will see two new sections appearing in the HoloTable:
 % one for repetitions of pure DH and one for repetitions of DH + visual
+printHolographyTable('my_test')
 
 
 
-% DATASETS
+% DATASETS  (NO NEEDED FOR VISUAL-HOLO ANALYSIS)
 
 % datasets are matlab file where you store data from one or more experiments for analysis
 % all datasets are stored in the Dataset folder inside the project.
@@ -137,12 +159,10 @@ loadDataset();
 addAllDatasetPSTHs() % to add all psths
 
 % to plot cell cards: 
-plotCellCard(1) % with the parameter being the cell number
+plotCellCard(17) % with the parameter being the cell number
 
-% to change the psth plotted use 
-changeDefaultPSTH('euler', 'simple')
-
-%
-
+% to change the psth plotted use:
+changeDefaultPSTH('euler', 'simple');
+plotCellCard(17);
 
 
