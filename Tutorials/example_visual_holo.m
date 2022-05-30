@@ -88,6 +88,7 @@ mea_rate = getMeaRate("my_test");
 
 psth_euler = sectionPSTHs(spike_times, repetitions, mea_rate, 'Time_Spacing' , 0.5);
 % this variable is a structure with all the data you need about concerning the RGC responses
+% Time spacing is the time interval (s) you want to consider before and after stimulus offset.
 
 % plot:
 figure();
@@ -98,6 +99,49 @@ close();
 
 % HOMOGRAPHIES
 
+% When you play any kind of stimulus, you need to determine its location,
+% i.e. its reference frame, so that you can relate the position of
+% the RGCs you record from with the position of the stimulus.
+
+% To do this we use homographies, which are matrices representing
+% projective transformations of point and planes in a 2D space.
+
+% Some homographies are FIXED, meaning they don't depend on the current
+% status of the rig, and have always same values.
+% Examples: the transformation between Camera and DMD is fixed, because
+% they always move together.
+
+% Other transformations depend on the current configuration of the rig.
+% Examples: Camera to MEA depends on the current location of the MEA.
+
+% To initialize you table of homographies: (just need to do this once and it will be set forever)
+initializeHomographies();
+% This will load and store all the fixed homographies.
+
+% you can visualize all the homographies saved using:
+listHomographies();
+
+% You can see that here we also have homographies for CAMERA to MEA, for
+% both x10 and x40 objective. These are computed assuming that the CAMERA
+% is perfectly centered on the MEA.
+
+% if during an experiment you move the MEA and/or camera with respect to
+% each others, you need to compute the corresponding homography.
+% This homography can be computed based on a picture of the MEA you took
+% from the stimulus location.
+% In order to do so, you can do:
+setH_Photo2MEA('my_test', 'holo_pic', '.jpg');
+% Where 'holo_pic' is the name of the picture (must be of size 672*512 pxl)
+% You have to click on 5 different electrodes, and input in the console
+% their corresponding coordinates in terms of electrode raw and column
+% (from 1 to 16).
+
+% now if you check the list of homographies, you will see the new
+% homographies are stored as well.
+listHomographies();
+
+% This step is necessary when you use holographic stimulation on the side
+% of the MEA, or when you display visual stimuli in the surround.
 
 
 % HOLOGRAPHY
@@ -118,7 +162,7 @@ extractHolography('my_test', 'Raw_Name', 'full');
 extractHolography('my_test', 'Raw_Name', 'full');
 % you will also asked to add an image for this holographic section.
 % this should be the picture taken with the camera from the same position
-% where you performed the stimulation.
+% where you performed the stimulation (same used to compute the homography).
 
 % Now to have a recap on the DH info you can use:
 printHolographyTable('my_test')
@@ -126,6 +170,14 @@ printHolographyTable('my_test')
 
 
 % VISUAL AND HOLOGRAPHY
+
+% To test whether DH and DMD triggers are correctly synchronized, use:
+testVisualHoloSynchronization('my_test');
+% This will plot a dot for each DMD trigger, colored according to the .vec file: 
+% green dots are triggers that should be aligned to open DH shutter.
+% In blue, you have the time intervals at which the DH shutter is open
+% according to the DH triggers.
+% If synchronization is correct, green dots and blue lines should align.
 
 % Put visual and holography together:
 extractVisualHoloRepetitions('my_test', 3, 1)
@@ -138,6 +190,37 @@ extractVisualHoloRepetitions('my_test', 3, 1)
 % After you run the command you will see two new sections appearing in the HoloTable:
 % one for repetitions of pure DH and one for repetitions of DH + visual
 printHolographyTable('my_test')
+
+
+
+% HOLOGRAPHY PSTHs
+% To compute the PSTHs for each of the holographic pattern in your table:
+computeHolographyPSTHs('my_test');
+% As for PSTHs to visual stimuli, you can check the documentation of the function
+% for further functionalities and optional paremeters.
+
+% To get the PSTH variable:
+my_holo_psths = getHolographyPSTHs('my_test');
+
+% To plot the PSTHs by pattern:
+dh_section = 3;  % Chose the section according to the HoloTable IDs
+holo_pattern = 1;  % this is the holographic pattern you want to visualize
+rgc_idx = 1:20;  % to visualize the first 20 RGCs
+plotHoloPSTHsByPattern('my_test', dh_section, holo_pattern, rgc_idx);
+% or to visualize it as a raster:
+plotHoloPSTHsByPattern('my_test', dh_section, holo_pattern, rgc_idx, 'Mode', 'raster');
+
+
+% To visualize the PSTHs by RGC:
+rgc_id = 1;
+plotHoloPSTHsByCell('my_test', dh_section, rgc_id);
+
+
+
+% SURROUND ANALYSIS
+% You have now all the data you need to run the surround analysis
+% check out the script and fill out the parameters.
+visualize_surround
 
 
 

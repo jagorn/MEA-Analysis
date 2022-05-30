@@ -9,6 +9,7 @@ Plots/*
 
 Homographies/*
 !Homographies/.homographies
+!Homographies/Homographies_base.mat
 
 Stimuli/checkerboard/binary/*
 !Stimuli/checkerboard/binary/.binary
