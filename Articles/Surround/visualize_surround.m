@@ -2,7 +2,7 @@ clear
 % close all
 
 % experiments
-ctrl_ids = ["20210721_grid", "20220421_dh_discs", "20220428_dh_discs"];  % this are the control experiments
+ctrl_ids = ["20210721_dh", "20220421_dh_discs", "20220428_dh_discs"];  % this are the control experiments
 test_ids = ["20210804a_a2", "20220502_a2_discs" ];  % this are the test experiments
 debug_ids = ["my_test"]; % dummy experiment used in tutorial
 
@@ -17,7 +17,7 @@ debug_ids = ["my_test"]; % dummy experiment used in tutorial
            %%%
             %
 
-exp_ids = debug_ids;  % choose test or control (or debug)
+exp_ids = ctrl_ids;  % choose test or control (or debug)
 visual_win = [0.175 0.500];  % [s] the time window of visual stimulation (o is the start of DH stimualtion)
 activation_win = [0.215 0.550];  % [s] choose the time window over which to detect visual response (0 is the start of DH stimulation)
 surround_distance = 50; % [microns] minimum distance between visual stim and receptive field center.
@@ -53,7 +53,10 @@ for i_exp = 1:numel(exp_ids)
     visual_table = getSectionsTable(exp_id);
     dh_section_id = find(contains([holo_table.stimulus], visual_stim));
     visual_section_id = find(contains([visual_table.stimulus], holo_stim));
-    assert(numel(dh_section_id) == 1 && numel(visual_section_id) == 1);
+    
+    dh_section_id = dh_section_id(1);
+    visual_section_id = visual_section_id(1);
+%     assert(numel(dh_section_id) == 1 && numel(visual_section_id) == 1);
     
     % Select Valid Cells
     [center, radius, vertices, surface, valid_stas] = getMEASTAs(exp_id);

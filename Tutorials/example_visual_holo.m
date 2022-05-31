@@ -155,6 +155,14 @@ extractHolography('my_test', 'Raw_Name', 'full');
 % configuration file.
 % you have to specify in the stim_holo.txt which DH_Frames files were
 % used, and in which order.
+
+% IMPORTANT: In brackets you need to specify the location of the stimulus.
+% if the location is missing, it is assumed that it was the default
+% location centered on the MEA.
+% To specify the location, add inside the brackets the name of the picture
+% you used to compute the corresponding homography.
+% Example: DH_frames_20220421_14_03_51 (side_40x)
+
 % Copy all of the DH_Frames files in the Holography folder inside your
 % experiment.
 
@@ -221,31 +229,3 @@ plotHoloPSTHsByCell('my_test', dh_section, rgc_id);
 % You have now all the data you need to run the surround analysis
 % check out the script and fill out the parameters.
 visualize_surround
-
-
-
-% DATASETS  (NO NEEDED FOR VISUAL-HOLO ANALYSIS)
-
-% datasets are matlab file where you store data from one or more experiments for analysis
-% all datasets are stored in the Dataset folder inside the project.
-
-% you create a dataset with setDataset (name of dataset, list of experiments)
-setDataset('my_test', {'my_test'})
-
-% load Dataset in the workspace:
-loadDataset();
-
-% for more information about datasets, check the tutorial
-% "example_create_dataset.m"
-
-% for more info check Dataset Manager in the code folder
-addAllDatasetPSTHs() % to add all psths
-
-% to plot cell cards: 
-plotCellCard(17) % with the parameter being the cell number
-
-% to change the psth plotted use:
-changeDefaultPSTH('euler', 'simple');
-plotCellCard(17);
-
-
