@@ -17,6 +17,7 @@ function rs = getFiringRates(spikes, time_window, rep_begins, time_resolution, k
     end
     
     % inputs must be row vectors
+    spikes = spikes(:)';
     assert(size(spikes, 1) == 1);
     assert(size(rep_begins, 1) == 1);
     assert(size(time_window, 1) == 1);

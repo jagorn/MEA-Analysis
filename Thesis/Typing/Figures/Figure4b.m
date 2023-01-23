@@ -17,7 +17,7 @@ class_names = {'RGC.8.2.1.', 'RGC.8.2.4_PRUNED.', 'RGC.4.4.', 'RGC.3.8.', 'RGC.4
 for i_c = 1:numel(class_names)
     
     class_name = class_names{i_c};
-    class_folder = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/Data_Fit/', class_name, 'mat');
+    class_folder = strcat('/home/fran_tr/Projects/MEA-Analysis/Thesis/Typing/Data/', class_name, 'mat');
     
     symbol_id = strcmp(class_name, names);
     symbol = symbols(symbol_id);
@@ -106,7 +106,7 @@ for i_nl = 1:n_nls
     % fit the nl function
     [params_sing, residual] = lsqcurvefit(@funOffset, 0, nl_to_fit_x, nl_to_fit_y, -inf, +inf);
     if residual < 0.01
-%         params = [params_sing, 0, 0, 1-params_sing];
+        params = [params_sing, 0, 0, 1-params_sing];
         continue;
     else
         params = lsqcurvefit(nl_func, params_0, nl_to_fit_x, nl_to_fit_y, params_lb, params_ub);

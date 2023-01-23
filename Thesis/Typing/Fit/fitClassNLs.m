@@ -2,9 +2,10 @@ clear
 close all
 
 % params
-% class_folder = 'RGC.3.8..mat';
-% class_folder = 'RGC.4.4..mat';
-% class_folder = 'RGC.8.8.1..mat';
+my_class_suffix = "/home/fran_tr/Projects/MEA-Analysis/Articles/Typing/Non-linearities estimate/_data/lns_";
+% class_folder = 'RGC.3.8.mat';
+% class_folder = 'RGC.4.4.mat';
+% class_folder = 'RGC.8.8.1.mat';
 class_folder = 'RGC.8.2.4_PRUNED.mat';
 
 nl_func = @funSigmoid;
@@ -16,7 +17,7 @@ show_plots = true;
 % test_non_linearities();
 
 % fit
-load(class_folder);
+load(strcat(my_class_suffix, class_folder);
 params_sta = fit_all_nl(non_linearities_sta, nl_x_sta, nl_func, params_0, params_lb, params_ub, show_plots);
 suptitle('Non Linearities STA Method');
 

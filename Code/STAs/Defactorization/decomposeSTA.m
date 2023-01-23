@@ -2,15 +2,18 @@ function [temporal, spatial, rfs, indices] = decomposeSTA(stas, varargin)
 
 do_smoothing_def = false;
 do_plots_def = false;
+remove_surround_def = false;
 
 % Parse Input
 p = inputParser;
 addRequired(p, 'stas');
 addParameter(p, 'Do_Smoothing', do_smoothing_def);
+addParameter(p, 'Remove_Surround', remove_surround_def);
 addParameter(p, 'Do_Plots', do_plots_def);
 parse(p, stas, varargin{:});
 do_smoothing = p.Results.Do_Smoothing;
 do_plots = p.Results.Do_Plots;
+remove_surround = p.Results.Remove_Surround;
 
 [n_rows, n_cols, n_steps] = size(stas{1});
 n_cells = numel(stas);
@@ -28,18 +31,32 @@ for i=1:length(stas)
         
         % filter the sta to remove some noise
         if do_smoothing
-            frame_for_fitting = std(smoothSta(sta), [], 3);
+            cell_sta = smoothSta(sta);
         else
-            frame_for_fitting = std(sta, [], 3);
+            cell_sta = sta;
         end
-        spatial(i, :, :) = std(sta, [], 3);
+        
+        if remove_surround
+            median_sta = median(cell_sta(:));
+            max_sta = max(cell_sta(:)) - median_sta;
+            min_sta = min(cell_sta(:)) - median_sta;
+            
+            if abs(max_sta) > abs(min_sta)
+                frame_for_fitting = max(cell_sta, [], 3);
+            else
+                frame_for_fitting = min(cell_sta, [], 3);
+            end
+        else
+            frame_for_fitting = std(cell_sta, [], 3);
+        end
+        spatial(i, :, :) = frame_for_fitting;
         
         % plot
         if do_plots
             imagesc(frame_for_fitting);
             waitforbuttonpress();
         end
-
+        
         % Fit The ellipses
         try
             [xEll, yEll, ~, ~] =  fitEllipse(frame_for_fitting);
@@ -48,10 +65,11 @@ for i=1:length(stas)
             continue;
         end
         
-        if is_valid
-            is_good_sta(i) = true;
+%         if is_valid
+        try
             temporal(i, :) = extractTemporalSta(sta, xEll, yEll);
             rfs(i) = polyshape(xEll, yEll);
+            is_good_sta(i) = true;
         end
     end
 end

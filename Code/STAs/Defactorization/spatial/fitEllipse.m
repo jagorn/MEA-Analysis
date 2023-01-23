@@ -1,13 +1,28 @@
 function [Xell, Yell, centreX, centreY] = fitEllipse(frame)
 
+% Find polarity
+medf = median(frame(:));
+maxf = max(frame(:)) - medf;
+minf = min(frame(:)) - medf;
+if abs(maxf) > abs(minf)
+    isON = true;
+else
+    isON = false;
+end
+
 % As center of the ellipse, choose the pixel with highest value
-[maxRows, imy] = max(abs(frame), [], 2);
-[maxPixel, imx] = max(maxRows, [], 1);
+if isON
+    [chosenRow, imy] = max(abs(frame), [], 2);
+    [chosenPxl, imx] = max(chosenRow, [], 1);
+else
+    [chosenRow, imy] = min(abs(frame), [], 2);
+    [chosenPxl, imx] = min(chosenRow, [], 1);
+end
 centreY = imx(1);
 centreX = imy(imx);
 
-% Normalize the STA frame
-frame =  frame - mean(frame(:));
+% % Normalize the STA frame
+frame =  frame - median(frame(:));
 frame = frame / max(abs(frame(:)));
 frame(abs(frame(:)) < 0.1) = 0;
 
@@ -19,14 +34,14 @@ gaussData = [size(frame,1) size(frame,2) centreX centreY];
 lowerBound = [0  0 -5 -5];
 upperBound = [20 20 5 5];
 
-[p1, ~] = lsqcurvefit(@funcGauss, p0, gaussData, frame, lowerBound, upperBound, options);  
+[p1, ~] = lsqcurvefit(@funcGauss, p0, gaussData, frame, lowerBound, upperBound, options);
 
 p0 = [p1 centreX centreY];
 gaussData = size(frame);
 lowerBound = [0  0 -5 -5 0 0];
 upperBound = [20 20 5 5 40 40];
 
-[p2, ~] = lsqcurvefit(@funcGauss, p0, gaussData, frame, lowerBound, upperBound, options);  
+[p2, ~] = lsqcurvefit(@funcGauss, p0, gaussData, frame, lowerBound, upperBound, options);
 
 ellipsesParams(1) = p2(5);
 ellipsesParams(2) = p2(6);
